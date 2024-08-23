@@ -2,9 +2,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 99.2%;
-  height: 89.7vh; /* Full screen height */
-  padding: 3px;
+  width: 100%;
+  height: 100vh; /* Full screen height */
+  padding: 10px;
   margin: 0;
   border: 0;
   background-color: RGB(237, 237, 239); /* Light background color */
@@ -20,13 +20,15 @@
     width: 100%;
     max-width: 1200px;
     margin-top: 50px;
+    /* padding: 0 20px; */
 
     .text-content {
       max-width: 500px;
+      /* margin-right: 20px; */
 
       .logo {
-        /* margin-bottom: 20px; */
         width: 150px;
+        /* margin-bottom: 20px; */
       }
 
       h1 {
@@ -52,11 +54,97 @@
 
     .image-content {
       img {
-        width: 500px;
+        width: auto;
+        max-width: 500px;
         height: auto;
-        /* border-radius: 5px; */
-        margin: 0%;
-        border: 0%;
+        margin: 0;
+        border: 0;
+      }
+    }
+  }
+
+  /* Responsive Design */
+  @media screen and (max-width: 1024px) {
+    .main-content {
+      flex-direction: column;
+      align-items: center;
+
+      .text-content {
+        max-width: 100%;
+        text-align: center;
+        margin-right: 0;
+
+        h1 {
+          font-size: 30px;
+        }
+
+        p {
+          font-size: 14px;
+        }
+
+        .shop-now-button {
+          padding: 10px 15px;
+        }
+      }
+
+      .image-content {
+        img {
+          max-width: 400px;
+          margin-top: 20px;
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .main-content {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+
+      .text-content {
+        h1 {
+          font-size: 28px;
+        }
+
+        p {
+          font-size: 14px;
+        }
+      }
+
+      .image-content {
+        img {
+          max-width: 300px;
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    .main-content {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+
+      .text-content {
+        h1 {
+          font-size: 24px;
+        }
+
+        p {
+          font-size: 12px;
+        }
+
+        .shop-now-button {
+          font-size: 12px;
+          padding: 8px 12px;
+        }
+      }
+
+      .image-content {
+        img {
+          max-width: 250px;
+        }
       }
     }
   }
