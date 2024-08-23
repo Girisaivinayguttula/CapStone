@@ -4,8 +4,9 @@
     justify-content: space-between;
     padding: 40px;
     background-color: RGB(237, 237, 239);
-    border: 1px solid #ccc;
-    border-radius: 8px;
+    /* margin: 25px; */
+    /* border: 1px solid #ccc; */
+    /* border-radius: 8px; */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
   

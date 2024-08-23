@@ -7,7 +7,7 @@
   
   .footer .logo img {
     max-width: 60px;
-    margin-bottom: 20px;
+    /* margin-bottom: 20px; */
   }
   
   .footer-content h2 {
@@ -70,4 +70,8 @@
   
   .footer-bottom a:hover {
     text-decoration: underline;
+  }
+
+  .logoW{
+    border: 1px solid beige;
   }
