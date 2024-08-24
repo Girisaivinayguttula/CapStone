@@ -1,1 +1,22 @@
-<p>onlineshop works!</p>
+<div class="page-container">
+  <header class="header">
+    <h3>Products</h3>
+  </header>
+
+  <!-- Product List --> 
+  <section class="products">
+    <div *ngIf="products.length === 0" class="no-products">
+      <p>No products available.</p>
+    </div>
+    <div *ngFor="let product of products" class="product-row">
+      <div class="product">
+        <h2>{{ product.name }}</h2>
+        <h3>Cost ${{ product.price }}</h3>
+        <p>{{ product.description }}</p>
+        <p>Category: {{ product.category }}</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- <p>this is working</p> -->
