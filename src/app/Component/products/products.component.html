@@ -1,0 +1,69 @@
+<div class="page-container">
+  <header class="header">
+    <h3>Products</h3>
+    <button class="add-product-button" (click)="toggleForm()">Add Product</button>
+  </header>
+
+  <!-- Product List -->
+  <section class="products">
+    <div *ngIf="products.length === 0" class="no-products">
+      <p>No products available.</p>
+    </div>
+    <div *ngFor="let product of products" class="product-row">
+      <div class="product">
+        <h2>{{ product.name }}</h2>
+        <h3>Cost ${{ product.price }}</h3>
+        <p>{{ product.description }}</p>
+        <p>Category: {{ product.category }}</p>
+        <button (click)="editProduct(product)">Edit</button>
+        <button (click)="deleteProduct(product)">Delete</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Add/Edit Product Form -->
+  <div *ngIf="showForm" class="product-form-container">
+    <h2>{{ isEditing ? 'Edit' : 'Add' }} Product</h2>
+    <form (ngSubmit)="isEditing ? updateProduct(productForm) : addProduct(productForm)" #productForm="ngForm">
+      <div class="form-group">
+        <label for="productName">Product Name:</label>
+        <input id="productName" [(ngModel)]="productName" name="name" #name="ngModel" required>
+        <div *ngIf="productForm.submitted && !name.valid" class="error">
+          Product name is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="productDescription">Description:</label>
+        <textarea id="productDescription" [(ngModel)]="productDescription" name="description" #description="ngModel" required></textarea>
+        <div *ngIf="productForm.submitted && !description.valid" class="error">
+          Description is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="productPrice">Price:</label>
+        <input id="productPrice" type="number" [(ngModel)]="productPrice" name="price" #price="ngModel" required min="0">
+        <div *ngIf="productForm.submitted && (!price.valid || price.errors?.['min'])" class="error">
+          Price must be a positive number
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="productCategory">Category:</label>
+        <select id="productCategory" [(ngModel)]="productCategory" name="category" #category="ngModel" required>
+          <option value="" disabled>Select a category</option>
+          <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+        </select>
+        <div *ngIf="productForm.submitted && !category.valid" class="error">
+          Category is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <button type="submit">{{ isEditing ? 'Update Product' : 'Add Product' }}</button>
+        <button type="button" (click)="toggleForm()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
