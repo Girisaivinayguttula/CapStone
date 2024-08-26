@@ -1,15 +1,23 @@
-import { Component } from '@angular/core';
-import { LoginComponent } from '../login/login.component';
-import { SignupComponent } from '../signup/signup.component';
-import { RouterModule, RouterOutlet } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { AuthService } from '../../auth.service';   // Import AuthService
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [LoginComponent,SignupComponent,RouterOutlet,RouterModule,],
+  imports: [CommonModule, RouterModule],
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.css'
+  styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
+  isAdmin = false;
 
+  constructor(private authService: AuthService) {} // Inject AuthService
+
+  ngOnInit(): void {
+    this.authService.isAdmin$.subscribe(isAdmin => {
+      this.isAdmin = isAdmin;
+    });
+  }
 }

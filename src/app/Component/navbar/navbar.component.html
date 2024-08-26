@@ -9,7 +9,7 @@
     <li><a routerLink="/home">Home</a></li>
     <li><a routerLink="/aboutus">About-us</a></li>
     <li><a routerLink="/onlineshop">Onlineshop</a></li>
-    <li><a routerLink="/products">Products</a></li>
+    <li *ngIf="isAdmin"><a routerLink="/products">Products</a></li>
     <li><a routerLink="/login">Login</a></li>
     <li><a routerLink="/signup">Register</a></li>
     <!-- Cart Icon -->

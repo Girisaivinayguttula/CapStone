@@ -21,10 +21,11 @@ export class SignupComponent {
   constructor(private http: HttpClient) {}
 
   onSubmit() {
-    this.http.post('http://localhost:3000/api/signup', this.user)
+    this.http.post('http://localhost:5000/api/signup', this.user)
       .subscribe(
         response => {
           console.log('User signed up successfully', response);
+          alert('Signup successful!'); // Alert added here
         },
         error => {
           console.error('Error signing up', error);
@@ -34,6 +35,7 @@ export class SignupComponent {
           } else {
             console.error('Error details:', error.message);
           }
+          alert('Signup failed. Please try again.'); // Alert for failure
         }
       );
   }
