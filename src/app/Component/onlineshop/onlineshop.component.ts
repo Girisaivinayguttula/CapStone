@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 export interface Products {
@@ -20,7 +21,7 @@ export interface Products {
 export class OnlineshopComponent implements OnInit {
   products: Products[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit() {
     this.fetchProducts();
@@ -35,5 +36,15 @@ export class OnlineshopComponent implements OnInit {
         console.error('Error fetching products:', err);
       }
     });
+  }
+
+  addToCart(product: Products) {
+    // Save the product in localStorage or a service for now
+    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    cart.push(product);
+    localStorage.setItem('cart', JSON.stringify(cart));
+
+    // Navigate to the cart component
+    this.router.navigate(['/cart']);
   }
 }

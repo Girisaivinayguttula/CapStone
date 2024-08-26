@@ -1,1 +1,21 @@
-<p>cart works!</p>
+<div class="cart-container">
+    <header class="header">
+      <h3>Your Cart</h3>
+    </header>
+  
+    <section class="cart-products">
+      <div *ngIf="cartProducts.length === 0" class="no-products">
+        <p>Your cart is empty.</p>
+      </div>
+      <div *ngFor="let product of cartProducts" class="product-row">
+        <div class="product">
+          <h2>{{ product.name }}</h2>
+          <h3>Cost: ${{ product.price }}</h3>
+          <p>{{ product.description }}</p>
+          <p>Category: {{ product.category }}</p>
+          <button (click)="removeFromCart(product)">Remove from Cart</button>
+        </div>
+      </div>
+    </section>
+  </div>
+  

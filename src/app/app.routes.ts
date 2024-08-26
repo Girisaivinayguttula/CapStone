@@ -14,7 +14,7 @@ export const appRoutes: Routes = [
   { path: 'aboutus', component: AboutusComponent },
   { path: 'products', component: ProductComponent},
   { path: 'onlineshop', component: OnlineshopComponent },
-  { path: 'cart', component: CartComponent},
+  { path: 'cart', component: CartComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Redirect to home if no path is provided
   { path: '**', redirectTo: '/home' } // Redirect to home for any unknown paths
 ];
