@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { CommonModule } from '@angular/common';
 
-export interface Product {
+export interface Products {
   _id?: string;
   name: string;
   description: string;
@@ -13,28 +12,28 @@ export interface Product {
 
 @Component({
   selector: 'app-onlineshop',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './onlineshop.component.html',
-  styleUrls: ['./onlineshop.component.scss'],
+  styleUrls: ['./onlineshop.component.css']
 })
 export class OnlineshopComponent implements OnInit {
-  products: Product[] = [];
-  private apiUrl = 'http://localhost:5000/api/products'; // Ensure this URL matches your backend server
+  products: Products[] = [];
 
   constructor(private http: HttpClient) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.fetchProducts();
   }
 
-  fetchProducts(): void {
-    this.http.get<Product[]>(this.apiUrl).pipe(
-      catchError((error) => {
-        console.error('Error fetching products:', error);
-        return []; // Return an empty array if there's an error
-      })
-    ).subscribe((data: Product[]) => {
-      console.log('Fetched products:', data); // Add this line to check the fetched products
-      this.products = data;
+  fetchProducts() {
+    this.http.get<Products[]>('http://localhost:5000/api/products').subscribe({
+      next: (data) => {
+        this.products = data;
+      },
+      error: (err) => {
+        console.error('Error fetching products:', err);
+      }
     });
   }
-}  
+}

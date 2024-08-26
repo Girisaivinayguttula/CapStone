@@ -1,0 +1,27 @@
+.onlineshop-container {
+    padding: 20px;
+  }
+  
+  .header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .products {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  .product-row {
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+    width: 250px;
+  }
+  
+  .product h2, .product h3, .product p {
+    margin: 5px 0;
+  }
+  

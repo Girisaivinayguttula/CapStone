@@ -107,8 +107,5 @@ app.delete('/api/products/:id', async (req, res) => {
   res.json({ message: 'Product deleted' });
 });
 
-// server.js
-const Product = require('./models/product');
-
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
