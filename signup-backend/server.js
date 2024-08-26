@@ -9,7 +9,11 @@ const PORT = process.env.PORT || 5000;
 const JWT_SECRET = 'your_jwt_secret'; // Replace with a secure key
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:4200', // Adjust this if your Angular app is on a different port or domain
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
 app.use(bodyParser.json());
 
@@ -22,10 +26,14 @@ mongoose.connect('mongodb+srv://Veenaee:Vinay%401505@pro.9gpov.mongodb.net/myDat
 
 // User Model
 const User = mongoose.model('User', new mongoose.Schema({
-  username: { type: String, required: true },
+  name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
-  password: { type: String, required: true }, // Storing plaintext password
+  phone: { type: String, required: true },
+  password: { type: String, required: true },
+  gender: { type: String, required: true }
 }));
+
+
 
 // Product Model
 const Product = mongoose.model('Product', new mongoose.Schema({
@@ -35,10 +43,24 @@ const Product = mongoose.model('Product', new mongoose.Schema({
   inStock: Boolean,
 }));
 
+// Middleware to verify JWT
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (token == null) return res.sendStatus(401);
+
+  jwt.verify(token, JWT_SECRET, (err, user) => {
+    if (err) return res.sendStatus(403);
+    req.user = user;
+    next();
+  });
+};
+
 // Signup Route
 app.post('/api/signup', async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { name, email, phone, password, gender } = req.body;
 
     // Check if the email is already registered
     const existingUser = await User.findOne({ email });
@@ -46,7 +68,7 @@ app.post('/api/signup', async (req, res) => {
       return res.status(400).send({ error: 'Email already registered' });
     }
 
-    const user = new User({ username, email, password }); // Storing plaintext password
+    const user = new User({ name, email, phone, password, gender });
     await user.save();
     res.status(201).send(user);
   } catch (error) {
@@ -80,6 +102,17 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
+// Get User Details
+app.get('/api/user', authenticateToken, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.userId).select('-password'); // Exclude password
+    if (!user) return res.status(404).send({ error: 'User not found' });
+    res.json(user);
+  } catch (error) {
+    res.status(500).send({ error: 'Server error', details: error.message });
+  }
+});
+
 // CRUD Endpoints for Products
 
 // Get all products
@@ -106,6 +139,5 @@ app.delete('/api/products/:id', async (req, res) => {
   await Product.findByIdAndDelete(req.params.id);
   res.json({ message: 'Product deleted' });
 });
-
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

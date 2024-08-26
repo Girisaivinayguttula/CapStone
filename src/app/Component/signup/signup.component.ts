@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -13,30 +14,47 @@ import { CommonModule } from '@angular/common';
 export class SignupComponent {
 
   user = {
-    username: '',
+    name: '',
     email: '',
-    password: ''
+    phone: '',
+    password: '',
+    confirmPassword: '',
+    gender: 'male' // Default value
   };
 
-  constructor(private http: HttpClient) {}
+  alertVisible = false;
+  alertMessage = '';
+
+  constructor(private http: HttpClient, private router: Router) {}
 
   onSubmit() {
+    console.log('User Data:', this.user); // Log the user data
+  
+    // Ensure password and confirmPassword match before proceeding
+    if (this.user.password !== this.user.confirmPassword) {
+      this.alertMessage = 'Passwords do not match. Please try again.';
+      this.alertVisible = true;
+      setTimeout(() => this.alertVisible = false, 3000);
+      return;
+    }
+  
     this.http.post('http://localhost:5000/api/signup', this.user)
       .subscribe(
         response => {
           console.log('User signed up successfully', response);
-          alert('Signup successful!'); // Alert added here
+          this.alertMessage = 'Signup successful! Redirecting to login page...';
+          this.alertVisible = true;
+          setTimeout(() => {
+            this.alertVisible = false;
+            this.router.navigate(['/login']);
+          }, 1000);
         },
         error => {
           console.error('Error signing up', error);
-          // Log error details for further investigation
-          if (error.error) {
-            console.error('Error details:', error.error);
-          } else {
-            console.error('Error details:', error.message);
-          }
-          alert('Signup failed. Please try again.'); // Alert for failure
+          this.alertMessage = 'Signup failed. Please try again.';
+          this.alertVisible = true;
+          setTimeout(() => this.alertVisible = false, 3000);
         }
       );
   }
-}
+}  

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../auth.service';   // Import AuthService
+import { AuthService } from '../../auth.service';  // Import the AuthService
 
 @Component({
   selector: 'app-login',
@@ -30,6 +30,7 @@ export class LoginComponent {
       localStorage.setItem('isLoggedIn', 'true');
       this.authService.updateAdminStatus(); // Notify AuthService
       alert('Login successful!');
+      
     } else {
       this.http.post('http://localhost:5000/api/login', this.loginData)
         .subscribe(

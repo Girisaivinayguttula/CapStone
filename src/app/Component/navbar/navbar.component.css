@@ -124,3 +124,10 @@ a {
   cursor: pointer;
   display: inline-block;
 }
+
+.profile-icon{
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    display: inline-block;
+}

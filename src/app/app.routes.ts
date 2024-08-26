@@ -7,6 +7,7 @@ import { OnlineshopComponent } from './Component/onlineshop/onlineshop.component
 import { ProductComponent } from './Component/products/products.component';
 import { CartComponent } from './Component/cart/cart.component';
 import { adminGuard } from './guards/admin.guard'; 
+import { ProfileComponent } from './Component/profile/profile.component';
 
 export const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -16,6 +17,7 @@ export const appRoutes: Routes = [
   { path: 'products', component: ProductComponent, canActivate: [adminGuard] },
   { path: 'onlineshop', component: OnlineshopComponent },
   { path: 'cart', component: CartComponent },
+  { path: 'profile', component: ProfileComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Redirect to home if no path is provided
   { path: '**', redirectTo: '/home' } // Redirect to home for any unknown paths
 ];
