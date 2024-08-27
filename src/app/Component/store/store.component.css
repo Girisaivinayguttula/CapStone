@@ -1,0 +1,112 @@
+/* Basic styling for the container */
+.container {
+  min-width: 1200px;
+  margin: 0 auto;
+  padding: 50px;
+  padding-top: 0%;
+  font-family: 'Helvetica', 'Arial', sans-serif;
+  text-align: center;
+  background-color: RGB(237, 237, 239); 
+}
+
+/* Title styling */
+.title {
+  font-size: 1.8rem;
+  font-weight: 300;
+  margin-bottom: 40px;
+}
+
+/* Flexbox layout for content */
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #000000;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+/* Image container styling */
+.image-container img {
+  max-width: 350px;
+  width: 100%;
+  border-radius: 8px;
+}
+
+/* Text content container */
+.details-container {
+  text-align: left;
+  padding-left: 30px;
+  max-width: 600px;
+}
+
+/* Heading inside the text content */
+.details-container h2 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+
+/* Paragraph and address styling */
+.details-container p {
+  font-size: 1rem;
+  margin-bottom: 20px;
+  line-height: 1.5;
+  
+}
+
+.address {
+  color: #d4af37; /* Gold color for address */
+  font-weight: bold;
+}
+
+/* Link styling */
+.check-locations {
+  display: inline-block;
+  margin-top: 20px;
+  text-decoration: none;
+  color: black;
+  border-bottom: 1px solid black;
+  font-weight: bold;
+}
+
+.check-locations:hover {
+  color: #d4af37;
+  border-color: #d4af37;
+}
+
+.container {
+  padding: 20px;
+  text-align: center;
+}
+
+.title {
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.image-container img {
+  max-width: 100%;
+  height: auto;
+}
+
+.details-container {
+  text-align: left;
+  margin-left: 20px;
+}
+
+.address {
+  font-weight: bold;
+}
+
+.map-container {
+  margin-top: 20px;
+  height: 500px;
+}

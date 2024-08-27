@@ -1,19 +1,25 @@
 <div class="onlineshop-container">
   <header class="header">
-    <h3>Our Products</h3>
+    <h2>ONLINE SHOP</h2>
   </header>
 
   <section class="products">
     <div *ngIf="products.length === 0" class="no-products">
       <p>No products available.</p>
     </div>
-    <div *ngFor="let product of products" class="product-row">
-      <div class="product">
-        <h2>{{ product.name }}</h2>
-        <h3>Cost: ${{ product.price }}</h3>
-        <p>{{ product.description }}</p>
-        <p>Category: {{ product.category }}</p>
-        <button (click)="addToCart(product)">Add to Cart</button>
+    <div class="product-list">
+      <div *ngFor="let product of products" class="product-card">
+        <img [src]="product.imageUrl" alt="{{ product.name }}">
+        <div class="product-info">
+          <span class="category">{{ product.category }}</span>
+          <h4>{{ product.name }}</h4>
+          <p class="price">${{ product.price }}</p>
+          <p class="description">{{ product.description }}</p>
+          <div class="rating">
+            <span *ngFor="let star of starsArray(product.rating ?? 0)">&#9733;</span>
+          </div>
+          <button (click)="addToCart(product)">Add to Cart</button>
+        </div>
       </div>
     </div>
   </section>

@@ -27,7 +27,7 @@ export class ProductComponent implements OnInit {
   productDescription = '';
   productPrice = 0;
   productCategory = '';
-  categories = ['Electronics', 'Books', 'Clothing', 'Accessories'];
+  categories = ['Cupcakes', 'Desserts', 'Drinks'];
 
   constructor(private http: HttpClient) {}
 

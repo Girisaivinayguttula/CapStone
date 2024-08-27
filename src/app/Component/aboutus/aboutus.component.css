@@ -57,7 +57,7 @@
   
   .about-image img {
     width: 250px; /* Set a fixed width for a smaller image */
-    height: auto;
+    height: 420px;
     object-fit: cover;
     border-radius: 10px;
     border: 1px solid #ddd; /* Border around the image */
