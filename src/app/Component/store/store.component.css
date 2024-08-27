@@ -1,18 +1,24 @@
+
 /* Basic styling for the container */
 .container {
   min-width: 1200px;
   margin: 0 auto;
   padding: 50px;
   padding-top: 0%;
-  font-family: 'Helvetica', 'Arial', sans-serif;
+  font-size: 12px;
+  font-weight: 200;
+  /* letter-spacing: 2px; */
+  text-transform: uppercase;
   text-align: center;
   background-color: RGB(237, 237, 239); 
 }
 
 /* Title styling */
 .title {
-  font-size: 1.8rem;
+  font-size: 24px;
   font-weight: 300;
+  letter-spacing: 2px;
+  text-transform: uppercase;
   margin-bottom: 40px;
 }
 

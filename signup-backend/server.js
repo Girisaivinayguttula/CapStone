@@ -21,6 +21,7 @@ app.use(bodyParser.json());
 mongoose.connect('mongodb+srv://Veenaee:Vinay%401505@pro.9gpov.mongodb.net/myDatabase?retryWrites=true&w=majority', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 30000 // Increase timeout to 30 seconds
 }).then(() => console.log('MongoDB connected'))
   .catch(err => console.error('Could not connect to MongoDB Atlas:', err));
 
@@ -41,8 +42,10 @@ const Product = mongoose.model('Product', new mongoose.Schema({
   price: Number,
   description: String,
   inStock: Boolean,
+  category: String,
+  imageUrl: String
 }));
-
+                                                              
 // Middleware to verify JWT
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];

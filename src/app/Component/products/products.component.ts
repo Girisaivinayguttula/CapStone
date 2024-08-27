@@ -9,6 +9,7 @@ export interface Products {
   description: string;
   price: number;
   category: string;
+  imageUrl: string; // Added this field for image URL
 }
 
 @Component({
@@ -27,6 +28,7 @@ export class ProductComponent implements OnInit {
   productDescription = '';
   productPrice = 0;
   productCategory = '';
+  productImageUrl = ''; // Added this field
   categories = ['Cupcakes', 'Desserts', 'Drinks'];
 
   constructor(private http: HttpClient) {}
@@ -59,7 +61,8 @@ export class ProductComponent implements OnInit {
         name: this.productName,
         description: this.productDescription,
         price: this.productPrice,
-        category: this.productCategory
+        category: this.productCategory,
+        imageUrl: this.productImageUrl // Include this line
       };
 
       this.http.post<Products>('http://localhost:5000/api/products', newProduct).subscribe({
@@ -82,6 +85,7 @@ export class ProductComponent implements OnInit {
     this.productDescription = product.description;
     this.productPrice = product.price;
     this.productCategory = product.category;
+    this.productImageUrl = product.imageUrl; // Include this line
   }
 
   updateProduct(form: NgForm) {
@@ -90,7 +94,8 @@ export class ProductComponent implements OnInit {
         name: this.productName,
         description: this.productDescription,
         price: this.productPrice,
-        category: this.productCategory
+        category: this.productCategory,
+        imageUrl: this.productImageUrl // Include this line
       };
 
       this.http.put<Products>(`http://localhost:5000/api/products/${this.currentProduct._id}`, updatedProduct).subscribe({
@@ -124,8 +129,9 @@ export class ProductComponent implements OnInit {
     this.productDescription = '';
     this.productPrice = 0;
     this.productCategory = '';
+    this.productImageUrl = ''; // Reset this field
+    this.showForm = false;
     this.isEditing = false;
     this.currentProduct = null;
-    this.showForm = false;
   }
 }

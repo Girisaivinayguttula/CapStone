@@ -15,9 +15,9 @@
           <h4>{{ product.name }}</h4>
           <p class="price">${{ product.price }}</p>
           <p class="description">{{ product.description }}</p>
-          <div class="rating">
+          <!-- <div class="rating">
             <span *ngFor="let star of starsArray(product.rating ?? 0)">&#9733;</span>
-          </div>
+          </div> -->
           <button (click)="addToCart(product)">Add to Cart</button>
         </div>
       </div>

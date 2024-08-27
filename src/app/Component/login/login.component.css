@@ -23,6 +23,7 @@
     width: 580px;
     min-width: 620px;
     min-height: 200px;
+    padding-left: 150px;
     margin: 50px;
     padding: 20px; /* Optional padding inside the container */
   }
