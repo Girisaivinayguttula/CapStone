@@ -112,7 +112,8 @@ export class ProductComponent implements OnInit {
   }
 
   deleteProduct(product: Products) {
-    if (product._id) {
+    const confirmDelete = window.confirm('Are you sure you want to delete this product?');
+    if (confirmDelete && product._id) {
       this.http.delete(`http://localhost:5000/api/products/${product._id}`).subscribe({
         next: () => {
           this.products = this.products.filter(p => p._id !== product._id);

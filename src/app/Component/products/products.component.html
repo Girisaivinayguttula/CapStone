@@ -1,76 +1,77 @@
-<div class="page-container">
+<div class="onlineshop-container">
   <header class="header">
-    <h3>Products</h3>
+    <h2>Products</h2>
     <button class="add-product-button" (click)="toggleForm()">Add Product</button>
   </header>
 
   <!-- Add/Edit Product Form -->
-<div *ngIf="showForm" class="product-form-container">
-  <h2>{{ isEditing ? 'Edit' : 'Add' }} Product</h2>
-  <form (ngSubmit)="isEditing ? updateProduct(productForm) : addProduct(productForm)" #productForm="ngForm">
-    <div class="form-group">
-      <label for="productName">Name:</label>
-      <input id="productName" [(ngModel)]="productName" name="name" required>
-      <div *ngIf="productForm.submitted && !productForm.controls['name']?.valid" class="error">
-        Name is required
+  <div *ngIf="showForm" class="product-form-container">
+    <h2>{{ isEditing ? 'Edit' : 'Add' }} Product</h2>
+    <form (ngSubmit)="isEditing ? updateProduct(productForm) : addProduct(productForm)" #productForm="ngForm">
+      <div class="form-group">
+        <label for="productName">Name:</label>
+        <input id="productName" [(ngModel)]="productName" name="name" required>
+        <div *ngIf="productForm.submitted && !productForm.controls['name']?.valid" class="error">
+          Name is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="productDescription">Description:</label>
+        <textarea id="productDescription" [(ngModel)]="productDescription" name="description" required></textarea>
+        <div *ngIf="productForm.submitted && !productForm.controls['description']?.valid" class="error">
+          Description is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="productPrice">Price:</label>
+        <input id="productPrice" type="number" [(ngModel)]="productPrice" name="price" required>
+        <div *ngIf="productForm.submitted && !productForm.controls['price']?.valid" class="error">
+          Price is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="productCategory">Category:</label>
+        <select id="productCategory" [(ngModel)]="productCategory" name="category" required>
+          <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+        </select>
+        <div *ngIf="productForm.submitted && !productForm.controls['category']?.valid" class="error">
+          Category is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="productImageUrl">Image URL:</label>
+        <input id="productImageUrl" [(ngModel)]="productImageUrl" name="imageUrl" required>
+        <div *ngIf="productForm.submitted && !productForm.controls['imageUrl']?.valid" class="error">
+          Image URL is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <button type="submit">{{ isEditing ? 'Update Product' : 'Add Product' }}</button>
+        <button type="button" (click)="toggleForm()">Cancel</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Product List -->
+  <section class="products">
+    <div *ngIf="products.length === 0" class="no-products">
+      <p>No products available.</p>
+    </div>
+    <div *ngFor="let product of products" class="product-card">
+      <img [src]="product.imageUrl" alt="{{ product.name }}" class="product-image"/>
+      <div class="product-info">
+        <h4>{{ product.name }}</h4>
+        <p class="price">Cost ${{ product.price }}</p>
+        <p class="description">{{ product.description }}</p>
+        <p class="category">Category: {{ product.category }}</p>
+        <button (click)="editProduct(product)">Edit</button>
+        <button (click)="deleteProduct(product)">Delete</button>
       </div>
     </div>
-
-    <div class="form-group">
-      <label for="productDescription">Description:</label>
-      <textarea id="productDescription" [(ngModel)]="productDescription" name="description" required></textarea>
-      <div *ngIf="productForm.submitted && !productForm.controls['description']?.valid" class="error">
-        Description is required
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="productPrice">Price:</label>
-      <input id="productPrice" type="number" [(ngModel)]="productPrice" name="price" required>
-      <div *ngIf="productForm.submitted && !productForm.controls['price']?.valid" class="error">
-        Price is required
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="productCategory">Category:</label>
-      <select id="productCategory" [(ngModel)]="productCategory" name="category" required>
-        <option *ngFor="let category of categories">{{ category }}</option>
-      </select>
-      <div *ngIf="productForm.submitted && !productForm.controls['category']?.valid" class="error">
-        Category is required
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="productImageUrl">Image URL:</label>
-      <input id="productImageUrl" [(ngModel)]="productImageUrl" name="imageUrl" required>
-      <div *ngIf="productForm.submitted && !productForm.controls['imageUrl']?.valid" class="error">
-        Image URL is required
-      </div>
-    </div>
-
-    <div class="form-group">
-      <button type="submit">{{ isEditing ? 'Update Product' : 'Add Product' }}</button>
-      <button type="button" (click)="toggleForm()">Cancel</button>
-    </div>
-  </form>
+  </section>
 </div>
-
-<!-- Product List -->
-<section class="products">
-  <div *ngIf="products.length === 0" class="no-products">
-    <p>No products available.</p>
-  </div>
-  <div *ngFor="let product of products" class="product-row">
-    <div class="product">
-      <img [src]="product.imageUrl" alt="{{ product.name }}" class="product-image"/> <!-- Added this line -->
-      <h2>{{ product.name }}</h2>
-      <h3>Cost ${{ product.price }}</h3>
-      <p>{{ product.description }}</p>
-      <p>Category: {{ product.category }}</p>
-      <button (click)="editProduct(product)">Edit</button>
-      <button (click)="deleteProduct(product)">Delete</button>
-    </div>
-  </div>
-</section>
