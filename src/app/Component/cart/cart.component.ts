@@ -7,8 +7,8 @@ export interface CartProduct {
   description: string;
   price: number;
   category: string;
-  quantity: number; // Added quantity field
-  imageUrl?: string; // Added optional imageUrl field
+  quantity: number;
+  imageUrl?: string;
 }
 
 @Component({
@@ -38,9 +38,9 @@ export class CartComponent implements OnInit {
     cart.forEach(product => {
       if (productMap.has(product._id)) {
         const existingProduct = productMap.get(product._id)!;
-        existingProduct.quantity += 1; // Increase quantity if product already exists
+        existingProduct.quantity += 1;
       } else {
-        product.quantity = 1; // Set quantity to 1 for new product
+        product.quantity = 1;
         productMap.set(product._id, product);
       }
     });
@@ -56,10 +56,12 @@ export class CartComponent implements OnInit {
     const cart = JSON.parse(localStorage.getItem('cart') || '[]');
     const updatedCart = cart.filter((p: CartProduct) => p._id !== product._id);
     localStorage.setItem('cart', JSON.stringify(updatedCart));
-    this.loadCart(); // Reload cart to reflect changes
+    this.loadCart();
   }
 
-  decreaseQuantity(product: CartProduct) {
+  decreaseQuantity(product: CartProduct, event: Event) {
+    event.preventDefault(); // Prevent default anchor behavior
+    console.log('Decreasing quantity for:', product); // Debugging
     if (product.quantity > 1) {
       product.quantity -= 1;
       this.updateCart(product);
@@ -68,14 +70,16 @@ export class CartComponent implements OnInit {
     }
   }
 
-  increaseQuantity(product: CartProduct) {
+  increaseQuantity(product: CartProduct, event: Event) {
+    event.preventDefault(); // Prevent default anchor behavior
+    console.log('Increasing quantity for:', product); // Debugging
     product.quantity += 1;
     this.updateCart(product);
   }
 
   updateCart(updatedProduct: CartProduct) {
     const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-    const updatedCart = cart.map((product: CartProduct) => 
+    const updatedCart = cart.map((product: CartProduct) =>
       product._id === updatedProduct._id ? updatedProduct : product
     );
     localStorage.setItem('cart', JSON.stringify(updatedCart));
@@ -83,7 +87,6 @@ export class CartComponent implements OnInit {
   }
 
   checkout() {
-    // Implement checkout logic
     alert('Proceeding to checkout...');
   }
 }

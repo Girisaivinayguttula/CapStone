@@ -14,19 +14,19 @@
       </div>
 
       <div *ngFor="let product of cartProducts" class="row border-top border-bottom main align-items-center">
-        <div class="col-2">
-          <!-- <img class="img-fluid" [src]="product.imageUrl || 'https://i.imgur.com/1GrakTl.jpg'" alt="Product Image"> -->
+        <div class="col-2 image-container">
+          <img class="img-fluid" [src]="product.imageUrl || 'https://i.imgur.com/1GrakTl.jpg'" alt="Product Image">
         </div>
-        <div class="col">
+        <div class="col details">
           <div class="row text-muted">{{ product.category }}</div>
           <div class="row">{{ product.name }}</div>
         </div>
-        <div class="col">
-          <a href="#" (click)="decreaseQuantity(product)">-</a>
+        <div class="col quantity-controls">
+          <a href="#" (click)="decreaseQuantity(product, $event)">-</a>
           <a href="#" class="border">{{ product.quantity }}</a>
-          <a href="#" (click)="increaseQuantity(product)">+</a>
+          <a href="#" (click)="increaseQuantity(product, $event)">+</a>
         </div>
-        <div class="col">
+        <div class="col price">
           ${{ product.price * product.quantity }}
           <span class="close" (click)="removeFromCart(product)">&#10005;</span>
         </div>
@@ -51,8 +51,6 @@
         <select>
           <option class="text-muted">Standard-Delivery- $5.00</option>
         </select>
-        <p>GIVE CODE</p>
-        <input id="code" placeholder="Enter your code">
       </form>
       <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
         <div class="col">TOTAL PRICE</div>
