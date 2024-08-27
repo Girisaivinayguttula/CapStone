@@ -39,12 +39,19 @@ export class OnlineshopComponent implements OnInit {
   }
 
   addToCart(product: Products) {
+    if (!this.isLoggedIn()) {
+      // Redirect to login page if user is not logged in
+      this.router.navigate(['/login']);
+      return;
+    }
+
     // Save the product in localStorage or a service for now
     let cart = JSON.parse(localStorage.getItem('cart') || '[]');
     cart.push(product);
     localStorage.setItem('cart', JSON.stringify(cart));
+  }
 
-    // Navigate to the cart component
-    this.router.navigate(['/cart']);
+  private isLoggedIn(): boolean {
+    return localStorage.getItem('isLoggedIn') === 'true';
   }
 }

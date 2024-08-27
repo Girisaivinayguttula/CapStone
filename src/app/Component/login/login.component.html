@@ -1,6 +1,6 @@
 <div class="container">
   <!-- Sign In Form -->
-  <div class="form-container sign-in-container">
+  <div class="form-container sign-in-container" *ngIf="!isLoggedIn">
     <form (ngSubmit)="onSubmit()">
       <h1>Sign In</h1>
       <input
@@ -23,11 +23,25 @@
     </form>
   </div>
 
-  <!-- Sign Up Section -->
-  <div class="form-container sign-up-container">
-    <form>
-      <h1>Hello, Friend!</h1>
-      <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
-    </form>
+  <!-- Profile Section (Visible after login) -->
+  <div *ngIf="isLoggedIn">
+    <div class="profile-container">
+      <h2>User Profile</h2>
+      <div *ngIf="user">
+        <p><strong>Name:</strong> {{ user.name }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Phone:</strong> {{ user.phone }}</p>
+        <p><strong>Gender:</strong> {{ user.gender }}</p>
+      </div>
+      <button class="btn" (click)="logout()">Logout</button>
+    </div>
   </div>
+
+<!-- Sign Up Section -->
+<div class="form-container sign-up-container" *ngIf="!isLoggedIn">
+  <form>
+    <h1>Hello, Friend!</h1>
+    <p>Don't have an account? <a routerLink="/signup">Sign Up</a></p>
+  </form>
 </div>
+
