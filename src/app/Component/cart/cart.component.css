@@ -10,7 +10,6 @@ body {
 .card {
   margin: auto;
   max-width: 750px;
-  min-height: auto;
   width: 90%;
   box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   border-radius: 1rem;
@@ -76,6 +75,20 @@ body {
   padding: 0 1vh;
 }
 
+.image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.image-container img {
+  width: 80px; /* Fixed width */
+  height: 80px; /* Fixed height */
+  object-fit: cover; /* Maintain aspect ratio while covering area */
+  border-radius: 4px; /* Optional: Rounded corners for images */
+}
+
 a {
   padding: 0 1vh;
 }
@@ -83,10 +96,6 @@ a {
 .close {
   margin-left: auto;
   font-size: 0.7rem;
-}
-
-img {
-  width: 3.5rem;
 }
 
 .back-to-shop {

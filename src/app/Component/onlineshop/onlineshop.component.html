@@ -3,23 +3,26 @@
     <h2>ONLINE SHOP</h2>
   </header>
 
+  <section class="category-filter">
+    <label for="category">Filter by Category:</label>
+    <select id="category" (change)="filterByCategory($event)">
+      <option value="">All</option>
+      <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+    </select>
+  </section>
+
   <section class="products">
-    <div *ngIf="products.length === 0" class="no-products">
+    <div *ngIf="filteredProducts.length === 0" class="no-products">
       <p>No products available.</p>
     </div>
     <div class="product-list">
-      <div *ngFor="let product of products" class="product-card">
+      <div *ngFor="let product of filteredProducts" class="product-card">
         <img [src]="product.imageUrl" alt="{{ product.name }}">
         <div class="product-info">
           <span class="category">{{ product.category }}</span>
           <h4>{{ product.name }}</h4>
           <p class="price">${{ product.price }}</p>
           <p class="description">{{ product.description }}</p>
-          <!--
-          <div class="rating">
-            <span *ngFor="let star of starsArray(product.rating ?? 0)">&#9733;</span>
-          </div>
-          -->
           <button 
             (click)="addToCart(product)"
             [disabled]="isProductInCart(product)"

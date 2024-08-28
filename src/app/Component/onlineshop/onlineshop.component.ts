@@ -22,7 +22,9 @@ export interface Products {
 })
 export class OnlineshopComponent implements OnInit {
   products: Products[] = [];
-  cartProducts: Set<string> = new Set();  // New property to track added products
+  filteredProducts: Products[] = [];
+  categories: string[] = [];
+  cartProducts: Set<string> = new Set();
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -38,11 +40,24 @@ export class OnlineshopComponent implements OnInit {
           imageUrl: product.imageUrl || 'https://picsum.photos/200',
           rating: product.rating || 4
         }));
+        this.filteredProducts = this.products;
+
+        // Extract unique categories
+        this.categories = Array.from(new Set(this.products.map(product => product.category)));
       },
       error: (err) => {
         console.error('Error fetching products:', err);
       }
     });
+  }
+
+  filterByCategory(event: Event) {
+    const selectElement = event.target as HTMLSelectElement;
+    const selectedCategory = selectElement?.value || '';
+  
+    this.filteredProducts = selectedCategory ? 
+      this.products.filter(product => product.category === selectedCategory) : 
+      this.products;
   }
 
   addToCart(product: Products) {
@@ -54,17 +69,11 @@ export class OnlineshopComponent implements OnInit {
     let cart = JSON.parse(localStorage.getItem('cart') || '[]');
     cart.push(product);
     localStorage.setItem('cart', JSON.stringify(cart));
-
-    // Add product to cartProducts set to indicate it is added
     this.cartProducts.add(product._id || '');
   }
 
   isProductInCart(product: Products): boolean {
     return this.cartProducts.has(product._id || '');
-  }
-
-  starsArray(rating: number): number[] {
-    return Array(rating).fill(1);
   }
 
   private isLoggedIn(): boolean {

@@ -35,7 +35,6 @@ const User = mongoose.model('User', new mongoose.Schema({
 }));
 
 
-
 // Product Model
 const Product = mongoose.model('Product', new mongoose.Schema({
   name: String,
