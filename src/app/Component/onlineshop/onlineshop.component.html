@@ -15,10 +15,17 @@
           <h4>{{ product.name }}</h4>
           <p class="price">${{ product.price }}</p>
           <p class="description">{{ product.description }}</p>
-          <!-- <div class="rating">
+          <!--
+          <div class="rating">
             <span *ngFor="let star of starsArray(product.rating ?? 0)">&#9733;</span>
-          </div> -->
-          <button (click)="addToCart(product)">Add to Cart</button>
+          </div>
+          -->
+          <button 
+            (click)="addToCart(product)"
+            [disabled]="isProductInCart(product)"
+          >
+            {{ isProductInCart(product) ? 'Added to Cart' : 'Add to Cart' }}
+          </button>
         </div>
       </div>
     </div>

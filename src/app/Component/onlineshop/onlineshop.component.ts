@@ -9,8 +9,8 @@ export interface Products {
   description: string;
   price: number;
   category: string;
-  imageUrl?: string; // Added this field to store image URLs
-  rating?: number; // Added this field to manage star ratings
+  imageUrl?: string;
+  rating?: number;
 }
 
 @Component({
@@ -22,6 +22,7 @@ export interface Products {
 })
 export class OnlineshopComponent implements OnInit {
   products: Products[] = [];
+  cartProducts: Set<string> = new Set();  // New property to track added products
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -34,8 +35,8 @@ export class OnlineshopComponent implements OnInit {
       next: (data) => {
         this.products = data.map(product => ({
           ...product,
-          imageUrl: product.imageUrl || 'https://picsum.photos/200', // Default image fallback
-          rating: product.rating || 4 // Default rating if not provided
+          imageUrl: product.imageUrl || 'https://picsum.photos/200',
+          rating: product.rating || 4
         }));
       },
       error: (err) => {
@@ -46,19 +47,24 @@ export class OnlineshopComponent implements OnInit {
 
   addToCart(product: Products) {
     if (!this.isLoggedIn()) {
-      // Redirect to login page if user is not logged in
       this.router.navigate(['/login']);
       return;
     }
 
-    // Save the product in localStorage or a service for now
     let cart = JSON.parse(localStorage.getItem('cart') || '[]');
     cart.push(product);
     localStorage.setItem('cart', JSON.stringify(cart));
+
+    // Add product to cartProducts set to indicate it is added
+    this.cartProducts.add(product._id || '');
+  }
+
+  isProductInCart(product: Products): boolean {
+    return this.cartProducts.has(product._id || '');
   }
 
   starsArray(rating: number): number[] {
-    return Array(rating).fill(1); // Creates an array to render the star icons
+    return Array(rating).fill(1);
   }
 
   private isLoggedIn(): boolean {

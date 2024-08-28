@@ -152,10 +152,149 @@ button:hover {
 }
 
 .add-product-button {
-  background-color: #28a745; /* Green button for adding */
+  background-color: #000000; /* Green button for adding */
   color: #fff;
 }
 
 .add-product-button:hover {
-  background-color: #218838;
+  background-color: #454645;
+}
+
+/* Inline Editing Styles */
+.product-info input[type="text"],
+.product-info input[type="number"],
+.product-info textarea,
+.product-info select {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px; /* Add some spacing */
+  box-sizing: border-box; /* Ensure padding doesn't affect width */
+}
+
+/* Match the appearance of product-info */
+.product-info input[type="text"] {
+  font-size: 20px; /* Same as product-info h4 */
+  font-weight: 400;
+}
+
+.product-info input[type="number"] {
+  font-size: 18px; /* Same as .price */
+  color: #333;
+}
+
+.product-info textarea {
+  font-size: 14px; /* Same as .description */
+  color: #666;
+  resize: vertical; /* Allow only vertical resizing */
+}
+
+.product-info select {
+  font-size: 12px; /* Same as .category */
+  color: #888;
+  text-transform: uppercase;
+}
+
+/* Remove default outline for a better look */
+.product-info input:focus,
+.product-info textarea:focus,
+.product-info select:focus {
+  outline: none;
+  border-color: #888; /* Slightly darker border on focus */
+  box-shadow: 0 0 5px rgba(136, 136, 136, 0.5); /* Subtle shadow effect */
+}
+
+/* Ensure margin is consistent for inline editing inputs */
+.product-info input {
+  margin-bottom: 10px; /* Add bottom margin for better spacing */
+}
+
+/* Specific styling for the "Image URL" input to increase its width */
+.product-info input[placeholder="Image URL"] {
+  width: calc(100% - 20px); /* Slightly narrower than full width for padding/margin */
+  margin-bottom: 15px; /* Increased bottom margin for better spacing */
+}
+
+/* add-product.component.css */
+
+/* Modal overlay */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Modal content */
+.modal-content {
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+/* Close button */
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Form styling */
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.form-group textarea {
+  resize: vertical;
+  height: 100px;
+}
+
+button[type="submit"] {
+  background: #000000;
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+button[type="submit"]:hover {
+  background: #2f3030;
 }

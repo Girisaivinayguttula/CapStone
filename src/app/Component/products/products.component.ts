@@ -9,7 +9,8 @@ export interface Products {
   description: string;
   price: number;
   category: string;
-  imageUrl: string; // Added this field for image URL
+  imageUrl: string;
+  quantity?: number;
 }
 
 @Component({
@@ -28,8 +29,8 @@ export class ProductComponent implements OnInit {
   productDescription = '';
   productPrice = 0;
   productCategory = '';
-  productImageUrl = ''; // Added this field
-  categories = ['Cupcakes', 'Desserts', 'Drinks'];
+  productImageUrl = '';
+  categories = ['Cupcakes', 'Desserts', 'Pastries'];
 
   constructor(private http: HttpClient) {}
 
@@ -48,7 +49,7 @@ export class ProductComponent implements OnInit {
     });
   }
 
-  toggleForm() {
+  toggleModal() {
     this.showForm = !this.showForm;
     if (!this.showForm) {
       this.resetForm();
@@ -62,12 +63,13 @@ export class ProductComponent implements OnInit {
         description: this.productDescription,
         price: this.productPrice,
         category: this.productCategory,
-        imageUrl: this.productImageUrl // Include this line
+        imageUrl: this.productImageUrl
       };
 
       this.http.post<Products>('http://localhost:5000/api/products', newProduct).subscribe({
         next: (product) => {
           this.products.push(product);
+          this.toggleModal(); // Close the modal after adding
           this.resetForm();
         },
         error: (err) => {
@@ -78,30 +80,31 @@ export class ProductComponent implements OnInit {
   }
 
   editProduct(product: Products) {
-    this.showForm = true;
-    this.isEditing = true;
     this.currentProduct = product;
     this.productName = product.name;
     this.productDescription = product.description;
     this.productPrice = product.price;
     this.productCategory = product.category;
-    this.productImageUrl = product.imageUrl; // Include this line
+    this.productImageUrl = product.imageUrl;
   }
 
-  updateProduct(form: NgForm) {
-    if (form.valid && this.currentProduct && this.currentProduct._id) {
+  saveProduct(product: Products) {
+    if (this.currentProduct && this.currentProduct._id) {
       const updatedProduct: Products = {
         name: this.productName,
         description: this.productDescription,
         price: this.productPrice,
         category: this.productCategory,
-        imageUrl: this.productImageUrl // Include this line
+        imageUrl: this.productImageUrl
       };
 
       this.http.put<Products>(`http://localhost:5000/api/products/${this.currentProduct._id}`, updatedProduct).subscribe({
-        next: (product) => {
-          const index = this.products.findIndex(p => p._id === this.currentProduct!._id);
-          this.products[index] = product;
+        next: (updatedProduct) => {
+          const index = this.products.findIndex(p => p._id === updatedProduct._id);
+          if (index !== -1) {
+            this.products[index] = updatedProduct;
+          }
+          this.currentProduct = null;
           this.resetForm();
         },
         error: (err) => {
@@ -112,8 +115,7 @@ export class ProductComponent implements OnInit {
   }
 
   deleteProduct(product: Products) {
-    const confirmDelete = window.confirm('Are you sure you want to delete this product?');
-    if (confirmDelete && product._id) {
+    if (product._id) {
       this.http.delete(`http://localhost:5000/api/products/${product._id}`).subscribe({
         next: () => {
           this.products = this.products.filter(p => p._id !== product._id);
@@ -130,9 +132,6 @@ export class ProductComponent implements OnInit {
     this.productDescription = '';
     this.productPrice = 0;
     this.productCategory = '';
-    this.productImageUrl = ''; // Reset this field
-    this.showForm = false;
-    this.isEditing = false;
-    this.currentProduct = null;
+    this.productImageUrl = '';
   }
 }

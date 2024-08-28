@@ -1,60 +1,41 @@
 <div class="onlineshop-container">
   <header class="header">
     <h2>Products</h2>
-    <button class="add-product-button" (click)="toggleForm()">Add Product</button>
+    <!-- Button to open modal -->
+    <button class="add-product-button" (click)="toggleModal()">Add Product</button>
   </header>
 
-  <!-- Add/Edit Product Form -->
-  <div *ngIf="showForm" class="product-form-container">
-    <h2>{{ isEditing ? 'Edit' : 'Add' }} Product</h2>
-    <form (ngSubmit)="isEditing ? updateProduct(productForm) : addProduct(productForm)" #productForm="ngForm">
-      <div class="form-group">
-        <label for="productName">Name:</label>
-        <input id="productName" [(ngModel)]="productName" name="name" required>
-        <div *ngIf="productForm.submitted && !productForm.controls['name']?.valid" class="error">
-          Name is required
+  <!-- Modal for Adding Product -->
+  <div class="modal" *ngIf="showForm">
+    <div class="modal-content">
+      <span class="close" (click)="toggleModal()">&times;</span>
+      <h2>Add Product</h2>
+      <form (ngSubmit)="addProduct(productForm)" #productForm="ngForm">
+        <div class="form-group">
+          <label for="name">Name:</label>
+          <input type="text" id="name" [(ngModel)]="productName" name="name" required>
         </div>
-      </div>
-
-      <div class="form-group">
-        <label for="productDescription">Description:</label>
-        <textarea id="productDescription" [(ngModel)]="productDescription" name="description" required></textarea>
-        <div *ngIf="productForm.submitted && !productForm.controls['description']?.valid" class="error">
-          Description is required
+        <div class="form-group">
+          <label for="description">Description:</label>
+          <textarea id="description" [(ngModel)]="productDescription" name="description" required></textarea>
         </div>
-      </div>
-
-      <div class="form-group">
-        <label for="productPrice">Price:</label>
-        <input id="productPrice" type="number" [(ngModel)]="productPrice" name="price" required>
-        <div *ngIf="productForm.submitted && !productForm.controls['price']?.valid" class="error">
-          Price is required
+        <div class="form-group">
+          <label for="price">Price:</label>
+          <input type="number" id="price" [(ngModel)]="productPrice" name="price" required>
         </div>
-      </div>
-
-      <div class="form-group">
-        <label for="productCategory">Category:</label>
-        <select id="productCategory" [(ngModel)]="productCategory" name="category" required>
-          <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
-        </select>
-        <div *ngIf="productForm.submitted && !productForm.controls['category']?.valid" class="error">
-          Category is required
+        <div class="form-group">
+          <label for="category">Category:</label>
+          <select id="category" [(ngModel)]="productCategory" name="category" required>
+            <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+          </select>
         </div>
-      </div>
-
-      <div class="form-group">
-        <label for="productImageUrl">Image URL:</label>
-        <input id="productImageUrl" [(ngModel)]="productImageUrl" name="imageUrl" required>
-        <div *ngIf="productForm.submitted && !productForm.controls['imageUrl']?.valid" class="error">
-          Image URL is required
+        <div class="form-group">
+          <label for="imageUrl">Image URL:</label>
+          <input type="text" id="imageUrl" [(ngModel)]="productImageUrl" name="imageUrl" required>
         </div>
-      </div>
-
-      <div class="form-group">
-        <button type="submit">{{ isEditing ? 'Update Product' : 'Add Product' }}</button>
-        <button type="button" (click)="toggleForm()">Cancel</button>
-      </div>
-    </form>
+        <button type="submit">Add Product</button>
+      </form>
+    </div>
   </div>
 
   <!-- Product List -->
@@ -65,11 +46,24 @@
     <div *ngFor="let product of products" class="product-card">
       <img [src]="product.imageUrl" alt="{{ product.name }}" class="product-image"/>
       <div class="product-info">
-        <h4>{{ product.name }}</h4>
-        <p class="price">Cost ${{ product.price }}</p>
-        <p class="description">{{ product.description }}</p>
-        <p class="category">Category: {{ product.category }}</p>
-        <button (click)="editProduct(product)">Edit</button>
+        <h4 *ngIf="currentProduct?._id !== product._id">{{ product.name }}</h4>
+        <input *ngIf="currentProduct?._id === product._id" [(ngModel)]="productName" placeholder="Name" />
+
+        <p class="price" *ngIf="currentProduct?._id !== product._id">Cost ${{ product.price }}</p>
+        <input *ngIf="currentProduct?._id === product._id" [(ngModel)]="productPrice" placeholder="Price" type="number" />
+
+        <p class="description" *ngIf="currentProduct?._id !== product._id">{{ product.description }}</p>
+        <textarea *ngIf="currentProduct?._id === product._id" [(ngModel)]="productDescription" placeholder="Description"></textarea>
+
+        <p class="category" *ngIf="currentProduct?._id !== product._id">Category: {{ product.category }}</p>
+        <select *ngIf="currentProduct?._id === product._id" [(ngModel)]="productCategory">
+          <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+        </select>
+
+        <input *ngIf="currentProduct?._id === product._id" [(ngModel)]="productImageUrl" placeholder="Image URL" />
+
+        <button *ngIf="currentProduct?._id !== product._id" (click)="editProduct(product)">Edit</button>
+        <button *ngIf="currentProduct?._id === product._id" (click)="saveProduct(product)">Save</button>
         <button (click)="deleteProduct(product)">Delete</button>
       </div>
     </div>

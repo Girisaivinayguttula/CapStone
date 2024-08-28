@@ -52,38 +52,32 @@ export class CartComponent implements OnInit {
     this.totalAmount = this.cartProducts.reduce((total, product) => total + (product.price * product.quantity), 0);
   }
 
-  removeFromCart(product: CartProduct) {
-    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-    const updatedCart = cart.filter((p: CartProduct) => p._id !== product._id);
-    localStorage.setItem('cart', JSON.stringify(updatedCart));
-    this.loadCart();
-  }
-
   decreaseQuantity(product: CartProduct, event: Event) {
     event.preventDefault(); // Prevent default anchor behavior
-    console.log('Decreasing quantity for:', product); // Debugging
     if (product.quantity > 1) {
       product.quantity -= 1;
-      this.updateCart(product);
     } else {
       this.removeFromCart(product);
     }
+    this.updateCart();
   }
 
   increaseQuantity(product: CartProduct, event: Event) {
     event.preventDefault(); // Prevent default anchor behavior
-    console.log('Increasing quantity for:', product); // Debugging
     product.quantity += 1;
-    this.updateCart(product);
+    this.updateCart();
   }
 
-  updateCart(updatedProduct: CartProduct) {
-    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-    const updatedCart = cart.map((product: CartProduct) =>
-      product._id === updatedProduct._id ? updatedProduct : product
-    );
+  updateCart() {
+    // Create a new array of products with updated quantities
+    const updatedCart = this.cartProducts.flatMap(product => Array(product.quantity).fill(product));
     localStorage.setItem('cart', JSON.stringify(updatedCart));
-    this.loadCart(); // Reload cart to reflect changes
+    this.calculateTotalAmount(); // Recalculate the total after each update
+  }
+
+  removeFromCart(product: CartProduct) {
+    this.cartProducts = this.cartProducts.filter(p => p._id !== product._id);
+    this.updateCart();
   }
 
   checkout() {
