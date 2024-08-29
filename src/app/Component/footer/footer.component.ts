@@ -45,7 +45,7 @@ export class FooterComponent implements OnInit {
       alert('Please enter a valid email address.');
       return;
     }
-
+  
     this.http.post('http://localhost:5000/api/subscribe', { email })
       .subscribe({
         next: () => {
@@ -57,4 +57,4 @@ export class FooterComponent implements OnInit {
         }
       });
   }
-}
+}  

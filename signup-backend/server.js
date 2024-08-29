@@ -76,6 +76,12 @@ const transporter = nodemailer.createTransport({
   }
 });
 
+// Subscription Model
+const Subscription = mongoose.model('Subscription', new mongoose.Schema({
+  email: { type: String, required: true, unique: true }
+}));
+
+
 // Middleware to verify JWT
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
@@ -247,31 +253,46 @@ app.post('/api/subscribe', async (req, res) => {
     return res.status(400).send({ error: 'Email is required' });
   }
 
-  // Email sending logic
-  const mailOptions = {
-    from: 'cabastoreoffical@gmail.com',
-    to: email,
-    subject: 'Subscription Confirmation',
-    html: `
-      <p>Thank you for subscribing to our newsletter!</p>
-      <p>We're thrilled to have you on board.</p>
-      <p>Expect to receive the latest updates, exclusive content, and special offers directly in your inbox.</p>
-      <p>If you ever have any questions or feedback, feel free to reply to this email or contact us at <a href="mailto:cabastoreoffical@gmail.com">cabastoreoffical@gmail.com</a>.</p>
-      <p>Stay tuned for more exciting news!</p>
-      <p>Best regards,</p>
-      <p><strong>Caba</strong></p>
-    `
-  };
-
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.error('Error while sending email:', error);
-      return res.status(500).send({ error: 'Failed to send email' });
-    } else {
-      console.log('Email sent: ' + info.response);
-      return res.status(200).send({ message: 'Subscription email sent successfully' });
+  try {
+    // Check if the email is already subscribed
+    const existingSubscription = await Subscription.findOne({ email });
+    if (existingSubscription) {
+      return res.status(400).send({ error: 'Email is already subscribed' });
     }
-  });
+
+    // Save the email to the Subscription collection
+    const subscription = new Subscription({ email });
+    await subscription.save();
+
+    // Send subscription confirmation email
+    const mailOptions = {
+      from: 'cabastoreoffical@gmail.com',
+      to: email,
+      subject: 'Subscription Confirmation',
+      html: `
+        <p>Thank you for subscribing to our newsletter!</p>
+        <p>We're thrilled to have you on board.</p>
+        <p>Expect to receive the latest updates, exclusive content, and special offers directly in your inbox.</p>
+        <p>If you ever have any questions or feedback, feel free to reply to this email or contact us at <a href="mailto:cabastoreoffical@gmail.com">cabastoreoffical@gmail.com</a>.</p>
+        <p>Stay tuned for more exciting news!</p>
+        <p>Best regards,</p>
+        <p><strong>Caba</strong></p>
+      `
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error('Error while sending email:', error);
+        return res.status(500).send({ error: 'Failed to send email' });
+      } else {
+        console.log('Email sent: ' + info.response);
+        return res.status(200).send({ message: 'Subscription successful and confirmation email sent' });
+      }
+    });
+  } catch (error) {
+    console.error('Error during subscription:', error);
+    return res.status(500).send({ error: 'Server error', details: error.message });
+  }
 });
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
