@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -34,7 +35,6 @@ const User = mongoose.model('User', new mongoose.Schema({
   gender: { type: String, required: true }
 }));
 
-
 // Product Model
 const Product = mongoose.model('Product', new mongoose.Schema({
   name: String,
@@ -65,13 +65,17 @@ const OrderSchema = new mongoose.Schema({
 
 const Order = mongoose.model('Order', OrderSchema);
 
+// Correct Transporter Configuration
+const transporter = nodemailer.createTransport({
+  host: 'smtp.gmail.com', // Correct Gmail SMTP server
+  port: 465, // Secure port for SSL/TLS
+  secure: true, // Use SSL
+  auth: {
+    user: 'girisaivinay1@gmail.com', // Your Gmail address
+    pass: 'xfjshehobmqlsetc'  // Correct App Password without spaces
+  }
+});
 
-
-
-
-
-
-                                                              
 // Middleware to verify JWT
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
@@ -180,15 +184,12 @@ app.delete('/api/products/:id', async (req, res) => {
   res.json({ message: 'Product deleted' });
 });
 
-// Save Order Route
+// Save Order Route with Email Sending
 app.post('/api/orders', authenticateToken, async (req, res) => {
   try {
-    console.log('Request Body:', req.body); // Verify the received data
-
     const { email, address, paymentMethod, cartProducts, totalAmount, shippingCost } = req.body;
 
     if (!email || !address || !cartProducts.length) {
-      console.log('Validation Error:', { email, address, cartProducts });
       return res.status(400).send({ error: 'Validation Error', details: 'Email, address, and cart products are required' });
     }
 
@@ -201,32 +202,30 @@ app.post('/api/orders', authenticateToken, async (req, res) => {
       shippingCost
     });
 
-    // Log before saving to see the structure
-    console.log('Order Data to Save:', newOrder);
-
     await newOrder.save();
 
-    // Verify data saved
-    const savedOrder = await Order.findById(newOrder._id);
-    console.log('Saved Order:', savedOrder);
+    // Send an email after order is placed
+    const mailOptions = {
+      from: 'girisaivinay1@gmail.com', // Sender address must match auth user
+      to: email, // Send email to the user who placed the order
+      subject: 'Order Confirmation',
+      text: 'Your order has been placed successfully!',
+      html: `<p>Dear Customer,</p><p>Your order has been placed successfully. Your order details are as follows:</p><p>Total Amount: $${totalAmount + shippingCost}</p>`
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log('Error while sending email:', error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
 
     res.status(201).send({ message: 'Order placed successfully' });
   } catch (error) {
-    console.error('Error saving order:', error); // Log any errors
+    console.error('Error saving order:', error);
     res.status(500).send({ error: 'Failed to place order', details: error.message });
   }
 });
-
-// Get orders for a logged-in user
-app.get('/api/orders/email', authenticateToken, async (req, res) => {
-  const userEmail = req.user.email; // Extract email from the token
-  try {
-    const orders = await Order.find({ email: userEmail });
-    res.json(orders);
-  } catch (error) {
-    res.status(500).send('Server error');
-  }
-});
-
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
