@@ -116,3 +116,132 @@
   margin-top: 20px;
   height: 500px;
 }
+
+/* Responsive adjustments */
+@media screen and (max-width: 1200px) {
+  .container {
+    padding: 40px;
+    min-width: auto; /* Remove the fixed min-width */
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .container {
+    padding: 30px;
+  }
+  
+  .title {
+    font-size: 1.8em;
+  }
+  
+  .content {
+    flex-direction: column;
+    align-items: flex-start;
+    border: none; /* Remove border for a cleaner look on smaller screens */
+  }
+  
+  .image-container img {
+    max-width: 100%;
+  }
+  
+  .details-container {
+    padding-left: 15px;
+    max-width: 100%; /* Full width for smaller screens */
+  }
+  
+  .details-container h2 {
+    font-size: 1.2rem;
+  }
+  
+  .details-container p {
+    font-size: 0.9rem;
+  }
+  
+  .address {
+    font-size: 0.9rem;
+  }
+  
+  .map-container {
+    height: 300px; /* Adjust height for smaller screens */
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    padding: 20px;
+  }
+  
+  .title {
+    font-size: 1.6em;
+  }
+  
+  .content {
+    flex-direction: column;
+    align-items: center;
+    border: none;
+    padding: 15px;
+  }
+  
+  .details-container {
+    padding-left: 0;
+    text-align: center; /* Center text for better readability */
+  }
+  
+  .details-container h2 {
+    font-size: 1.1rem;
+  }
+  
+  .details-container p {
+    font-size: 0.8rem;
+  }
+  
+  .address {
+    font-size: 0.8rem;
+  }
+  
+  .map-container {
+    height: 250px; /* Further adjust height */
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .container {
+    padding: 15px;
+  }
+  
+  .title {
+    font-size: 1.4em;
+  }
+  
+  .content {
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+  }
+  
+  .image-container img {
+    max-width: 100%;
+    height: auto; /* Ensure images scale properly */
+  }
+  
+  .details-container {
+    padding-left: 0;
+    text-align: center;
+  }
+  
+  .details-container h2 {
+    font-size: 1rem;
+  }
+  
+  .details-container p {
+    font-size: 0.7rem;
+  }
+  
+  .address {
+    font-size: 0.7rem;
+  }
+  
+  .map-container {
+    height: 200px; /* Adjust for very small screens */
+  }
+}

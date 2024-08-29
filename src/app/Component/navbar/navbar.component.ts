@@ -20,4 +20,11 @@ export class NavbarComponent implements OnInit {
       this.isAdmin = isAdmin;
     });
   }
+
+  closeMenu(): void {
+    const menuToggle = document.getElementById('menu-toggle') as HTMLInputElement;
+    if (menuToggle) {
+      menuToggle.checked = false; // Uncheck the checkbox to close the menu
+    }
+  }
 }

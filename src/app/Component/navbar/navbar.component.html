@@ -6,20 +6,17 @@
     <span></span>
   </label>
   <ul class="nav-links">
-    <li><a routerLink="/home">Home</a></li>
-    <li><a routerLink="/aboutus">About-us</a></li>
-    <li><a routerLink="/onlineshop">Onlineshop</a></li>
-    <li *ngIf="isAdmin"><a routerLink="/products">Products</a></li>
-    <!-- <li><a routerLink="/contactus">Contactus</a></li> -->
-    <li><a routerLink="/store">Store</a></li>
-    <a routerLink="/login">
+    <li><a routerLink="/home" (click)="closeMenu()">Home</a></li>
+    <li><a routerLink="/aboutus" (click)="closeMenu()">About-us</a></li>
+    <li><a routerLink="/onlineshop" (click)="closeMenu()">Onlineshop</a></li>
+    <li *ngIf="isAdmin"><a routerLink="/products" (click)="closeMenu()">Products</a></li>
+    <li><a routerLink="/store" (click)="closeMenu()">Store</a></li>
+    <li><a routerLink="/login" (click)="closeMenu()">
       <img src="assests/images/profile.png" alt="pro" class="profile-icon">
-    </a>
-    <li>
-      <a routerLink="/cart">
-        <img src="assests/images/cart.png" alt="Cart" class="cart-icon">
-      </a>
-    </li>
-    <li><a routerLink="/orders">My Orders</a></li>
+    </a></li>
+    <li><a routerLink="/cart" (click)="closeMenu()">
+      <img src="assests/images/cart.png" alt="Cart" class="cart-icon">
+    </a></li>
+    <li><a routerLink="/orders" (click)="closeMenu()">My Orders</a></li>
   </ul>
 </nav>
