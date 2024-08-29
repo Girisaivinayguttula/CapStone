@@ -11,6 +11,7 @@ export interface Products {
   category: string;
   imageUrl?: string;
   rating?: number;
+  quantity: number;  // Added quantity property
 }
 
 @Component({
@@ -38,7 +39,8 @@ export class OnlineshopComponent implements OnInit {
         this.products = data.map(product => ({
           ...product,
           imageUrl: product.imageUrl || 'https://picsum.photos/200',
-          rating: product.rating || 4
+          rating: product.rating || 4,
+          quantity: product.quantity || 0  // Ensure quantity is handled
         }));
         this.filteredProducts = this.products;
 

@@ -42,7 +42,8 @@ const Product = mongoose.model('Product', new mongoose.Schema({
   description: String,
   inStock: Boolean,
   category: String,
-  imageUrl: String
+  imageUrl: String,
+  quantity: { type: Number, required: true } // Ensure this line is included
 }));
 
 // Order Model
@@ -173,7 +174,7 @@ app.get('/api/products', async (req, res) => {
 
 // Create a new product
 app.post('/api/products', async (req, res) => {
-  const newProduct = new Product(req.body);
+  const newProduct = new Product(req.body); // `req.body` should contain `quantity`
   await newProduct.save();
   res.json(newProduct);
 });
@@ -190,7 +191,7 @@ app.delete('/api/products/:id', async (req, res) => {
   res.json({ message: 'Product deleted' });
 });
 
-// Save Order Route with Email Sending
+// Save Order Route with Product Quantity Reduction and Email Notification
 app.post('/api/orders', authenticateToken, async (req, res) => {
   try {
     const { email, address, paymentMethod, cartProducts, totalAmount, shippingCost } = req.body;
@@ -213,7 +214,15 @@ app.post('/api/orders', authenticateToken, async (req, res) => {
     // Save the order to the database
     await newOrder.save();
 
-    // Send an email after order is placed
+    // Reduce the quantity of each product in the database
+    for (const product of cartProducts) {
+      await Product.updateOne(
+        { name: product.name }, // or use _id: product._id
+        { $inc: { quantity: -product.quantity } }
+      );
+    }
+
+    // Send an email after the order is placed
     const cartHtml = cartProducts.map(product => `<li>${product.name} - $${product.price} x ${product.quantity}</li>`).join('');
     const mailOptions = {
       from: 'cabastoreoffical@gmail.com',
@@ -239,6 +248,7 @@ app.post('/api/orders', authenticateToken, async (req, res) => {
     });
 
     res.status(201).send({ message: 'Order placed successfully' });
+
   } catch (error) {
     console.error('Error saving order:', error);
     res.status(500).send({ error: 'Failed to place order', details: error.message });

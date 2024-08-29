@@ -30,6 +30,7 @@ export class ProductComponent implements OnInit {
   productPrice = 0;
   productCategory = '';
   productImageUrl = '';
+  productQuantity = 0;  // New property for quantity
   categories = ['Cupcakes', 'Desserts', 'Pastries'];
 
   constructor(private http: HttpClient) {}
@@ -63,7 +64,8 @@ export class ProductComponent implements OnInit {
         description: this.productDescription,
         price: this.productPrice,
         category: this.productCategory,
-        imageUrl: this.productImageUrl
+        imageUrl: this.productImageUrl,
+        quantity: this.productQuantity // Set quantity,
       };
 
       this.http.post<Products>('http://localhost:5000/api/products', newProduct).subscribe({
@@ -86,6 +88,7 @@ export class ProductComponent implements OnInit {
     this.productPrice = product.price;
     this.productCategory = product.category;
     this.productImageUrl = product.imageUrl;
+    this.productQuantity = product.quantity || 0; // Set quantity
   }
 
   saveProduct(product: Products) {
@@ -95,7 +98,8 @@ export class ProductComponent implements OnInit {
         description: this.productDescription,
         price: this.productPrice,
         category: this.productCategory,
-        imageUrl: this.productImageUrl
+        imageUrl: this.productImageUrl,
+        quantity: this.productQuantity // Set quantity
       };
 
       this.http.put<Products>(`http://localhost:5000/api/products/${this.currentProduct._id}`, updatedProduct).subscribe({
@@ -133,5 +137,6 @@ export class ProductComponent implements OnInit {
     this.productPrice = 0;
     this.productCategory = '';
     this.productImageUrl = '';
+    this.productQuantity = 0;  // Reset quantity
   }
 }

@@ -23,12 +23,18 @@
           <h4>{{ product.name }}</h4>
           <p class="price">${{ product.price }}</p>
           <p class="description">{{ product.description }}</p>
-          <button 
-            (click)="addToCart(product)"
-            [disabled]="isProductInCart(product)"
-          >
-            {{ isProductInCart(product) ? 'Added to Cart' : 'Add to Cart' }}
-          </button>
+          
+          <div *ngIf="product.quantity > 0; else outOfStock">
+            <button 
+              (click)="addToCart(product)"
+              [disabled]="isProductInCart(product)"
+            >
+              {{ isProductInCart(product) ? 'Added to Cart' : 'Add to Cart' }}
+            </button>
+          </div>
+          <ng-template #outOfStock>
+            <p class="out-of-stock">Out of Stock</p>
+          </ng-template>
         </div>
       </div>
     </div>
