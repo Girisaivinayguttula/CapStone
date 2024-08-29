@@ -239,5 +239,39 @@ app.post('/api/orders', authenticateToken, async (req, res) => {
   }
 });
 
+// Add a new route to handle newsletter subscription
+app.post('/api/subscribe', async (req, res) => {
+  const { email } = req.body;
+
+  if (!email) {
+    return res.status(400).send({ error: 'Email is required' });
+  }
+
+  // Email sending logic
+  const mailOptions = {
+    from: 'cabastoreoffical@gmail.com',
+    to: email,
+    subject: 'Subscription Confirmation',
+    html: `
+      <p>Thank you for subscribing to our newsletter!</p>
+      <p>We're thrilled to have you on board.</p>
+      <p>Expect to receive the latest updates, exclusive content, and special offers directly in your inbox.</p>
+      <p>If you ever have any questions or feedback, feel free to reply to this email or contact us at <a href="mailto:cabastoreoffical@gmail.com">cabastoreoffical@gmail.com</a>.</p>
+      <p>Stay tuned for more exciting news!</p>
+      <p>Best regards,</p>
+      <p><strong>Caba</strong></p>
+    `
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error('Error while sending email:', error);
+      return res.status(500).send({ error: 'Failed to send email' });
+    } else {
+      console.log('Email sent: ' + info.response);
+      return res.status(200).send({ message: 'Subscription email sent successfully' });
+    }
+  });
+});
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
