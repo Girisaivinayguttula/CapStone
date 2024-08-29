@@ -5,13 +5,13 @@ const transporter = nodemailer.createTransport({
   port: 465, // Secure port for SSL/TLS
   secure: true, // Use SSL
   auth: {
-    user: 'girisaivinay1@gmail.com', // Your Gmail address
-    pass: 'xfjshehobmqlsetc'  // Correct App Password without spaces
+    user: 'cabastoreoffical@gmail.com', // Your Gmail address
+    pass: 'achttpcpvxdxdhyx'  // Correct App Password without spaces
   }
 });
 
 const mailOptions = {
-  from: 'girisaivinay1@gmail.com', // Must match the user in the auth field
+  from: 'cabastoreoffical@gmail.com', // Must match the user in the auth field
   to: 'chaturyanaidu@gmail.com', // Recipient's email
   subject: 'Order submission',
   text: 'Your order has been Placed.'

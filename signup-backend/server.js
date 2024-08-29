@@ -71,8 +71,8 @@ const transporter = nodemailer.createTransport({
   port: 465, // Secure port for SSL/TLS
   secure: true, // Use SSL
   auth: {
-    user: 'girisaivinay1@gmail.com', // Your Gmail address
-    pass: 'xfjshehobmqlsetc'  // Correct App Password without spaces
+    user: 'cabastoreoffical@gmail.com', // Your Gmail address
+    pass: 'achttpcpvxdxdhyx'  // Correct App Password without spaces
   }
 });
 
@@ -210,7 +210,7 @@ app.post('/api/orders', authenticateToken, async (req, res) => {
     // Send an email after order is placed
     const cartHtml = cartProducts.map(product => `<li>${product.name} - $${product.price} x ${product.quantity}</li>`).join('');
     const mailOptions = {
-      from: 'girisaivinay1@gmail.com',
+      from: 'cabastoreoffical@gmail.com',
       to: email,
       subject: 'Order Confirmation',
       text: `Your order has been placed successfully!\n\nTotal Amount: $${totalAmount + shippingCost}\n\nShipping Address: ${address}`,
