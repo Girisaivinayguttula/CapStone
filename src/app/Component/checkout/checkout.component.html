@@ -1,0 +1,90 @@
+<div class="container-fluid">
+    <div class="row">
+      <!-- Order Summary Section -->
+      <div class="col-md-6 order-summary">
+        <h5>Shopping Cart</h5>
+        <h3>${{ totalAmount + shippingCost }}</h3>
+        <div *ngFor="let product of cartProducts" class="order-item">
+          <img [src]="product.imageUrl || 'https://i.imgur.com/1GrakTl.jpg'" alt="{{product.name}}" class="product-image">
+          <div>
+            <div>{{ product.name }}</div>
+            <div class="text-muted">Qty {{ product.quantity }}</div>
+            <div class="text-muted">${{ product.price }} each</div>
+          </div>
+          <div class="price">${{ product.price * product.quantity }}</div>
+        </div>
+        <div class="order-total">
+          <div class="row">
+            <div class="col">Subtotal</div>
+            <div class="col text-right">${{ totalAmount }}</div>
+          </div>
+          <div class="row">
+            <div class="col">Shipping</div>
+            <div class="col text-right">${{ shippingCost }}</div>
+          </div>
+          <div class="row total-due">
+            <div class="col">Total due</div>
+            <div class="col text-right">${{ totalAmount + shippingCost }}</div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Payment Section -->
+      <div class="col-md-6 payment-section">
+        <h5>Shipping information</h5>
+        <form>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" [(ngModel)]="email" name="email" placeholder="Enter your email" required>
+          </div>
+          <div class="form-group">
+            <label for="address">Shipping address</label>
+            <input type="text" class="form-control" id="address" [(ngModel)]="address" name="address" placeholder="Enter your address" required>
+          </div>
+          <h5>Payment details</h5>
+          <div class="form-group">
+            <label for="paymentMethod">Select payment method</label>
+            <div>
+              <input type="radio" id="card" name="paymentMethod" value="Card" [(ngModel)]="selectedPaymentMethod" (change)="onPaymentMethodChange('Card')">
+              <label for="card">Card</label>
+            </div>
+            <div>
+              <input type="radio" id="upi" name="paymentMethod" value="UPI" [(ngModel)]="selectedPaymentMethod" (change)="onPaymentMethodChange('UPI')">
+              <label for="upi">UPI</label>
+            </div>
+            <div>
+              <input type="radio" id="cod" name="paymentMethod" value="Cash on Delivery" [(ngModel)]="selectedPaymentMethod" (change)="onPaymentMethodChange('Cash on Delivery')">
+              <label for="cod">Cash on Delivery</label>
+            </div>
+          </div>
+  
+          <!-- Card Information -->
+          <div *ngIf="selectedPaymentMethod === 'Card'">
+            <div class="form-group">
+              <label for="cardNumber">Card information</label>
+              <input type="text" class="form-control" id="cardNumber" placeholder="1234 1234 1234 1234">
+            </div>
+            <div class="form-row">
+              <div class="col">
+                <input type="text" class="form-control" placeholder="MM/YY">
+              </div>
+              <div class="col">
+                <input type="text" class="form-control" placeholder="CVC">
+              </div>
+            </div>
+          </div>
+  
+          <!-- UPI Information -->
+          <div *ngIf="selectedPaymentMethod === 'UPI'">
+            <div class="form-group">
+              <label for="upiId">UPI ID</label>
+              <input type="text" class="form-control" id="upiId" placeholder="Enter your UPI ID">
+            </div>
+          </div>
+  
+          <button type="button" class="btn btn-primary mt-4" (click)="onPay()">Pay ${{ totalAmount + shippingCost }}</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  

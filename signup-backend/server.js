@@ -44,6 +44,26 @@ const Product = mongoose.model('Product', new mongoose.Schema({
   category: String,
   imageUrl: String
 }));
+
+// Order Model
+const Order = mongoose.model('Order', new mongoose.Schema({
+  email: { type: String, required: true },
+  address: { type: String, required: true },
+  paymentMethod: { type: String, required: true },
+  cartProducts: [
+    {
+      name: String,
+      price: Number,
+      quantity: Number,
+      imageUrl: String
+    }
+  ],
+  totalAmount: Number,
+  shippingCost: Number,
+  orderDate: { type: Date, default: Date.now }
+}));
+
+
                                                               
 // Middleware to verify JWT
 const authenticateToken = (req, res, next) => {
@@ -142,4 +162,24 @@ app.delete('/api/products/:id', async (req, res) => {
   res.json({ message: 'Product deleted' });
 });
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// Save Order Route
+app.post('/api/orders', authenticateToken, async (req, res) => {
+  try {
+    console.log('Request Body:', req.body); // Log the request body
+
+    const { email, address, paymentMethod, cartProducts, totalAmount, shippingCost } = req.body;
+
+    // Validate required fields
+    if (!email || !address) {
+      console.log('Validation Error:', { email, address }); // Log validation error details
+      return res.status(400).send({ error: 'Validation Error', details: 'Email and address are required' });
+    }
+
+    const newOrder = new Order({ email, address, paymentMethod, cartProducts, totalAmount, shippingCost });
+    await newOrder.save();
+    res.status(201).send({ message: 'Order placed successfully' });
+  } catch (error) {
+    console.error('Error saving order:', error);
+    res.status(500).send({ error: 'Failed to place order', details: error.message });
+  }
+});
