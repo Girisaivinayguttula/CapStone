@@ -189,10 +189,12 @@ app.post('/api/orders', authenticateToken, async (req, res) => {
   try {
     const { email, address, paymentMethod, cartProducts, totalAmount, shippingCost } = req.body;
 
+    // Validation
     if (!email || !address || !cartProducts.length) {
       return res.status(400).send({ error: 'Validation Error', details: 'Email, address, and cart products are required' });
     }
 
+    // Create a new order
     const newOrder = new Order({
       email,
       address,
@@ -202,15 +204,24 @@ app.post('/api/orders', authenticateToken, async (req, res) => {
       shippingCost
     });
 
+    // Save the order to the database
     await newOrder.save();
 
     // Send an email after order is placed
+    const cartHtml = cartProducts.map(product => `<li>${product.name} - $${product.price} x ${product.quantity}</li>`).join('');
     const mailOptions = {
-      from: 'girisaivinay1@gmail.com', // Sender address must match auth user
-      to: email, // Send email to the user who placed the order
+      from: 'girisaivinay1@gmail.com',
+      to: email,
       subject: 'Order Confirmation',
-      text: 'Your order has been placed successfully!',
-      html: `<p>Dear Customer,</p><p>Your order has been placed successfully. Your order details are as follows:</p><p>Total Amount: $${totalAmount + shippingCost}</p>`
+      text: `Your order has been placed successfully!\n\nTotal Amount: $${totalAmount + shippingCost}\n\nShipping Address: ${address}`,
+      html: `
+        <p>Dear Customer,</p>
+        <p>Your order has been placed successfully. Your order details are as follows:</p>
+        <p><strong>Total Amount:</strong> $${totalAmount + shippingCost}</p>
+        <p><strong>Shipping Address:</strong> ${address}</p>
+        <p><strong>Order Details:</strong></p>
+        <ul>${cartHtml}</ul>
+      `
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
@@ -227,5 +238,6 @@ app.post('/api/orders', authenticateToken, async (req, res) => {
     res.status(500).send({ error: 'Failed to place order', details: error.message });
   }
 });
+
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
