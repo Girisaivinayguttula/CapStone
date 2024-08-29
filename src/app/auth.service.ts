@@ -6,39 +6,47 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class AuthService {
   private isLoggedInSubject = new BehaviorSubject<boolean>(false); // Track general login status
-  isLoggedIn$ = this.isLoggedInSubject.asObservable();
+  isLoggedIn$: Observable<boolean> = this.isLoggedInSubject.asObservable();
 
   private isAdminSubject = new BehaviorSubject<boolean>(false);
-  isAdmin$ = this.isAdminSubject.asObservable();
+  isAdmin$: Observable<boolean> = this.isAdminSubject.asObservable();
 
   constructor() {
-    this.updateLoginStatus(); // Initialize login status
-    this.updateAdminStatus(); // Initialize admin status
+    this.initializeAuthStatus();
   }
 
-  updateLoginStatus() {
+  private initializeAuthStatus() {
+    this.updateLoginStatus();
+    this.updateAdminStatus();
+  }
+
+  private updateLoginStatus() {
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
     this.isLoggedInSubject.next(isLoggedIn);
   }
 
-  updateAdminStatus() {
+  public updateAdminStatus() { // Change this to public
     const isAdmin = localStorage.getItem('isAdmin') === 'true';
     this.isAdminSubject.next(isAdmin);
   }
 
-  login() {
+  public login(token: string, isAdmin: boolean) {
+    localStorage.setItem('token', token);
     localStorage.setItem('isLoggedIn', 'true');
+    this.setAdminStatus(isAdmin);
     this.updateLoginStatus();
+    this.updateAdminStatus();
   }
 
-  logout() {
+  public logout() {
+    localStorage.removeItem('token');
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('isAdmin');
     this.updateLoginStatus();
     this.updateAdminStatus();
   }
 
-  setAdminStatus(isAdmin: boolean) {
+  public setAdminStatus(isAdmin: boolean) {
     localStorage.setItem('isAdmin', isAdmin.toString());
     this.updateAdminStatus();
   }

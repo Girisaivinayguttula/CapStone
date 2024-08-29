@@ -8,13 +8,13 @@ export interface CartProduct {
   name: string;
   price: number;
   quantity: number;
-  imageUrl?: string;
+  imageUrl?: string;  // Optional field for image URL
 }
 
 @Component({
   selector: 'app-checkout',
   standalone: true,
-  imports: [ CommonModule,FormsModule],  // Import FormsModule for ngModel
+  imports: [CommonModule, FormsModule],  // Import FormsModule for ngModel
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.css'] // Make sure the correct property is used (styleUrls)
 })
@@ -31,6 +31,7 @@ export class CheckoutComponent implements OnInit {
   ngOnInit() {
     this.loadCart();
     this.calculateTotalAmount();
+    this.getUserEmail(); // Fetch user email
   }
 
   loadCart() {
@@ -46,8 +47,14 @@ export class CheckoutComponent implements OnInit {
         const existingProduct = productMap.get(product._id)!;
         existingProduct.quantity += 1;
       } else {
-        product.quantity = 1;
-        productMap.set(product._id, product);
+        // Add new product with all necessary fields
+        productMap.set(product._id, {
+          _id: product._id,
+          name: product.name,
+          price: product.price,
+          quantity: 1,
+          imageUrl: product.imageUrl // Ensure this field is included
+        });
       }
     });
 
@@ -56,6 +63,25 @@ export class CheckoutComponent implements OnInit {
 
   calculateTotalAmount() {
     this.totalAmount = this.cartProducts.reduce((total, product) => total + (product.price * product.quantity), 0);
+  }
+
+  getUserEmail() {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('You must be logged in');
+      return;
+    }
+
+    const headers = { 'Authorization': `Bearer ${token}` };
+    this.http.get<{ email: string }>('http://localhost:5000/api/user', { headers })
+      .subscribe(
+        (user) => {
+          this.email = user.email; // Set the email input with the fetched user email
+        },
+        (error) => {
+          console.error('Failed to fetch user details:', error);
+        }
+      );
   }
 
   onPaymentMethodChange(method: string) {
@@ -69,33 +95,35 @@ export class CheckoutComponent implements OnInit {
       console.log('Address:', this.address);
       return;
     }
-  
+
     const orderData = {
       email: this.email,
       address: this.address,
       paymentMethod: this.selectedPaymentMethod,
-      cartProducts: this.cartProducts,
+      cartProducts: this.cartProducts.map(product => ({
+        name: product.name,
+        price: product.price,
+        quantity: product.quantity,
+        imageUrl: product.imageUrl
+      })),
       totalAmount: this.totalAmount,
       shippingCost: this.shippingCost
     };
-  
+
     console.log('Order Data:', orderData); // Log the order data to verify
-  
-    const token = localStorage.getItem('token');  // Assuming you store the JWT token in localStorage
-  
+
+    const token = localStorage.getItem('token');
     if (!token) {
       alert('You must be logged in to place an order');
       return;
     }
-  
-    const headers = { 'Authorization': `Bearer ${token}` };  // Set the Authorization header
-  
-    // Send the order data to the backend with the JWT token
+
+    const headers = { 'Authorization': `Bearer ${token}` };
+
     this.http.post('http://localhost:5000/api/orders', orderData, { headers }).subscribe(
       response => {
         alert('Order placed successfully');
-        localStorage.removeItem('cart');  // Clear the cart after successful order placement
-        // Implement redirection or other post-payment logic here
+        localStorage.removeItem('cart');
       },
       error => {
         alert('Failed to place order');
@@ -103,4 +131,4 @@ export class CheckoutComponent implements OnInit {
       }
     );
   }
-}  
+}

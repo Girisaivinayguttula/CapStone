@@ -14,25 +14,21 @@ import { ChangeDetectorRef } from '@angular/core';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  loginData = {
-    email: '',
-    password: ''
-  };
+  loginData = { email: '', password: '' };
   user: any;
-  isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'; // Initialize login state
+  isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
 
   private adminEmail = 'admin@gmail.com';
   private adminPassword = 'adminpass';
 
   constructor(
-    private http: HttpClient, 
-    private authService: AuthService, 
+    private http: HttpClient,
+    private authService: AuthService,
     private router: Router,
-    private cd: ChangeDetectorRef // Inject ChangeDetectorRef
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
-    // Check if user is already logged in and fetch user details
     if (this.isLoggedIn) {
       this.getUserDetails();
     }
@@ -46,49 +42,46 @@ export class LoginComponent implements OnInit {
         phone: '123-456-7890',
         gender: 'Male'
       };
-      localStorage.setItem('token', 'hardcoded-token');
-      localStorage.setItem('username', this.user.name);
-      localStorage.setItem('isAdmin', 'true');
-      localStorage.setItem('isLoggedIn', 'true');
-      this.isLoggedIn = true;
-      this.authService.updateAdminStatus(); 
-      this.cd.detectChanges(); // Trigger change detection
+      this.handleLogin('hardcoded-token', true);
     } else {
-      this.http.post('http://localhost:5000/api/login', this.loginData)
-        .subscribe(
-          (response: any) => {
-            localStorage.setItem('token', response.token);
-            localStorage.setItem('isLoggedIn', 'true');
-            this.isLoggedIn = true;
-            this.getUserDetails(); // Fetch user details after login
-            this.authService.updateAdminStatus(); 
-            this.cd.detectChanges(); // Trigger change detection
-          },
-          error => {
-            alert('Login failed: Invalid email or password.');
-            console.error('Login failed', error);
-          }
-        );
+      this.http.post('http://localhost:5000/api/login', this.loginData).subscribe(
+        (response: any) => {
+          this.handleLogin(response.token, response.isAdmin);
+        },
+        error => {
+          alert('Login failed: Invalid email or password.');
+          console.error('Login failed', error);
+        }
+      );
     }
   }
 
-  getUserDetails() {
-    const token = localStorage.getItem('token'); // Assuming JWT is stored in localStorage
-  
-    this.http.get('http://localhost:5000/api/user', { // Use the full URL for API request
-      headers: { Authorization: `Bearer ${token}` }
-    }).subscribe({
-      next: (data) => this.user = data,
-      error: (err) => console.error('Failed to fetch user details:', err)
-    });
+  handleLogin(token: string, isAdmin: boolean) {
+    localStorage.setItem('token', token);
+    localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('isAdmin', isAdmin ? 'true' : 'false');
+    this.isLoggedIn = true;
+    this.getUserDetails();
+    this.authService.updateAdminStatus();
+    this.cd.detectChanges();
+    this.router.navigate(['/']); // Redirect after login
   }
-  
+
+  getUserDetails() {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
+    this.http.get('http://localhost:5000/api/user', { headers: { Authorization: `Bearer ${token}` } }).subscribe(
+      data => this.user = data,
+      err => console.error('Failed to fetch user details:', err)
+    );
+  }
 
   logout() {
-    localStorage.clear(); // Clear all localStorage data
-    this.isLoggedIn = false; // Reset login state
-    this.user = null; // Clear user data
-    this.cd.detectChanges(); // Trigger change detection
-    this.router.navigate(['/']); // Redirect to the login page or any desired route
+    localStorage.clear();
+    this.isLoggedIn = false;
+    this.user = null;
+    this.cd.detectChanges();
+    this.router.navigate(['/']); // Redirect after logout
   }
 }
