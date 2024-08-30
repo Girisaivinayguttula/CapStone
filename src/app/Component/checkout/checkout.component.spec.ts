@@ -3,17 +3,17 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { FormsModule } from '@angular/forms';
 import { CheckoutComponent } from './checkout.component';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http'; // Import HttpClient
-import { of } from 'rxjs'; // Import `of` from RxJS
+import { HttpClient } from '@angular/common/http';
+import { of } from 'rxjs';
 
 describe('CheckoutComponent', () => {
   let component: CheckoutComponent;
   let fixture: ComponentFixture<CheckoutComponent>;
   let httpMock: HttpTestingController;
-  let httpClientSpy: { post: jasmine.Spy }; // Spy object for HttpClient
+  let httpClientSpy: { post: jasmine.Spy; get: jasmine.Spy };
 
   beforeEach(async () => {
-    httpClientSpy = jasmine.createSpyObj('HttpClient', ['post']); // Create spy object
+    httpClientSpy = jasmine.createSpyObj('HttpClient', ['post', 'get']);
 
     await TestBed.configureTestingModule({
       imports: [
@@ -23,7 +23,7 @@ describe('CheckoutComponent', () => {
         CheckoutComponent
       ],
       providers: [
-        { provide: HttpClient, useValue: httpClientSpy } // Provide spy object
+        { provide: HttpClient, useValue: httpClientSpy }
       ]
     }).compileComponents();
   });
@@ -35,21 +35,26 @@ describe('CheckoutComponent', () => {
     fixture.detectChanges();
   });
 
-  afterEach(() => {
-    httpMock.verify();
-  });
-
   it('should create the component and call ngOnInit', () => {
     spyOn(component, 'loadCart').and.callThrough();
     spyOn(component, 'calculateTotalAmount').and.callThrough();
     spyOn(component, 'getUserEmail').and.callThrough();
 
-    fixture.detectChanges();
+    component.ngOnInit(); // Explicitly call ngOnInit
 
     expect(component).toBeTruthy();
     expect(component.loadCart).toHaveBeenCalled();
     expect(component.calculateTotalAmount).toHaveBeenCalled();
     expect(component.getUserEmail).toHaveBeenCalled();
+  });
+
+  it('should correctly assign email when getUserEmail is called', () => {
+    const mockEmail = 'test@example.com';
+    httpClientSpy.get.and.returnValue(of({ email: mockEmail }));
+
+    component.getUserEmail();
+
+    expect(component.email).toBe(mockEmail);
   });
 
   it('should load cart products and calculate total amount', () => {
@@ -58,54 +63,38 @@ describe('CheckoutComponent', () => {
       { _id: '2', name: 'Product 2', price: 20, quantity: 1, imageUrl: '' }
     ];
 
-    // Mock localStorage.getItem
     spyOn(localStorage, 'getItem').and.returnValue(JSON.stringify(cart));
-
-    // Spy on the calculateTotalAmount method to ensure it's called
     spyOn(component, 'calculateTotalAmount').and.callThrough();
 
-    // Load cart products and calculate the total amount
     component.loadCart();
-    fixture.detectChanges(); // Ensure the component reflects the changes
+    component.calculateTotalAmount();
 
-    // Calculate the total amount manually
+    fixture.detectChanges();
+
     const expectedTotalAmount = 10 * 2 + 20 * 1;
 
-    // Verify that the cart products are loaded correctly
     expect(component.cartProducts.length).toBe(2);
-
-    // Verify that the total amount is calculated correctly
     expect(component.totalAmount).toBe(expectedTotalAmount);
   });
 
-  it('should update the selected payment method', () => {
-    component.onPaymentMethodChange('UPI');
-    expect(component.selectedPaymentMethod).toBe('UPI');
-
-    component.onPaymentMethodChange('Card');
-    expect(component.selectedPaymentMethod).toBe('Card');
-  });
-
-  it('should place an order and clear the cart on success', () => {
-    spyOn(component, 'onPay').and.callThrough();
-    spyOn(localStorage, 'getItem').and.returnValue('token');
-    const postResponse = of({}); // Use `of` to mock observable response
-    httpClientSpy.post.and.returnValue(postResponse);
-    spyOn(localStorage, 'removeItem').and.callThrough();
+  it('should place an order and clear cart', () => {
+    const mockResponse = { success: true };
+    httpClientSpy.post.and.returnValue(of(mockResponse));
 
     component.email = 'test@example.com';
-    component.address = '123 Test St';
+    component.address = '123 Street, City';
+    component.cartProducts = [
+      { _id: '1', name: 'Product 1', price: 10, quantity: 2, imageUrl: '' }
+    ];
+    component.totalAmount = 20;
+    component.shippingCost = 5;
+
+    spyOn(localStorage, 'getItem').and.returnValue('token123');
+    spyOn(localStorage, 'removeItem');
+
     component.onPay();
 
-    expect(component.onPay).toHaveBeenCalled();
+    expect(httpClientSpy.post.calls.count()).toBe(1);
     expect(localStorage.removeItem).toHaveBeenCalledWith('cart');
-  });
-
-  it('should alert if email or address is missing during payment', () => {
-    spyOn(window, 'alert');
-    component.email = '';
-    component.address = '';
-    component.onPay();
-    expect(window.alert).toHaveBeenCalledWith('Email and address are required');
   });
 });

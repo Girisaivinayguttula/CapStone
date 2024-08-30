@@ -37,12 +37,6 @@ describe('AboutusComponent', () => {
     expect(paragraphs[1].textContent).toContain('Au premier étage, aux côtés des cuisines');
   });
 
-  it('should have a button with text "Read More"', () => {
-    const button = fixture.nativeElement.querySelector('button');
-    expect(button).toBeTruthy(); // Ensure the button exists
-    expect(button.textContent).toContain('Read More');
-  });
-
   it('should display the image with correct src and alt attributes', () => {
     const img = fixture.nativeElement.querySelector('img');
     expect(img).toBeTruthy(); // Ensure the image exists

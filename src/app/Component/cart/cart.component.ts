@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, RouterOutlet } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 
 export interface CartProduct {
   _id: string;
@@ -15,7 +16,7 @@ export interface CartProduct {
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CommonModule, RouterModule, RouterOutlet],
+  imports: [CommonModule, RouterModule, RouterOutlet, HttpClientModule],
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css']
 })

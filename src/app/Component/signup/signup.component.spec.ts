@@ -1,8 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ActivatedRoute } from '@angular/router';
-import { of } from 'rxjs';
 import { SignupComponent } from './signup.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing'; // Add this if you use HttpClient
 
 describe('SignupComponent', () => {
   let component: SignupComponent;
@@ -10,16 +9,13 @@ describe('SignupComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SignupComponent],
-      imports: [RouterTestingModule], // Import RouterTestingModule
+      imports: [
+        SignupComponent, // Import Standalone Component directly
+        RouterTestingModule, // Import RouterTestingModule for router testing
+        HttpClientTestingModule // Import HttpClientTestingModule for HTTP testing
+      ],
       providers: [
-        { 
-          provide: ActivatedRoute, 
-          useValue: {
-            snapshot: { queryParams: {} }, // Mock as needed
-            params: of({}) // Mock observable of params if your component uses it
-          }
-        }
+        // Provide any additional services or mocks here if needed
       ]
     }).compileComponents();
 
