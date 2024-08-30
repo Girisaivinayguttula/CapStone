@@ -7,11 +7,9 @@ import { OnlineshopComponent } from './Component/onlineshop/onlineshop.component
 import { ProductComponent } from './Component/products/products.component';
 import { CartComponent } from './Component/cart/cart.component';
 import { adminGuard } from './guards/admin.guard'; 
-import { ContactusComponent } from './Component/contactus/contactus.component';
 import { StoreComponent } from './Component/store/store.component';
 import { CheckoutComponent } from './Component/checkout/checkout.component';
 import { OrdersComponent } from './components/orders/orders.component';
-
 
 export const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -23,7 +21,6 @@ export const appRoutes: Routes = [
   { path: 'cart', component: CartComponent },
   { path: 'store', component: StoreComponent },
   { path: 'checkout', component: CheckoutComponent },
-  { path: 'contactus', component: ContactusComponent },
   { path: 'orders', component: OrdersComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Redirect to home if no path is provided
   { path: '**', redirectTo: '/home' } // Redirect to home for any unknown paths

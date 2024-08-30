@@ -45,15 +45,14 @@ export class CheckoutComponent implements OnInit {
     cart.forEach(product => {
       if (productMap.has(product._id)) {
         const existingProduct = productMap.get(product._id)!;
-        existingProduct.quantity += 1;
+        existingProduct.quantity += product.quantity;
       } else {
-        // Add new product with all necessary fields
         productMap.set(product._id, {
           _id: product._id,
           name: product.name,
           price: product.price,
-          quantity: 1,
-          imageUrl: product.imageUrl // Ensure this field is included
+          quantity: product.quantity,
+          imageUrl: product.imageUrl
         });
       }
     });
@@ -91,8 +90,6 @@ export class CheckoutComponent implements OnInit {
   onPay() {
     if (!this.email || !this.address) {
       alert('Email and address are required');
-      console.log('Email:', this.email);
-      console.log('Address:', this.address);
       return;
     }
 
