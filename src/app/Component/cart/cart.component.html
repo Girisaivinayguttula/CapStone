@@ -20,6 +20,7 @@
         <div class="col details">
           <div class="row text-muted">{{ product.category }}</div>
           <div class="row">{{ product.name }}</div>
+          <div class="row"><p class="pp">Price:{{ product.price }}$</p></div>
         </div>
         <div class="col quantity-controls">
           <a href="#" (click)="decreaseQuantity(product, $event)">-</a>

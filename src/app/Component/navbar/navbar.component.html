@@ -10,13 +10,14 @@
     <li><a routerLink="/aboutus" (click)="closeMenu()">About-us</a></li>
     <li><a routerLink="/onlineshop" (click)="closeMenu()">Onlineshop</a></li>
     <li *ngIf="isAdmin"><a routerLink="/products" (click)="closeMenu()">Products</a></li>
+    <li *ngIf="isAdmin"><a routerLink="/subscriber" (click)="closeMenu()">subscriptions</a></li>
     <li><a routerLink="/store" (click)="closeMenu()">Store</a></li>
+    <li><a routerLink="/orders" (click)="closeMenu()">My Orders</a></li>
     <li><a routerLink="/login" (click)="closeMenu()">
       <img src="assests/images/profile.png" alt="pro" class="profile-icon">
     </a></li>
     <li><a routerLink="/cart" (click)="closeMenu()">
       <img src="assests/images/cart.png" alt="Cart" class="cart-icon">
     </a></li>
-    <li><a routerLink="/orders" (click)="closeMenu()">My Orders</a></li>
   </ul>
 </nav>

@@ -64,7 +64,9 @@ export class LoginComponent implements OnInit {
     this.getUserDetails();
     this.authService.updateAdminStatus();
     this.cd.detectChanges();
-    this.router.navigate(['/']); // Redirect after login
+    this.router.navigate(['/']).then(() => {
+      window.location.reload(); // Refresh the page after redirecting to home
+    });
   }
 
   getUserDetails() {
@@ -82,6 +84,8 @@ export class LoginComponent implements OnInit {
     this.isLoggedIn = false;
     this.user = null;
     this.cd.detectChanges();
-    this.router.navigate(['/']); // Redirect after logout
+    this.router.navigate(['/']).then(() => {
+      window.location.reload(); // Refresh the page after redirecting to home
+    });
   }
 }

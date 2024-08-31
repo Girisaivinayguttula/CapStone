@@ -32,7 +32,8 @@ const User = mongoose.model('User', new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   phone: { type: String, required: true },
   password: { type: String, required: true },
-  gender: { type: String, required: true }
+  gender: { type: String, required: true },
+  isAdmin: { type: Boolean, default: false } // Add isAdmin field
 }));
 
 // Product Model
@@ -304,5 +305,17 @@ app.post('/api/subscribe', async (req, res) => {
     return res.status(500).send({ error: 'Server error', details: error.message });
   }
 });
+
+// Get all subscriptions
+app.get('/api/subscriptions', async (req, res) => {
+  try {
+    const subscriptions = await Subscription.find().select('email -_id');
+    res.json(subscriptions.map(sub => sub.email));
+  } catch (error) {
+    console.error('Error fetching subscriptions:', error);
+    res.status(500).send({ error: 'Failed to fetch subscriptions' });
+  }
+});
+
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

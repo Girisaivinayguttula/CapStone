@@ -9,7 +9,8 @@ import { CartComponent } from './Component/cart/cart.component';
 import { adminGuard } from './guards/admin.guard'; 
 import { StoreComponent } from './Component/store/store.component';
 import { CheckoutComponent } from './Component/checkout/checkout.component';
-import { OrdersComponent } from './components/orders/orders.component';
+import { OrdersComponent } from './Component/orders/orders.component'; 
+import { SubscriberComponent } from './Component/subscriber/subscriber.component';
 
 export const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -22,6 +23,7 @@ export const appRoutes: Routes = [
   { path: 'store', component: StoreComponent },
   { path: 'checkout', component: CheckoutComponent },
   { path: 'orders', component: OrdersComponent },
+  { path: 'subscriber', component: SubscriberComponent , canActivate: [adminGuard]},
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Redirect to home if no path is provided
   { path: '**', redirectTo: '/home' } // Redirect to home for any unknown paths
 ];

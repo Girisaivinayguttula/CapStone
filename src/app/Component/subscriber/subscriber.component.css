@@ -1,0 +1,50 @@
+/* Ensure the component takes up the full height of the page */
+:host {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 95vh;
+    background-color: RGB(237, 237, 239);
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Style the container for the subscriber list */
+  .subscriber-list {
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+  }
+  
+  /* Style the heading */
+  .subscriber-list h2 {
+    margin-bottom: 1.5rem;
+    color: #333333;
+    font-size: 24px;
+    font-weight: 600;
+  }
+  
+  /* Style the list of emails */
+  .subscriber-list ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .subscriber-list li {
+    background-color: #f0f0f0;
+    margin-bottom: 0.5rem;
+    padding: 0.75rem;
+    border-radius: 4px;
+    font-size: 18px;
+    color: #555555;
+  }
+  
+  /* Add hover effect on list items */
+  .subscriber-list li:hover {
+    background-color: #e0e0e0;
+  }
+  
