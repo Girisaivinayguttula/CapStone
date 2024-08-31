@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router'; // Import Router
 
 export interface CartProduct {
   _id: string;
@@ -26,7 +27,7 @@ export class CheckoutComponent implements OnInit {
   email = '';
   address = '';
 
-  constructor(private http: HttpClient) {} // Inject HttpClient
+  constructor(private http: HttpClient, private router: Router) {} // Inject HttpClient and Router
 
   ngOnInit() {
     this.loadCart();
@@ -124,6 +125,7 @@ export class CheckoutComponent implements OnInit {
       response => {
         alert('Order placed successfully');
         localStorage.removeItem('cart');
+        this.router.navigate(['/cart']); // Redirect to cart page
       },
       error => {
         alert('Failed to place order');
