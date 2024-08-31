@@ -10,13 +10,14 @@ body {
   margin: 0;
   font-family: 'Montserrat', sans-serif;
   display: flex;
-  justify-content: left;
+  justify-content: center; /* Center content horizontally */
   align-items: center;
-  height: 100vh;
 }
 
 .container {
-  margin-left: 80px;
+  margin-left: 400px;
+  margin-top: 10px;
+  margin-bottom: 30px;
   background: #fff;
   border-radius: 10px;
   box-shadow: 24px 10px 48px rgba(0, 0, 0, 0.8), 0 10px 10px rgba(0, 0, 0, 0.22);
@@ -25,6 +26,40 @@ body {
   width: 580px;
   max-width: 720px;
   max-height: 500px;
+}
+
+/* Media query for screens 768px and below */
+@media (max-width: 768px) {
+  .container {
+    margin-left: 0; /* Remove margin-left for smaller screens */
+    width: 100%; /* Make container full width */
+    height: auto; /* Allow container to grow in height */
+    flex-direction: column; /* Stack containers vertically */
+    align-items: center; /* Center containers horizontally */
+    min-height: 600px; /* Increase height for smaller screens */
+  }
+
+  .form-container {
+    width: 100%; /* Adjust form-container width */
+    padding: 20px; /* Reduce padding for smaller screens */
+    box-sizing: border-box; /* Include padding in width calculation */
+  }
+
+  .sign-in-container {
+    background: #000000;
+    color: #ffffff;
+    width: 100%; /* Full width */
+    flex: 0 0 auto; /* Allow to be smaller */
+    height: auto; /* Allow to be smaller in height */
+  }
+
+  .sign-up-container {
+    background: #ffffff;
+    margin-top: 10px; /* Space between sign-in and sign-up containers */
+    flex: 1; /* Allow to take up remaining space */
+    overflow-y: auto; /* Scroll if content overflows */
+    height: auto; /* Allow to grow in height */
+  }
 }
 
 .form-container {
@@ -37,17 +72,15 @@ body {
 }
 
 .sign-in-container {
-  background: #bfd4de;
-  color: #000000;
-  flex: 0 0 120px;  /* Adjust the last value for width */
-  width: auto;  /* Optional, allows the container to grow if needed */
+  background: #000000;
+  color: #ffffff;
+  flex: 0 0 120px; /* Adjust the last value for width */
+  width: auto; /* Optional, allows the container to grow if needed */
 }
 
-
 .sign-up-container {
-  background: #fff7f7;
+  background: #ffffff;
   flex: 1;
-  
 }
 
 h1 {
@@ -94,16 +127,14 @@ input[type="text"], input[type="email"], input[type="password"] {
   color: #000000;
 }
 
-
-#signinbt{
-  color: #000000;
+#signinbt {
+  color: #ffffff;
 }
 
 .gender {
   margin: 10px 0;
   display: flex;
   width: 100%;
-
 }
 
 .gender label {

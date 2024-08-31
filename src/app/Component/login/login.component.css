@@ -1,3 +1,7 @@
+app-login {
+  background-color: #000000;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -23,7 +27,9 @@ body {
   width: 100%;
   max-width: 800px; /* Set a max-width to limit the container size */
   padding: 20px;
-  margin: 20px; /* Adjust margin for smaller screens */
+  margin-bottom: 110px; /* Adjust margin for smaller screens */
+  margin-top: 50px;
+  margin-left: 280px; /* Default margin for larger screens */
 }
 
 /* Flexbox layout for form containers */
@@ -44,14 +50,16 @@ body {
 
 /* Sign In Form Styling */
 .sign-in-container {
-  background: #fff7f7;
+  background: #ffffff;
   color: #000000;
 }
 
 /* Sign Up Form Styling */
 .sign-up-container {
-  background: #6b98b4;
-  color: #000000;
+  background: #000000;
+  color: #ffffff;
+  padding-top: 95px;
+  padding-bottom: 95px;
 }
 
 /* Typography */
@@ -74,10 +82,10 @@ input {
 }
 
 a {
-  color: #000000;
+  color: #ffffff;
   font-size: 1rem; /* Adjust font size for readability */
   margin: 15px 0;
-  text-decoration: none;
+  text-decoration: underline;
 }
 
 .btn {
@@ -113,27 +121,34 @@ a {
 }
 
 /* Responsive Adjustments */
+@media screen and (min-width: 992px) {
+  .container {
+    margin-left: 280px; /* Apply margin-left for larger screens */
+  }
+}
+
 @media screen and (max-width: 992px) {
   .container {
-      flex-direction: column;
-      padding: 20px;
+    flex-direction: column;
+    padding: 20px;
+    margin-left: 0; /* Remove margin-left for smaller screens */
   }
 
   .form-container {
-      max-width: 90%; /* Adjust max-width for smaller screens */
-      margin: 10px auto; /* Center the forms */
+    max-width: 90%; /* Adjust max-width for smaller screens */
+    margin: 10px auto; /* Center the forms */
   }
 }
 
 @media screen and (max-width: 768px) {
   .form-container {
-      padding: 15px;
-      max-width: 100%; /* Full width on very small screens */
+    padding: 15px;
+    max-width: 100%; /* Full width on very small screens */
   }
 }
 
 @media screen and (max-width: 576px) {
   .form-container {
-      padding: 10px;
+    padding: 10px;
   }
 }

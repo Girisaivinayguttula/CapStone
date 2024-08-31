@@ -34,11 +34,11 @@
       <h5>Shipping information</h5>
       <form>
         <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" class="form-control" id="email" [(ngModel)]="email" name="email" placeholder="Enter your email" required>
+          <label for="email">Email : </label>
+          <input type="email" class="form-control" id="email" [(ngModel)]="email" name="email" placeholder="Enter your email " required>
         </div>
         <div class="form-group">
-          <label for="address">Shipping address</label>
+          <label for="address">Shipping address : </label>
           <input type="text" class="form-control" id="address" [(ngModel)]="address" name="address" placeholder="Enter your address" required>
         </div>
         <h5>Payment details</h5>
@@ -61,7 +61,7 @@
         <!-- Card Information -->
         <div *ngIf="selectedPaymentMethod === 'Card'">
           <div class="form-group">
-            <label for="cardNumber">Card information</label>
+            <label for="cardNumber">Card information : </label>
             <input type="text" class="form-control" id="cardNumber" placeholder="1234 1234 1234 1234">
           </div>
           <div class="form-row">

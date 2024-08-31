@@ -298,3 +298,111 @@ button[type="submit"] {
 button[type="submit"]:hover {
   background: #2f3030;
 }
+
+/* Media query for tablets and small screens */
+@media (max-width: 1024px) {
+  .onlineshop-container {
+    min-width: 95%;
+    padding: 10px;
+  }
+
+  .product-card {
+    width: 45%; /* Adjust width for tablets to fit two products per row */
+    margin: 10px 0; /* Adjust margin for spacing */
+  }
+
+  .product-image {
+    height: 300px; /* Reduce height for smaller screens */
+  }
+
+  .header h2 {
+    font-size: 20px; /* Adjust font size for smaller screens */
+  }
+
+  .product-info h4 {
+    font-size: 18px; /* Adjust font size for smaller screens */
+  }
+
+  .price {
+    font-size: 16px; /* Adjust font size for smaller screens */
+  }
+
+  .description {
+    font-size: 12px; /* Adjust font size for smaller screens */
+  }
+
+  .product-form-container {
+    max-width: 90%; /* Limit form width for smaller screens */
+    padding: 15px; /* Reduce padding for smaller screens */
+  }
+
+  .product-form-container h2 {
+    font-size: 20px; /* Adjust font size for smaller screens */
+  }
+}
+
+/* Media query for mobile screens */
+@media (max-width: 768px) {
+  .product-card {
+    width: 100%; /* Full width for mobile screens */
+    margin: 10px 0; /* Adjust margin for spacing */
+  }
+
+  .product-image {
+    height: 250px; /* Reduce height further for mobile screens */
+  }
+
+  .header h2 {
+    font-size: 18px; /* Adjust font size for mobile screens */
+  }
+
+  .product-info h4 {
+    font-size: 16px; /* Adjust font size for mobile screens */
+  }
+
+  .price {
+    font-size: 14px; /* Adjust font size for mobile screens */
+  }
+
+  .description {
+    font-size: 12px; /* Adjust font size for mobile screens */
+  }
+
+  .product-form-container {
+    max-width: 100%; /* Full width for mobile screens */
+    padding: 10px; /* Reduce padding for mobile screens */
+  }
+
+  .product-form-container h2 {
+    font-size: 18px; /* Adjust font size for mobile screens */
+  }
+
+  .product-info input,
+  .product-info textarea,
+  .product-info select {
+    font-size: 14px; /* Adjust font size for mobile screens */
+  }
+}
+
+/* Media query for very small screens */
+@media (max-width: 480px) {
+  .header h2 {
+    font-size: 16px; /* Further reduce font size for very small screens */
+  }
+
+  .product-info h4 {
+    font-size: 14px; /* Further reduce font size for very small screens */
+  }
+
+  .price {
+    font-size: 12px; /* Further reduce font size for very small screens */
+  }
+
+  .description {
+    font-size: 10px; /* Further reduce font size for very small screens */
+  }
+
+  .product-image {
+    height: 200px; /* Reduce height further for very small screens */
+  }
+}

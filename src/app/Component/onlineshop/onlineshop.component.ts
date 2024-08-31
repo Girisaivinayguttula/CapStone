@@ -68,7 +68,7 @@ export class OnlineshopComponent implements OnInit {
       return;
     }
 
-    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
     cart.push(product);
     localStorage.setItem('cart', JSON.stringify(cart));
     this.cartProducts.add(product._id || '');
