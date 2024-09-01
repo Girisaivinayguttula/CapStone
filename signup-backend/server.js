@@ -33,7 +33,9 @@ const User = mongoose.model('User', new mongoose.Schema({
   phone: { type: String, required: true },
   password: { type: String, required: true },
   gender: { type: String, required: true },
-  isAdmin: { type: Boolean, default: false } // Add isAdmin field
+  isAdmin: { type: Boolean, default: false }, // Add isAdmin field
+  isVerified: { type: Boolean, default: false },
+  otp: { type: String }
 }));
 
 // Product Model
@@ -98,23 +100,72 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
-// Signup Route
+// Signup Route with OTP Generation
 app.post('/api/signup', async (req, res) => {
   try {
     const { name, email, phone, password, gender } = req.body;
 
-    // Check if the email is already registered
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(400).send({ error: 'Email already registered' });
+    let user = await User.findOne({ email });
+    
+    if (user) {
+      if (user.isVerified) {
+        return res.status(400).send({ error: 'Email already registered and verified.' });
+      } else {
+        // Update the existing user's OTP if they haven't verified yet
+        const otp = Math.floor(100000 + Math.random() * 900000).toString(); // Generate a new 6-digit OTP
+        user.otp = otp;
+        await user.save();
+      }
+    } else {
+      // Create a new user with OTP
+      const otp = Math.floor(100000 + Math.random() * 900000).toString(); // Generate a new 6-digit OTP
+      user = new User({ name, email, phone, password, gender, otp });
+      await user.save();
     }
 
-    const user = new User({ name, email, phone, password, gender });
-    await user.save();
-    res.status(201).send(user);
+    // Send OTP email
+    const mailOptions = {
+      from: 'cabastoreoffical@gmail.com',
+      to: email,
+      subject: 'OTP Verification',
+      text: `Your OTP code is ${user.otp}`,
+      html: `<p>Your OTP code is <strong>${user.otp}</strong></p>`
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error('Error while sending OTP email:', error);
+        return res.status(500).send({ error: 'Failed to send OTP email' });
+      } else {
+        console.log('OTP email sent: ' + info.response);
+        return res.status(200).send({ message: 'OTP sent to your email. Please enter it to verify your account.' });
+      }
+    });
+
   } catch (error) {
     console.error('Error saving user:', error);
-    res.status(400).send({ error: 'Error saving user', details: error.message });
+    res.status(500).send({ error: 'Error saving user', details: error.message });
+  }
+});
+
+// OTP Verification Route
+app.post('/api/verify-otp', async (req, res) => {
+  try {
+    const { email, otp } = req.body;
+
+    const user = await User.findOne({ email });
+    if (!user || user.otp !== otp) {
+      return res.status(400).send({ error: 'Invalid OTP' });
+    }
+
+    user.isVerified = true;
+    user.otp = undefined; // Clear the OTP after verification
+    await user.save();
+
+    res.status(200).send({ message: 'OTP verified. Account activated.' });
+  } catch (error) {
+    console.error('Error verifying OTP:', error);
+    res.status(500).send({ error: 'Server error', details: error.message });
   }
 });
 
