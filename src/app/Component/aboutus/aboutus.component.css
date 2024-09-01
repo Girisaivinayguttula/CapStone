@@ -21,6 +21,7 @@
   text-transform: uppercase;
   letter-spacing: 2px;
   margin-bottom: 10px;
+  font-family: 'Times New Roman', Times, serif;
 }
 
 .about-text h1 {
@@ -28,6 +29,7 @@
   font-weight: 700;
   margin-bottom: 20px;
   line-height: 1.2;
+  font-family: 'Times New Roman', Times, serif;
 }
 
 .about-text p {
@@ -35,6 +37,7 @@
   color: #555;
   line-height: 1.6;
   margin-bottom: 20px;
+  font-family: 'Times New Roman', Times, serif;
 }
 
 .about-text button {

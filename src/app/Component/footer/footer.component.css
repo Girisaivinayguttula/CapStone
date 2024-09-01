@@ -3,6 +3,7 @@
   color: #e8e4d8;
   padding: 40px;
   text-align: center;
+  font-family: 'Times New Roman', Times, serif; /* Set font-family */
 }
 
 .footer .logo img {
@@ -13,6 +14,7 @@
   font-size: 24px;
   font-weight: 500;
   margin-bottom: 10px;
+  font-family: 'Times New Roman', Times, serif; /* Set font-family */
 }
 
 .footer-content p {
@@ -22,7 +24,7 @@
 
 .subscribe-form {
   display: flex;
-  flex-direction: column; /* Stack elements vertically on smaller screens */
+  flex-direction: column;
   align-items: center;
   gap: 10px;
 }
@@ -34,8 +36,8 @@
   background-color: transparent;
   color: #e8e4d8;
   outline: none;
-  width: 100%; /* Full width for smaller screens */
-  max-width: 300px; /* Limit maximum width */
+  width: 100%;
+  max-width: 300px;
 }
 
 .subscribe-form input[type="email"]::placeholder {
@@ -50,8 +52,8 @@
   border: none;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  width: 100%; /* Full width for smaller screens */
-  max-width: 300px; /* Limit maximum width */
+  width: 100%;
+  max-width: 300px;
 }
 
 .subscribe-form button:hover {
@@ -88,13 +90,9 @@
     font-size: 14px;
   }
 
-  .subscribe-form {
-    flex-direction: column;
-  }
-
   .subscribe-form input[type="email"],
   .subscribe-form button {
     width: 100%;
-    max-width: 100%; /* Adjust to full width on small screens */
+    max-width: 100%;
   }
 }

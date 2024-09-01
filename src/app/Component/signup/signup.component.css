@@ -1,5 +1,6 @@
 * {
   box-sizing: border-box;
+  font-family: 'Times New Roman', Times, serif; /* Set font-family */
 }
 
 body {
@@ -8,14 +9,14 @@ body {
   height: 100vh;
   overflow: hidden;
   margin: 0;
-  font-family: 'Montserrat', sans-serif;
   display: flex;
   justify-content: center; /* Center content horizontally */
   align-items: center;
+  font-family: 'Times New Roman', Times, serif; /* Set font-family */
 }
 
 .container {
-  margin-left: 400px;
+  margin-left: 320px;
   margin-top: 10px;
   margin-bottom: 30px;
   background: #fff;
@@ -24,7 +25,7 @@ body {
   display: flex;
   overflow: hidden;
   width: 580px;
-  max-width: 720px;
+  min-width: 720px;
   max-height: 700px;
 }
 
@@ -46,38 +47,47 @@ body {
 
 /* Media query for screens 768px and below */
 @media (max-width: 768px) {
+  body {
+    height: auto; /* Allow body to grow in height */
+    overflow: auto; /* Enable scrolling on small screens */
+    padding: 20px;
+  }
+
   .container {
     margin-left: 0; /* Remove margin-left for smaller screens */
     width: 100%; /* Make container full width */
     height: auto; /* Allow container to grow in height */
     flex-direction: column; /* Stack containers vertically */
     align-items: center; /* Center containers horizontally */
-    min-height: 600px; /* Increase height for smaller screens */
+    min-width: unset; /* Allow to shrink on smaller screens */
+    max-width: 100%; /* Ensure it doesn't exceed screen width */
     margin-top: 20px;
   }
 
   .form-container {
-    width: 100%; /* Adjust form-container width */
+    /* width: 100%; Adjust form-container width */
     padding: 20px; /* Reduce padding for smaller screens */
     box-sizing: border-box; /* Include padding in width calculation */
+  }
+
+  .sign-in-container, .sign-up-container {
+    width: 100%; /* Full width */
+    flex: 1;
+    min-width: unset; /* Allow to shrink on smaller screens */
+    max-width: 100%; /* Ensure it doesn't exceed screen width */
+    height: auto; /* Allow to grow in height */
   }
 
   .sign-in-container {
     background: #000000;
     color: #ffffff;
-    width: 100%; /* Full width */
-    flex: 0 0 auto; /* Allow to be smaller */
-    height: 150px; /* Allow to be smaller in height */
-    min-width: 400px;
+    height: 150px; /* Keep height appropriate */
   }
 
   .sign-up-container {
     background: #ffffff;
     margin-top: 10px; /* Space between sign-in and sign-up containers */
-    flex: 1; /* Allow to take up remaining space */
     overflow-y: auto; /* Scroll if content overflows */
-    height: auto; /* Allow to grow in height */
-    min-width: 300px;
   }
 }
 
@@ -87,13 +97,13 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 50%;
+  /* width: 50%; */
 }
 
 .sign-in-container {
   background: #000000;
   color: #ffffff;
-  flex: 0 0 120px; /* Adjust the last value for width */
+  /* flex: 0 0 120px; Adjust the last value for width */
   width: auto; /* Optional, allows the container to grow if needed */
 }
 
@@ -104,6 +114,8 @@ body {
 
 h1 {
   margin-bottom: 20px;
+  font-family: 'Times New Roman', Times, serif; /* Set font-family */
+  font-weight: bold;
 }
 
 p, span {
