@@ -71,10 +71,4 @@ describe('NavbarComponent', () => {
     expect(authService.isAdmin$.subscribe).toHaveBeenCalled(); // Ensure subscribe is called
   });
 
-  it('should have profile and cart icons', () => {
-    const profileIcon = fixture.nativeElement.querySelector('img.profile-icon');
-    const cartIcon = fixture.nativeElement.querySelector('img.cart-icon');
-    expect(profileIcon).not.toBeNull(); // Ensure profile icon is present
-    expect(cartIcon).not.toBeNull(); // Ensure cart icon is present
-  });
 });

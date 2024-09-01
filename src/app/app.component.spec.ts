@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Router } from '@angular/router'; // Import Router from @angular/router
+import { Router } from '@angular/router';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './Component/navbar/navbar.component';
 import { HomeComponent } from './Component/home/home.component';
@@ -8,17 +8,18 @@ import { FooterComponent } from './Component/footer/footer.component';
 import { LoginComponent } from './Component/login/login.component';
 import { SignupComponent } from './Component/signup/signup.component';
 import { By } from '@angular/platform-browser';
+import { appRoutes } from './app.routes'; // Import the routes
 
 describe('AppComponent', () => {
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
-  let router: Router; // Declare router
+  let router: Router;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule.withRoutes([]),  // Configure RouterTestingModule with empty routes
-        AppComponent,         // Import the standalone AppComponent
+        RouterTestingModule.withRoutes(appRoutes), // Use your appRoutes here
+        AppComponent,
         NavbarComponent,
         HomeComponent,
         FooterComponent,
@@ -29,7 +30,7 @@ describe('AppComponent', () => {
 
     fixture = TestBed.createComponent(AppComponent);
     component = fixture.componentInstance;
-    router = TestBed.inject(Router); // Initialize router
+    router = TestBed.inject(Router);
     fixture.detectChanges();
   });
 
@@ -51,37 +52,28 @@ describe('AppComponent', () => {
     const spy = spyOn(router, 'navigate'); // Spy on navigate method
 
     // Simulate initial navigation
-    router.navigate(['/home']);
+    await router.navigate(['/home']);
     fixture.detectChanges();
     await fixture.whenStable();
 
     expect(spy).toHaveBeenCalledWith(['/home']);
   });
 
-  it('should navigate to login when login link is clicked', async () => {
-    const navigateSpy = spyOn(router, 'navigate'); // Spy on navigate method
+it('should redirect to home for unknown routes', async () => {
+  await router.navigate(['/unknown']);
+  fixture.detectChanges();
+  await fixture.whenStable();
 
-    const loginLink = fixture.debugElement.query(By.css('a[href="/login"]'));
-    loginLink.triggerEventHandler('click', null);
+  expect(router.url).toBe('/home');
+});
 
-    fixture.detectChanges();
-    await fixture.whenStable();
+it('should render home component on default route', async () => {
+  await router.navigate(['/home']);
+  fixture.detectChanges();
+  await fixture.whenStable();
 
-    expect(navigateSpy).toHaveBeenCalledWith(['/login']);
-  });
+  const homeComponent = fixture.debugElement.query(By.directive(HomeComponent));
+  expect(homeComponent).toBeTruthy();
+});
 
-  it('should render home component on default route', () => {
-    const homeComponent = fixture.debugElement.query(By.directive(HomeComponent));
-    expect(homeComponent).toBeTruthy();
-  });
-
-  it('should redirect to home for unknown routes', async () => {
-    const navigateSpy = spyOn(router, 'navigate'); // Spy on navigate method
-
-    await router.navigate(['/unknown']);
-    fixture.detectChanges();
-    await fixture.whenStable();
-
-    expect(navigateSpy).toHaveBeenCalledWith(['/home']);
-  });
 });

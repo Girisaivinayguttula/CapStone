@@ -27,6 +27,8 @@ describe('LoginComponent', () => {
   });
 
   it('should create', () => {
+    component.user = { name: 'Test User', email: 'test@example.com' }; // Ensure user is defined
+    fixture.detectChanges(); // Trigger change detection to update the view
     expect(component).toBeTruthy();
   });
 });

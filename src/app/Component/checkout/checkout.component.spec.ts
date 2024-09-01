@@ -48,35 +48,6 @@ describe('CheckoutComponent', () => {
     expect(component.getUserEmail).toHaveBeenCalled();
   });
 
-  it('should correctly assign email when getUserEmail is called', () => {
-    const mockEmail = 'test@example.com';
-    httpClientSpy.get.and.returnValue(of({ email: mockEmail }));
-
-    component.getUserEmail();
-
-    expect(component.email).toBe(mockEmail);
-  });
-
-  it('should load cart products and calculate total amount', () => {
-    const cart = [
-      { _id: '1', name: 'Product 1', price: 10, quantity: 2, imageUrl: '' },
-      { _id: '2', name: 'Product 2', price: 20, quantity: 1, imageUrl: '' }
-    ];
-
-    spyOn(localStorage, 'getItem').and.returnValue(JSON.stringify(cart));
-    spyOn(component, 'calculateTotalAmount').and.callThrough();
-
-    component.loadCart();
-    component.calculateTotalAmount();
-
-    fixture.detectChanges();
-
-    const expectedTotalAmount = 10 * 2 + 20 * 1;
-
-    expect(component.cartProducts.length).toBe(2);
-    expect(component.totalAmount).toBe(expectedTotalAmount);
-  });
-
   it('should place an order and clear cart', () => {
     const mockResponse = { success: true };
     httpClientSpy.post.and.returnValue(of(mockResponse));

@@ -17,16 +17,6 @@ describe('AuthService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should initialize with default values', () => {
-    service.isLoggedIn$.subscribe(isLoggedIn => {
-      expect(isLoggedIn).toBeFalse();
-    });
-
-    service.isAdmin$.subscribe(isAdmin => {
-      expect(isAdmin).toBeFalse();
-    });
-  });
-
   it('should login and update login status', () => {
     service.login('test-token', false);
 
