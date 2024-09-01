@@ -1,3 +1,5 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
 <nav class="home-container">
   <input type="checkbox" id="menu-toggle">
   <label for="menu-toggle" class="hamburger-menu">
@@ -13,11 +15,8 @@
     <li *ngIf="isAdmin"><a routerLink="/subscriber" (click)="closeMenu()">subscriptions</a></li>
     <li><a routerLink="/store" (click)="closeMenu()">Store</a></li>
     <li><a routerLink="/orders" (click)="closeMenu()">My Orders</a></li>
-    <li><a routerLink="/login" (click)="closeMenu()">
-      <img src="assests/images/profile.png" alt="pro" class="profile-icon">
-    </a></li>
-    <li><a routerLink="/cart" (click)="closeMenu()">
-      <img src="assests/images/cart.png" alt="Cart" class="cart-icon">
-    </a></li>
+    <li><a routerLink="/login" (click)="closeMenu()"><mat-icon>account_circle</mat-icon></a></li>
+    <li><a routerLink="/cart" (click)="closeMenu()"><mat-icon>shopping_cart</mat-icon></a></li>
   </ul>
 </nav>
+

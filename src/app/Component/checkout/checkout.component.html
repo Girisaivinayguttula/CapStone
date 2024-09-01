@@ -45,11 +45,11 @@
         <div class="form-group">
           <label for="paymentMethod">Select payment method</label>
           <div>
-            <input type="radio" id="card" name="paymentMethod" value="Card" [(ngModel)]="selectedPaymentMethod" (change)="onPaymentMethodChange('Card')">
+            <input type="radio" id="card" name="paymentMethod" value="Card" [(ngModel)]="selectedPaymentMethod" (change)="onPaymentMethodChange('Card')" >
             <label for="card">Card</label>
           </div>
           <div>
-            <input type="radio" id="upi" name="paymentMethod" value="UPI" [(ngModel)]="selectedPaymentMethod" (change)="onPaymentMethodChange('UPI')">
+            <input type="radio" id="upi" name="paymentMethod" value="UPI" [(ngModel)]="selectedPaymentMethod" (change)="onPaymentMethodChange('UPI')" >
             <label for="upi">UPI</label>
           </div>
           <div>

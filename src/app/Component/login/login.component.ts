@@ -5,11 +5,12 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../../auth.service';
 import { Router, RouterModule } from '@angular/router';
 import { ChangeDetectorRef } from '@angular/core';
+import {MatIconModule} from '@angular/material/icon';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, CommonModule, HttpClientModule, RouterModule],
+  imports: [FormsModule, CommonModule, HttpClientModule, RouterModule, MatIconModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })

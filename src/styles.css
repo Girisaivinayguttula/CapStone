@@ -3,3 +3,5 @@ app-login{
     min-height: 1500px;
     background-color: RGB(237, 237, 239);
 }
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
