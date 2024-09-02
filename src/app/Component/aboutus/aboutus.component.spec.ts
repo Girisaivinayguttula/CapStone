@@ -33,8 +33,8 @@ describe('AboutusComponent', () => {
   it('should display the correct paragraphs', () => {
     const paragraphs = fixture.nativeElement.querySelectorAll('p');
     expect(paragraphs.length).toBe(2); // Ensure there are exactly 2 paragraphs
-    expect(paragraphs[0].textContent).toContain('Dans un cadre champêtre');
-    expect(paragraphs[1].textContent).toContain('Au premier étage, aux côtés des cuisines');
+    expect(paragraphs[0].textContent).toContain('Giri Sai Vinay Guttula, hailing from Visakhapatnam, holds a B.Tech in Electronics and Communication Engineering (ECE) with a specialization in Artificial Intelligence and Machine Learning (AIML) from GITAM University.');
+    expect(paragraphs[1].textContent).toContain('With a strong passion for learning new things, Giri enjoys spending quality time with family and friends. He is currently working as an Associate Engineer at Ascendion, where he continues to develop his skills and contribute to the field of technology.');
   });
 
   it('should display the image with correct src and alt attributes', () => {

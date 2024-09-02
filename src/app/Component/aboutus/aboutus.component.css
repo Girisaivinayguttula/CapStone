@@ -7,11 +7,11 @@
   padding-top: 62px;
   background-color: RGB(237, 237, 239);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  flex-wrap: wrap; /* Allows content to wrap on smaller screens */
+  flex-wrap: wrap; 
 }
 
 .about-text {
-  flex: 1 1 50%; /* Takes 50% width and adjusts for responsiveness */
+  flex: 1 1 50%; 
   padding-right: 30px;
 }
 
@@ -55,13 +55,13 @@
 }
 
 .about-image {
-  flex: 0 1 250px; /* Flex-grow: 0, Flex-shrink: 1, and Flex-basis: 250px */
-  margin-top: 20px; /* Adds space on top in case it wraps */
+  flex: 0 1 250px; 
+  margin-top: 20px; 
 }
 
 .about-image img {
-  width: 100%; /* Full width within its flex container */
-  height: auto; /* Adjusts height proportionally */
+  width: 100%; 
+  height: auto; 
   object-fit: cover;
   border-radius: 10px;
   border: 1px solid #ddd;
@@ -70,33 +70,33 @@
 /* Media queries for responsiveness */
 @media (max-width: 768px) {
   .about-container {
-    flex-direction: column; /* Stack items vertically */
-    align-items: flex-start; /* Align items to the start */
-    padding: 20px; /* Reduce padding for smaller screens */
+    flex-direction: column; 
+    align-items: flex-start; 
+    padding: 20px; 
   }
 
   .about-text {
-    padding-right: 0; /* Remove right padding on smaller screens */
+    padding-right: 0; 
   }
 
   .about-image {
-    width: 100%; /* Image takes full width */
-    margin-top: 20px; /* Space between text and image */
+    width: 100%; 
+    margin-top: 20px; 
   }
 
   .about-image img {
-    width: 100%; /* Image takes full width */
-    height: auto; /* Auto-adjust height */
+    width: 100%; 
+    height: auto; 
   }
 }
 
 @media (max-width: 480px) {
   .about-text h1 {
-    font-size: 24px; /* Smaller heading size */
+    font-size: 24px; 
   }
 
   .about-text p {
-    font-size: 14px; /* Smaller paragraph size */
+    font-size: 14px; 
   }
 
   .about-text button {
