@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { SuscriberService } from './suscriber.service';
 
 @Component({
   selector: 'app-subscriber',
@@ -12,19 +12,18 @@ import { CommonModule } from '@angular/common';
 export class SubscriberComponent implements OnInit {
   subscriptions: string[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(private suscriberService: SuscriberService) {}
 
   ngOnInit() {
     this.fetchSubscriptions();
   }
 
   fetchSubscriptions() {
-    const apiUrl = 'http://localhost:5000/api/subscriptions'; // Update with your actual backend URL
-    this.http.get<string[]>(apiUrl).subscribe(
-      (data) => {
+    this.suscriberService.fetchSubscriptions().subscribe(
+      (data: string[]) => {
         this.subscriptions = data;
       },
-      (error) => {
+      (error: any) => {
         console.error('Error fetching subscriptions:', error);
       }
     );

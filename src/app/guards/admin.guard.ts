@@ -5,7 +5,7 @@ export const adminGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
   const isAdmin = localStorage.getItem('isAdmin') === 'true';
   if (!isAdmin) {
-    router.navigate(['/home']); // Redirect non-admin users
+    router.navigate(['/home']);
     return false;
   }
   return true;
