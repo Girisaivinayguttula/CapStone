@@ -36,7 +36,7 @@ export class CheckoutComponent implements OnInit {
   }
 
   loadCart() {
-    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const cart = JSON.parse(sessionStorage.getItem('cart') || '[]');
     this.cartProducts = this.aggregateCartProducts(cart);
   }
 
@@ -67,7 +67,7 @@ export class CheckoutComponent implements OnInit {
   }
 
   getUserEmail() {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (!token) {
       alert('You must be logged in');
       return;
@@ -113,7 +113,7 @@ export class CheckoutComponent implements OnInit {
 
     console.log('Order Data:', orderData); // Log the order data to verify
 
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (!token) {
       alert('You must be logged in to place an order');
       return;
@@ -124,7 +124,7 @@ export class CheckoutComponent implements OnInit {
     this.http.post('http://localhost:5000/api/orders', orderData, { headers }).subscribe(
       response => {
         alert('Order placed successfully');
-        localStorage.removeItem('cart');
+        sessionStorage.removeItem('cart');
         this.router.navigate(['/cart']); // Redirect to cart page
       },
       error => {

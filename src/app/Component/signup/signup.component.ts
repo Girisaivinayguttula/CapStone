@@ -1,86 +1,79 @@
 import { Component } from '@angular/core';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule, RouterOutlet } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { AuthService } from './auth.service';
+import { ReactiveFormsModule } from '@angular/forms';
+import { NotificationService } from '../../notification.service'; 
 
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [FormsModule, CommonModule, HttpClientModule, RouterOutlet, RouterModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterModule],
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css']
 })
 export class SignupComponent {
+  signupForm!: FormGroup;
+  otpForm!: FormGroup;
+  otpSent = false;
+  otpVerificationFailed = false;
 
-  user = {
-    name: '',
-    email: '',
-    phone: '',
-    password: '',
-    gender: 'male' // Default value
-  };
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router,
+    private notificationService: NotificationService
+  ) {
+    this.initializeForms();
+  }
 
-  otp = ''; // New field to store OTP
-  otpSent = false; // Track if OTP was sent
-  otpVerificationFailed = false; // Track if OTP verification fails
+  private initializeForms(): void {
+    this.signupForm = this.fb.group({
+      name: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      phone: ['', [Validators.required, Validators.pattern('[0-9]{10}')]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      gender: ['male']
+    });
 
-  constructor(private http: HttpClient, private router: Router) {}
+    this.otpForm = this.fb.group({
+      otp: ['', [Validators.required, Validators.pattern('[0-9]{6}')]]
+    });
+  }
 
-  onSubmit() {
-    if (!this.isPasswordValid() || !this.isPhoneValid() || !this.user.name || !this.user.email) {
-      // Do not proceed if validation fails; Angular will already handle this via the template
+  onSubmit(): void {
+    if (this.signupForm.invalid) {
+      this.notificationService.showError('Please fill in all required fields correctly.');
       return;
     }
 
-    // If validation passes, send signup request
-    this.http.post('http://localhost:5000/api/signup', this.user)
-      .subscribe(
-        response => {
-          console.log('OTP sent successfully', response);
-          this.otpSent = true; // OTP was sent successfully
-          alert('OTP sent to your email. Please enter it to verify your account.');
-        },
-        error => {
-          console.error('Error sending OTP', error);
-          alert('Signup failed. Please try again.');
-        }
-      );
+    this.authService.signup(this.signupForm.value).subscribe(
+      () => {
+        this.otpSent = true;
+        this.notificationService.showSuccess('OTP sent to your email. Please enter it to verify your account.');
+      },
+      error => {
+        this.notificationService.showError('Signup failed. Please try again.');
+      }
+    );
   }
 
-  onVerifyOtp() {
-    if (!this.isOtpValid()) {
-      alert('OTP must be exactly 6 digits.');
+  onVerifyOtp(): void {
+    if (this.otpForm.invalid) {
+      this.notificationService.showError('OTP must be exactly 6 digits.');
       return;
     }
 
-    this.http.post('http://localhost:5000/api/verify-otp', { email: this.user.email, otp: this.otp })
-      .subscribe(
-        response => {
-          console.log('OTP verified successfully', response);
-          alert('OTP verified! Redirecting to login page...');
-          setTimeout(() => this.router.navigate(['/login']), 1000);
-        },
-        error => {
-          console.error('Error verifying OTP', error);
-          alert('Incorrect OTP. Please try again.');
-          this.otpVerificationFailed = true;
-        }
-      );
-  }
-
-  isPasswordValid(): boolean {
-    const password = this.user.password;
-    return password.length >= 6;
-  }
-  
-  isPhoneValid(): boolean {
-    const phone = this.user.phone;
-    return phone.length === 10 && /^[0-9]+$/.test(phone);
-  }
-
-  isOtpValid(): boolean {
-    const otp = this.otp;
-    return otp.length === 6 && /^[0-9]+$/.test(otp);
+    this.authService.verifyOtp(this.signupForm.value.email, this.otpForm.value.otp).subscribe(
+      () => {
+        this.notificationService.showSuccess('OTP verified! Redirecting to login page...');
+        setTimeout(() => this.router.navigate(['/login']), 1000);
+      },
+      error => {
+        this.notificationService.showError('Incorrect OTP. Please try again.');
+        this.otpVerificationFailed = true;
+      }
+    );
   }
 }

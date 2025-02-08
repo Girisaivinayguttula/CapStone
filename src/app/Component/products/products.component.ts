@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { ProductService } from './product.service';
 
 export interface Products {
   _id?: string;
@@ -16,7 +16,7 @@ export interface Products {
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [FormsModule, CommonModule, HttpClientModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.css']
 })
@@ -33,14 +33,14 @@ export class ProductComponent implements OnInit {
   productQuantity = 0;  // New property for quantity
   categories = ['Cupcakes', 'Desserts', 'Pastries'];
 
-  constructor(private http: HttpClient) {}
+  constructor(private productService: ProductService) {}
 
   ngOnInit() {
     this.fetchProducts();
   }
 
   fetchProducts() {
-    this.http.get<Products[]>('http://localhost:5000/api/products').subscribe({
+    this.productService.getProducts().subscribe({
       next: (data) => {
         this.products = data;
       },
@@ -68,7 +68,7 @@ export class ProductComponent implements OnInit {
         quantity: this.productQuantity // Set quantity,
       };
 
-      this.http.post<Products>('http://localhost:5000/api/products', newProduct).subscribe({
+      this.productService.addProduct(newProduct).subscribe({
         next: (product) => {
           this.products.push(product);
           this.toggleModal(); // Close the modal after adding
@@ -91,6 +91,7 @@ export class ProductComponent implements OnInit {
     this.productQuantity = product.quantity || 0; // Set quantity
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   saveProduct(product: Products) {
     if (this.currentProduct && this.currentProduct._id) {
       const updatedProduct: Products = {
@@ -102,7 +103,7 @@ export class ProductComponent implements OnInit {
         quantity: this.productQuantity // Set quantity
       };
 
-      this.http.put<Products>(`http://localhost:5000/api/products/${this.currentProduct._id}`, updatedProduct).subscribe({
+      this.productService.updateProduct(this.currentProduct._id, updatedProduct).subscribe({
         next: (updatedProduct) => {
           const index = this.products.findIndex(p => p._id === updatedProduct._id);
           if (index !== -1) {
@@ -121,9 +122,9 @@ export class ProductComponent implements OnInit {
   deleteProduct(product: Products) {
     if (product._id) {
       const isConfirmed = window.confirm("Are you sure you want to delete this product?");
-      
+
       if (isConfirmed) {
-        this.http.delete(`http://localhost:5000/api/products/${product._id}`).subscribe({
+        this.productService.deleteProduct(product._id).subscribe({
           next: () => {
             this.products = this.products.filter(p => p._id !== product._id);
           },
@@ -133,7 +134,7 @@ export class ProductComponent implements OnInit {
         });
       }
     }
-  }  
+  }
 
   resetForm() {
     this.productName = '';

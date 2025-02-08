@@ -9,10 +9,12 @@
   margin-bottom: 20px;
   border-radius: 5px;
   background-color: #f9f9f9;
+  font-family: 'Times New Roman', Times, serif;
 }
 
 h2 {
   margin-bottom: 20px;
+  font-family: 'Times New Roman', Times, serif;
 }
 
 ul {
@@ -21,4 +23,5 @@ ul {
 
 li {
   margin-bottom: 5px;
+  font-family: 'Times New Roman', Times, serif;
 }

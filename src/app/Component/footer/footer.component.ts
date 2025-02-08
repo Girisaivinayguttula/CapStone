@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { HttpHeaders } from '@angular/common/http'; // Import HttpHeaders
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { SuscriberService } from '../subscriber/suscriber.service';
 
 @Component({
   selector: 'app-footer',
@@ -13,31 +12,36 @@ import { FormsModule } from '@angular/forms';
 })
 export class FooterComponent implements OnInit {
   userEmail: string = '';
+  subscriptions: string[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(private suscriberService: SuscriberService) {}
 
   ngOnInit() {
     this.getUserEmail();
+    this.fetchSubscriptions();
   }
 
   getUserEmail() {
-    // Assume the token is stored in local storage after login
-    const token = localStorage.getItem('token');
-    
-    if (token) {
-      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    this.suscriberService.getUserEmail().subscribe({
+      next: (response) => {
+        this.userEmail = response.email || '';
+      },
+      error: (error) => {
+        console.error('Error fetching user details:', error);
+        this.userEmail = '';
+      }
+    });
+  }
 
-      this.http.get<any>('http://localhost:5000/api/user', { headers })
-        .subscribe({
-          next: (response) => {
-            this.userEmail = response.email || ''; // Use the email from the response
-          },
-          error: (error) => {
-            console.error('Error fetching user details:', error);
-            this.userEmail = ''; // Default to empty if there's an error
-          }
-        });
-    }
+  fetchSubscriptions() {
+    this.suscriberService.fetchSubscriptions().subscribe({
+      next: (subscriptions) => {
+        this.subscriptions = subscriptions;
+      },
+      error: (error) => {
+        console.error('Error fetching subscriptions:', error);
+      }
+    });
   }
 
   onSubscribe(email: string) {
@@ -45,16 +49,15 @@ export class FooterComponent implements OnInit {
       alert('Please enter a valid email address.');
       return;
     }
-  
-    this.http.post('http://localhost:5000/api/subscribe', { email })
-      .subscribe({
-        next: () => {
-          alert('You are subscribed to the newsletter!');
-        },
-        error: (error) => {
-          console.error('Error during subscription:', error);
-          alert('There was an error subscribing to the newsletter. Please try again later.');
-        }
-      });
+
+    this.suscriberService.subscribeEmail(email).subscribe({
+      next: () => {
+        alert('You are subscribed to the newsletter!');
+        this.fetchSubscriptions();
+      },
+      error: (error) => {
+        alert('There was an error subscribing to the newsletter. Please try again later.');
+      }
+    });
   }
-}  
+}

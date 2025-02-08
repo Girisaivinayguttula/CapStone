@@ -116,6 +116,77 @@ button:hover {
   padding-bottom: 25px;
 }
 
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px auto;
+  max-width: 600px;
+  width: 100%;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 500px;
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 25px;
+  padding: 8px 16px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.search-bar:focus-within {
+  border-color: #333;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+  transform: translateY(-1px);
+}
+
+.search-bar input {
+  flex: 1;
+  border: none;
+  padding: 8px;
+  font-size: 16px;
+  background: transparent;
+  outline: none;
+}
+
+.search-bar input::placeholder {
+  color: #999;
+}
+
+.search-icon {
+  color: #666;
+  margin-right: 8px;
+  font-size: 18px;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+  .search-container {
+    max-width: 90%;
+  }
+  
+  .search-bar {
+    padding: 6px 12px;
+  }
+  
+  .search-bar input {
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .search-container {
+    max-width: 95%;
+  }
+  
+  .search-bar {
+    padding: 4px 10px;
+  }
+}
+
 /* Responsive adjustments */
 @media screen and (max-width: 1024px) {
   .product-list {

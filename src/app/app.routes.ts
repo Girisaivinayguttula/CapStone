@@ -24,6 +24,6 @@ export const appRoutes: Routes = [
   { path: 'checkout', component: CheckoutComponent },
   { path: 'orders', component: OrdersComponent },
   { path: 'subscriber', component: SubscriberComponent , canActivate: [adminGuard]},
-  { path: '', redirectTo: '/home', pathMatch: 'full' }, // Redirect to home if no path is provided
-  { path: '**', redirectTo: '/home' } // Redirect to home for any unknown paths
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: '**', redirectTo: '/home' }
 ];
