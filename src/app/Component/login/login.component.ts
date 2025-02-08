@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthService } from '../../auth.service';
 import { LoginService } from './login.service';
+import { NotificationService } from '../../notification.service';
 
 @Component({
   selector: 'app-login',
@@ -27,6 +28,7 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private cd: ChangeDetectorRef,
+    private notificationService: NotificationService,
     private snackBar: MatSnackBar
   ) {}
 
@@ -35,7 +37,7 @@ export class LoginComponent implements OnInit {
   }
 
   private checkLoginStatus(): void {
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
     if (isLoggedIn) {
       this.isLoggedIn = true;
       this.getUserDetails();
@@ -68,8 +70,9 @@ export class LoginComponent implements OnInit {
     this.loginService.login(this.loginData).subscribe(
       (response: any) => {
         this.handleLogin(response.token, response.isAdmin);
+        this.notificationService.showSuccess('Login Successful.');
       },
-      error => {
+      () => {
         this.showError('Login failed: Invalid email or password.');
       }
     );
@@ -83,19 +86,19 @@ export class LoginComponent implements OnInit {
   }
 
   private storeLoginInfo(token: string, isAdmin: boolean): void {
-    localStorage.setItem('token', token);
-    localStorage.setItem('isLoggedIn', 'true');
-    localStorage.setItem('isAdmin', isAdmin ? 'true' : 'false');
+    sessionStorage.setItem('token', token);
+    sessionStorage.setItem('isLoggedIn', 'true');
+    sessionStorage.setItem('isAdmin', isAdmin ? 'true' : 'false');
     this.isLoggedIn = true;
   }
 
   private getUserDetails(): void {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (!token) return;
 
     this.loginService.getUserDetails(token).subscribe(
       data => this.user = data,
-      err => this.showError('Failed to fetch user details.')
+      () => this.showError('Failed to fetch user details.')
     );
   }
 
@@ -114,7 +117,7 @@ export class LoginComponent implements OnInit {
   }
 
   logout(): void {
-    localStorage.clear();
+    sessionStorage.clear();
     this.isLoggedIn = false;
     this.user = null;
     this.cd.detectChanges();

@@ -60,12 +60,12 @@ describe('CheckoutComponent', () => {
     component.totalAmount = 20;
     component.shippingCost = 5;
 
-    spyOn(localStorage, 'getItem').and.returnValue('token123');
-    spyOn(localStorage, 'removeItem');
+    spyOn(sessionStorage, 'getItem').and.returnValue('token123');
+    spyOn(sessionStorage, 'removeItem');
 
     component.onPay();
 
     expect(httpClientSpy.post.calls.count()).toBe(1);
-    expect(localStorage.removeItem).toHaveBeenCalledWith('cart');
+    expect(sessionStorage.removeItem).toHaveBeenCalledWith('cart');
   });
 });

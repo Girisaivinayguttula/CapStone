@@ -21,33 +21,33 @@ export class AuthService {
   }
 
   private updateLoginStatus() {
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
     this.isLoggedInSubject.next(isLoggedIn);
   }
 
   public updateAdminStatus() { // Change this to public
-    const isAdmin = localStorage.getItem('isAdmin') === 'true';
+    const isAdmin = sessionStorage.getItem('isAdmin') === 'true';
     this.isAdminSubject.next(isAdmin);
   }
 
   public login(token: string, isAdmin: boolean) {
-    localStorage.setItem('token', token);
-    localStorage.setItem('isLoggedIn', 'true');
+    sessionStorage.setItem('token', token);
+    sessionStorage.setItem('isLoggedIn', 'true');
     this.setAdminStatus(isAdmin);
     this.updateLoginStatus();
     this.updateAdminStatus();
   }
 
   public logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('isAdmin');
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('isLoggedIn');
+    sessionStorage.removeItem('isAdmin');
     this.updateLoginStatus();
     this.updateAdminStatus();
   }
 
   public setAdminStatus(isAdmin: boolean) {
-    localStorage.setItem('isAdmin', isAdmin.toString());
+    sessionStorage.setItem('isAdmin', isAdmin.toString());
     this.updateAdminStatus();
   }
 }

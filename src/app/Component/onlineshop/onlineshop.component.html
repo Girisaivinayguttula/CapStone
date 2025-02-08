@@ -12,29 +12,38 @@
   </section>
 
   <section class="products">
+    <div class="search-container">
+      <div class="search-bar">
+        <input type="text" placeholder="Search Products" (input)="searchProducts($event)">
+      </div>
+    </div>
+    
     <div *ngIf="filteredProducts.length === 0" class="no-products">
       <p>No products available.</p>
     </div>
+
     <div class="product-list">
       <div *ngFor="let product of filteredProducts" class="product-card">
         <img [src]="product.imageUrl" alt="{{ product.name }}">
-        <div class="product-info">
-          <span class="category">{{ product.category }}</span>
-          <h4>{{ product.name }}</h4>
-          <p class="price">${{ product.price }}</p>
-          <p class="description">{{ product.description }}</p>
-          
-          <div *ngIf="product.quantity > 0; else outOfStock">
-            <button 
-              (click)="addToCart(product)"
-              [disabled]="isProductInCart(product)"
-            >
+        <div class="product-content">
+          <div class="product-info">
+            <span class="category">{{ product.category }}</span>
+            <h4>{{ product.name }}</h4>
+            <p class="price">${{ product.price }}</p>
+            <p class="description">{{ product.description }}</p>
+
+            <div *ngIf="product.quantity > 0; else outOfStock">
+              <!-- ... add any in-stock content if needed ... -->
+            </div>
+            <ng-template #outOfStock>
+              <p class="out-of-stock">Out of Stock</p>
+            </ng-template>
+          </div>
+          <div class="button-container">
+            <button (click)="addToCart(product)" [disabled]="isProductInCart(product)">
               {{ isProductInCart(product) ? 'Added to Cart' : 'Add to Cart' }}
             </button>
           </div>
-          <ng-template #outOfStock>
-            <p class="out-of-stock">Out of Stock</p>
-          </ng-template>
         </div>
       </div>
     </div>
