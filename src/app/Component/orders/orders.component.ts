@@ -20,7 +20,7 @@ export class OrdersComponent implements OnInit {
   }
 
   fetchOrders() {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (!token) {
       console.error('No token found');
       return;

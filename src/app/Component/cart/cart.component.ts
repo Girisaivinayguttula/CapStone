@@ -29,7 +29,7 @@ export class CartComponent implements OnInit {
   }
 
   loadCart() {
-    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const cart = JSON.parse(sessionStorage.getItem('cart') || '[]');
     this.cartProducts = this.aggregateCartProducts(cart);
     this.calculateTotalAmount();
   }
@@ -73,7 +73,7 @@ export class CartComponent implements OnInit {
   updateCart() {
     // Create a new array of products with updated quantities
     const updatedCart = this.cartProducts.flatMap(product => Array(product.quantity).fill(product));
-    localStorage.setItem('cart', JSON.stringify(updatedCart));
+    sessionStorage.setItem('cart', JSON.stringify(updatedCart));
     this.calculateTotalAmount(); // Recalculate the total after each update
   }
 

@@ -37,7 +37,7 @@ export class CheckoutComponent implements OnInit {
   }
 
   loadCart() {
-    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const cart = JSON.parse(sessionStorage.getItem('cart') || '[]');
     this.cartProducts = this.aggregateCartProducts(cart);
   }
 
@@ -68,7 +68,7 @@ export class CheckoutComponent implements OnInit {
   }
 
   getUserEmail() {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (!token) {
       this.notificationService.showError('You must be logged in');
       return;
@@ -114,7 +114,7 @@ export class CheckoutComponent implements OnInit {
 
     console.log('Order Data:', orderData); // Log the order data to verify
 
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (!token) {
       this.notificationService.showError('You must be logged in');
       return;

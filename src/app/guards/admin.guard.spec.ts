@@ -24,7 +24,7 @@ describe('adminGuard', () => {
   });
 
   it('should allow navigation if isAdmin is true', () => {
-    localStorage.setItem('isAdmin', 'true');
+    sessionStorage.setItem('isAdmin', 'true');
 
     const mockActivatedRouteSnapshot = {} as ActivatedRouteSnapshot;
     const mockRouterStateSnapshot = {} as RouterStateSnapshot;
@@ -36,7 +36,7 @@ describe('adminGuard', () => {
   });
 
   it('should redirect to /home if isAdmin is false', () => {
-    localStorage.setItem('isAdmin', 'false');
+    sessionStorage.setItem('isAdmin', 'false');
 
     const mockActivatedRouteSnapshot = {} as ActivatedRouteSnapshot;
     const mockRouterStateSnapshot = {} as RouterStateSnapshot;
@@ -48,7 +48,7 @@ describe('adminGuard', () => {
   });
 
   it('should redirect to /home if isAdmin is not set', () => {
-    localStorage.removeItem('isAdmin');
+    sessionStorage.removeItem('isAdmin');
 
     const mockActivatedRouteSnapshot = {} as ActivatedRouteSnapshot;
     const mockRouterStateSnapshot = {} as RouterStateSnapshot;

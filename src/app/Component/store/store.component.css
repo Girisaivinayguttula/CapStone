@@ -81,6 +81,15 @@
   border-color: #d4af37;
 }
 
+.section-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  line-height: 1.2;
+  font-family: 'Times New Roman', Times, serif;
+  padding-top: 50px;
+}
+
 /* Media Queries for responsiveness */
 @media (max-width: 768px) {
   .container {
