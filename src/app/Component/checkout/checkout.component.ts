@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router'; // Import Router
+import { NotificationService } from '../../notification.service';
 
 export interface CartProduct {
   _id: string;
@@ -27,7 +28,7 @@ export class CheckoutComponent implements OnInit {
   email = '';
   address = '';
 
-  constructor(private http: HttpClient, private router: Router) {} // Inject HttpClient and Router
+  constructor(private http: HttpClient, private router: Router, private notificationService: NotificationService) {} // Inject HttpClient and Router
 
   ngOnInit() {
     this.loadCart();
@@ -69,7 +70,7 @@ export class CheckoutComponent implements OnInit {
   getUserEmail() {
     const token = localStorage.getItem('token');
     if (!token) {
-      alert('You must be logged in');
+      this.notificationService.showError('You must be logged in');
       return;
     }
 
@@ -91,7 +92,7 @@ export class CheckoutComponent implements OnInit {
 
   onPay() {
     if (!this.email || !this.address) {
-      alert('Email and address are required');
+      this.notificationService.showError('Email and address are required');
       console.log('Email:', this.email);
       console.log('Address:', this.address);
       return;
@@ -115,7 +116,7 @@ export class CheckoutComponent implements OnInit {
 
     const token = localStorage.getItem('token');
     if (!token) {
-      alert('You must be logged in to place an order');
+      this.notificationService.showError('You must be logged in');
       return;
     }
 
@@ -123,13 +124,12 @@ export class CheckoutComponent implements OnInit {
 
     this.http.post('http://localhost:5000/api/orders', orderData, { headers }).subscribe(
       response => {
-        alert('Order placed successfully');
-        localStorage.removeItem('cart');
-        this.router.navigate(['/cart']); // Redirect to cart page
+        this.notificationService.showSuccess('Order placed successfully');
+        this.router.navigate(['/orders']);
+        sessionStorage.removeItem('cart');
       },
       error => {
-        alert('Failed to place order');
-        console.error('Error placing order:', error);
+        this.notificationService.showError('Failed to place order');
       }
     );
   }

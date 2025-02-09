@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SuscriberService } from '../subscriber/suscriber.service';
+import { NotificationService } from '../../notification.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-footer',
@@ -10,54 +12,93 @@ import { SuscriberService } from '../subscriber/suscriber.service';
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.css']
 })
-export class FooterComponent implements OnInit {
+export class FooterComponent implements OnInit, OnDestroy {
   userEmail: string = '';
   subscriptions: string[] = [];
+  isLoggedIn: boolean = false;
+  private destroy$ = new Subject<void>();
+  private readonly EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  constructor(private suscriberService: SuscriberService) {}
+  constructor(
+    private readonly suscriberService: SuscriberService, 
+    private readonly notificationService: NotificationService
+  ) {}
 
-  ngOnInit() {
-    this.getUserEmail();
-    this.fetchSubscriptions();
+  ngOnInit(): void {
+    this.checkAuthStatus();
   }
 
-  getUserEmail() {
-    this.suscriberService.getUserEmail().subscribe({
-      next: (response) => {
-        this.userEmail = response.email || '';
-      },
-      error: (error) => {
-        console.error('Error fetching user details:', error);
-        this.userEmail = '';
-      }
-    });
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
-  fetchSubscriptions() {
-    this.suscriberService.fetchSubscriptions().subscribe({
-      next: (subscriptions) => {
-        this.subscriptions = subscriptions;
-      },
-      error: (error) => {
-        console.error('Error fetching subscriptions:', error);
-      }
-    });
+  private checkAuthStatus(): void {
+    const token = sessionStorage.getItem('token');
+    const userRole = sessionStorage.getItem('userRole'); // Add this line
+    this.isLoggedIn = Boolean(token);
+    
+    if (this.isLoggedIn && userRole === 'user') { // Modified condition
+      this.getUserEmail();
+    }
   }
 
-  onSubscribe(email: string) {
-    if (!email) {
-      alert('Please enter a valid email address.');
+  private getUserEmail(): void {
+    this.suscriberService.getUserEmail()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response) => {
+          this.userEmail = response?.email ?? '';
+        },
+        error: (error) => {
+          if (error?.status === 403) {
+            this.handleAuthError();
+          }
+          this,this.notificationService.showError('Error fetching user email:', error);
+        }
+      });
+  }
+
+  private handleAuthError(): void {
+    sessionStorage.removeItem('token');
+    this.isLoggedIn = false;
+    this.userEmail = '';
+  }
+
+  fetchSubscriptions(): void {
+    this.suscriberService.fetchSubscriptions()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (subscriptions) => {
+          this.subscriptions = subscriptions;
+        },
+        error: (error) => {
+          this.notificationService.showError('Error fetching subscriptions. Please try again later.');
+        }
+      });
+  }
+
+  onSubscribe(email: string): void {
+    if (!this.isValidEmail(email)) {
+      this.notificationService.showError('Please enter a valid email address.');
       return;
     }
+  
+    this.suscriberService.subscribeEmail(email)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.notificationService.showSuccess('Successfully subscribed to the newsletter!');
+          this.fetchSubscriptions();
+        },
+        error: (error) => {
+          const errorMessage = error?.error?.error || 'Subscription failed. Please try again later.';
+          this.notificationService.showError(errorMessage);
+        }
+      });
+  }
 
-    this.suscriberService.subscribeEmail(email).subscribe({
-      next: () => {
-        alert('You are subscribed to the newsletter!');
-        this.fetchSubscriptions();
-      },
-      error: (error) => {
-        alert('There was an error subscribing to the newsletter. Please try again later.');
-      }
-    });
+  private isValidEmail(email: string): boolean {
+    return this.EMAIL_REGEX.test(email);
   }
 }

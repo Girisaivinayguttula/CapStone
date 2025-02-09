@@ -1,10 +1,23 @@
-/* You can add global styles to this file, and also import other style files */
-app-login{
-    min-height: 1500px;
-    background-color: RGB(237, 237, 239);
-}
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.success-snackbar {
+    background: green !important;
+    color: white !important;
+  }
+  
+  .error-snackbar {
+    background: red !important;
+    color: white !important;
+  }
+  
+  .success-snackbar .mdc-snackbar__action,
+  .error-snackbar .mdc-snackbar__action {
+    color: white !important;
+  }
+  
+  .success-snackbar .mdc-snackbar__surface,
+  .error-snackbar .mdc-snackbar__surface {
+    background-color: inherit !important;
+  }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+  .h1 .h2 .h3 .h4 .h5 .h6 {
+    font-family: 'Times New Roman', Times, serif;
+  }

@@ -48,15 +48,16 @@ export class SignupComponent {
       return;
     }
 
-    this.authService.signup(this.signupForm.value).subscribe(
-      () => {
+    this.authService.signup(this.signupForm.value).subscribe({
+      next: () => {
         this.otpSent = true;
         this.notificationService.showSuccess('OTP sent to your email. Please enter it to verify your account.');
       },
-      error => {
-        this.notificationService.showError('Signup failed. Please try again.');
+      error: (error: unknown) => {
+        const errorMessage = (error as any)?.error?.error || 'Subscription failed. Please try again later.';
+        this.notificationService.showError(errorMessage);
       }
-    );
+    });
   }
 
   onVerifyOtp(): void {
@@ -67,7 +68,6 @@ export class SignupComponent {
 
     this.authService.verifyOtp(this.signupForm.value.email, this.otpForm.value.otp).subscribe(
       () => {
-        this.notificationService.showSuccess('OTP verified! Redirecting to login page...');
         setTimeout(() => this.router.navigate(['/login']), 1000);
       },
       error => {

@@ -11,7 +11,7 @@ const JWT_SECRET = 'your_jwt_secret'; // Replace with a secure key
 
 // Middleware
 app.use(cors({
-  origin: 'http://localhost:4200', // Adjust this if your Angular app is on a different port or domain
+  origin: ['http://localhost:4200', 'https://your-app-name.vercel.app'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
