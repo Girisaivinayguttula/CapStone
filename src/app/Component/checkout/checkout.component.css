@@ -107,20 +107,20 @@
 .payment-section .form-row {
   display: flex;
   justify-content: space-between;
-  gap: 10px; /* Adjusted gap for spacing between columns */
+  gap: 10px;
 }
 
 .payment-section .form-row .col {
   flex: 1;
-  min-width: 0; /* Prevents columns from shrinking too small */
+  min-width: 0;
 }
 
 .payment-section .form-control {
-  font-size: 0.875rem; /* Smaller font size */
-  padding: 8px; /* Reduced padding for a smaller appearance */
+  font-size: 0.875rem;
+  padding: 8px;
   border-radius: 4px;
   border: 1px solid #ccc;
-  width: 100%; /* Ensures input box fits within its column */
+  width: 100%;
 }
 
 .payment-section .btn-primary {

@@ -2,7 +2,7 @@ body {
   background: #ddd;
   min-height: 100vh;
   display: flex;
-  font-family: 'Times New Roman', Times, serif; /* Set font-family */
+  font-family: 'Times New Roman', Times, serif;
   font-size: 0.8rem;
   font-weight: bold;
 }
@@ -58,21 +58,21 @@ body {
 
 .title b {
   font-size: 1.5rem;
-  font-family: 'Times New Roman', Times, serif; /* Set font-family */
+  font-family: 'Times New Roman', Times, serif;
 }
 
 .main {
-  display: flex; /* Align items horizontally */
-  align-items: center; /* Vertically center items */
+  display: flex;
+  align-items: center;
   padding: 2vh 0;
 }
 
 .col-2 {
-  flex: 0 0 20%; /* Set width of the image column */
+  flex: 0 0 20%;
 }
 
 .col {
-  flex: 1; /* Allow details column to take up remaining space */
+  flex: 1;
   padding: 0 1vh;
 }
 
@@ -84,10 +84,10 @@ body {
 }
 
 .image-container img {
-  width: 80px; /* Fixed width */
-  height: 80px; /* Fixed height */
-  object-fit: cover; /* Maintain aspect ratio while covering area */
-  border-radius: 4px; /* Optional: Rounded corners for images */
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 4px;
 }
 
 a {

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ProductService } from './product.service';
+import { NotificationService } from '../../notification.service';
 
 export interface Products {
   _id?: string;
@@ -30,10 +31,10 @@ export class ProductComponent implements OnInit {
   productPrice = 0;
   productCategory = '';
   productImageUrl = '';
-  productQuantity = 0;  // New property for quantity
-  categories = ['Cupcakes', 'Desserts', 'Pastries'];
+  productQuantity = 0;
+  categories = ['Cupcakes', 'Desserts', 'Pastries', 'Shakes', 'Drinks'];
 
-  constructor(private productService: ProductService) {}
+  constructor(private productService: ProductService, private notificationService: NotificationService) {}
 
   ngOnInit() {
     this.fetchProducts();
@@ -44,8 +45,8 @@ export class ProductComponent implements OnInit {
       next: (data) => {
         this.products = data;
       },
-      error: (err) => {
-        console.error('Error fetching products:', err);
+      error: () => {
+        this.notificationService.showError('Error fetching products:');
       }
     });
   }
@@ -65,13 +66,13 @@ export class ProductComponent implements OnInit {
         price: this.productPrice,
         category: this.productCategory,
         imageUrl: this.productImageUrl,
-        quantity: this.productQuantity // Set quantity,
+        quantity: this.productQuantity
       };
 
       this.productService.addProduct(newProduct).subscribe({
         next: (product) => {
           this.products.push(product);
-          this.toggleModal(); // Close the modal after adding
+          this.toggleModal();
           this.resetForm();
         },
         error: (err) => {
@@ -88,10 +89,9 @@ export class ProductComponent implements OnInit {
     this.productPrice = product.price;
     this.productCategory = product.category;
     this.productImageUrl = product.imageUrl;
-    this.productQuantity = product.quantity || 0; // Set quantity
+    this.productQuantity = product.quantity || 0;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   saveProduct(product: Products) {
     if (this.currentProduct && this.currentProduct._id) {
       const updatedProduct: Products = {
@@ -100,7 +100,7 @@ export class ProductComponent implements OnInit {
         price: this.productPrice,
         category: this.productCategory,
         imageUrl: this.productImageUrl,
-        quantity: this.productQuantity // Set quantity
+        quantity: this.productQuantity
       };
 
       this.productService.updateProduct(this.currentProduct._id, updatedProduct).subscribe({
@@ -142,6 +142,6 @@ export class ProductComponent implements OnInit {
     this.productPrice = 0;
     this.productCategory = '';
     this.productImageUrl = '';
-    this.productQuantity = 0;  // Reset quantity
+    this.productQuantity = 0;
   }
 }
