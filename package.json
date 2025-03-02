@@ -1,12 +1,11 @@
 {
-  "name": "pro",
-  "version": "0.0.0",
+  "name": "capstone",
+  "version": "1.0.0",
+  "description": "CapStone project",
+  "main": "src/app/server.js",
   "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "start": "NODE_ENV=production concurrently \"node ./src/app/server.js --port 5000\" \"ng serve --port 4200\"",
+    "build": "ng build"
   },
   "private": true,
   "dependencies": {
@@ -24,7 +23,17 @@
     "mongodb": "^6.8.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
-    "zone.js": "~0.14.10"
+    "zone.js": "~0.14.10",
+    "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "helmet": "^6.0.1",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^7.0.3",
+    "morgan": "^1.10.0",
+    "nodemailer": "^6.9.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^18.2.0",
@@ -44,6 +53,12 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.5.2",
-    "typescript-eslint": "^8.3.0"
-  }
+    "typescript-eslint": "^8.3.0",
+    "concurrently": "^7.0.0"
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "license": "MIT"
 }
