@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, RouterOutlet } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
 
 export interface CartProduct {
   _id: string;
@@ -16,7 +15,7 @@ export interface CartProduct {
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CommonModule, RouterModule, RouterOutlet, HttpClientModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css']
 })
@@ -55,7 +54,7 @@ export class CartComponent implements OnInit {
   }
 
   decreaseQuantity(product: CartProduct, event: Event) {
-    event.preventDefault(); // Prevent default anchor behavior
+    event.preventDefault();
     if (product.quantity > 1) {
       product.quantity -= 1;
     } else {
@@ -65,24 +64,19 @@ export class CartComponent implements OnInit {
   }
 
   increaseQuantity(product: CartProduct, event: Event) {
-    event.preventDefault(); // Prevent default anchor behavior
+    event.preventDefault();
     product.quantity += 1;
     this.updateCart();
   }
 
   updateCart() {
-    // Create a new array of products with updated quantities
     const updatedCart = this.cartProducts.flatMap(product => Array(product.quantity).fill(product));
     sessionStorage.setItem('cart', JSON.stringify(updatedCart));
-    this.calculateTotalAmount(); // Recalculate the total after each update
+    this.calculateTotalAmount();
   }
 
   removeFromCart(product: CartProduct) {
     this.cartProducts = this.cartProducts.filter(p => p._id !== product._id);
     this.updateCart();
   }
-
-  // checkout() {
-  //   alert('Proceeding to checkout...');
-  // }
 }

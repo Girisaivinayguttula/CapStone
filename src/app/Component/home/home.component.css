@@ -2,15 +2,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100vh; /* Full screen height */
+  height: 85vh;
   padding-top: 10px;
   margin: 0;
   border: 0;
-  background-color: RGB(237, 237, 239); /* Light background color */
-
-  app-navbar {
-    width: 100%;
-  }
+  background-color: RGB(237, 237, 239);
+}
 
   .main-content {
     display: flex;
@@ -147,4 +144,3 @@
       }
     }
   }
-}

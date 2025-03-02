@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
+const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -11,7 +12,8 @@ const JWT_SECRET = 'your_jwt_secret'; // Replace with a secure key
 
 // Middleware
 app.use(cors({
-  origin: 'http://localhost:4200', // Adjust this if your Angular app is on a different port or domain
+  origin: ['http://localhost:4200', 'https://your-domain.vercel.app'],
+  credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
@@ -19,12 +21,15 @@ app.use(express.json());
 app.use(bodyParser.json());
 
 // MongoDB Connection
-mongoose.connect('mongodb+srv://Veenaee:Vinay%401505@pro.9gpov.mongodb.net/myDatabase?retryWrites=true&w=majority', {
+mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://Veenaee:Vinay%401505@pro.9gpov.mongodb.net/myDatabase', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  serverSelectionTimeoutMS: 30000 // Increase timeout to 30 seconds
-}).then(() => console.log('MongoDB connected'))
-  .catch(err => console.error('Could not connect to MongoDB Atlas:', err));
+  serverSelectionTimeoutMS: 30000
+})
+.then(() => console.log('MongoDB connected'))
+.catch(err => console.error('MongoDB connection error:', err));
+
+module.exports = app;
 
 // User Model
 const User = mongoose.model('User', new mongoose.Schema({

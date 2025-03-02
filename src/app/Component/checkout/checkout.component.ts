@@ -3,36 +3,37 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router'; // Import Router
+import { NotificationService } from '../../notification.service';
 
 export interface CartProduct {
   _id: string;
   name: string;
   price: number;
   quantity: number;
-  imageUrl?: string;  // Optional field for image URL
+  imageUrl?: string;
 }
 
 @Component({
   selector: 'app-checkout',
   standalone: true,
-  imports: [CommonModule, FormsModule],  // Import FormsModule for ngModel
+  imports: [CommonModule, FormsModule],
   templateUrl: './checkout.component.html',
-  styleUrls: ['./checkout.component.css'] // Make sure the correct property is used (styleUrls)
+  styleUrls: ['./checkout.component.css']
 })
 export class CheckoutComponent implements OnInit {
   cartProducts: CartProduct[] = [];
   totalAmount = 0;
   shippingCost = 5;
-  selectedPaymentMethod = 'Card'; // Default payment method
+  selectedPaymentMethod = 'Card';
   email = '';
   address = '';
 
-  constructor(private http: HttpClient, private router: Router) {} // Inject HttpClient and Router
+  constructor(private http: HttpClient, private router: Router, private notificationService: NotificationService) {} // Inject HttpClient and Router
 
   ngOnInit() {
     this.loadCart();
     this.calculateTotalAmount();
-    this.getUserEmail(); // Fetch user email
+    this.getUserEmail();
   }
 
   loadCart() {
@@ -48,13 +49,12 @@ export class CheckoutComponent implements OnInit {
         const existingProduct = productMap.get(product._id)!;
         existingProduct.quantity += 1;
       } else {
-        // Add new product with all necessary fields
         productMap.set(product._id, {
           _id: product._id,
           name: product.name,
           price: product.price,
           quantity: 1,
-          imageUrl: product.imageUrl // Ensure this field is included
+          imageUrl: product.imageUrl
         });
       }
     });
@@ -69,7 +69,7 @@ export class CheckoutComponent implements OnInit {
   getUserEmail() {
     const token = sessionStorage.getItem('token');
     if (!token) {
-      alert('You must be logged in');
+      this.notificationService.showError('You must be logged in');
       return;
     }
 
@@ -77,7 +77,7 @@ export class CheckoutComponent implements OnInit {
     this.http.get<{ email: string }>('http://localhost:5000/api/user', { headers })
       .subscribe(
         (user) => {
-          this.email = user.email; // Set the email input with the fetched user email
+          this.email = user.email;
         },
         (error) => {
           console.error('Failed to fetch user details:', error);
@@ -91,7 +91,7 @@ export class CheckoutComponent implements OnInit {
 
   onPay() {
     if (!this.email || !this.address) {
-      alert('Email and address are required');
+      this.notificationService.showError('Email and address are required');
       console.log('Email:', this.email);
       console.log('Address:', this.address);
       return;
@@ -110,12 +110,9 @@ export class CheckoutComponent implements OnInit {
       totalAmount: this.totalAmount,
       shippingCost: this.shippingCost
     };
-
-    console.log('Order Data:', orderData); // Log the order data to verify
-
     const token = sessionStorage.getItem('token');
     if (!token) {
-      alert('You must be logged in to place an order');
+      this.notificationService.showError('You must be logged in');
       return;
     }
 
@@ -123,13 +120,12 @@ export class CheckoutComponent implements OnInit {
 
     this.http.post('http://localhost:5000/api/orders', orderData, { headers }).subscribe(
       response => {
-        alert('Order placed successfully');
+        this.notificationService.showSuccess('Order placed successfully');
+        this.router.navigate(['/orders']);
         sessionStorage.removeItem('cart');
-        this.router.navigate(['/cart']); // Redirect to cart page
       },
       error => {
-        alert('Failed to place order');
-        console.error('Error placing order:', error);
+        this.notificationService.showError('Failed to place order');
       }
     );
   }

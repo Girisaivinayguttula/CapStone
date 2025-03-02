@@ -1,6 +1,7 @@
 .orders-container {
   padding: 20px;
   background-color: RGB(237, 237, 239); /* Light background */
+  min-height: 480px;
 }
 
 .order-card {

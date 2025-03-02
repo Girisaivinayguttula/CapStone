@@ -3,11 +3,11 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 40px;
-  padding-top: 62px;
   background-color: RGB(237, 237, 239);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   flex-wrap: wrap; 
+  align-items: center;
+  height: 100vh;
 }
 
 .about-text {

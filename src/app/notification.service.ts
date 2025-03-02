@@ -9,21 +9,29 @@ export class NotificationService {
   constructor(private snackBar: MatSnackBar) {}
 
   showSuccess(message: string, config?: MatSnackBarConfig): void {
-    this.snackBar.open(message, 'Close', {
+    const defaultConfig: MatSnackBarConfig = {
       duration: 3000,
       horizontalPosition: 'center',
       verticalPosition: 'top',
-      panelClass: ['success-snackbar'],
+      panelClass: ['success-snackbar']
+    };
+
+    this.snackBar.open(message, 'Close', {
+      ...defaultConfig,
       ...config
     });
   }
 
   showError(message: string, config?: MatSnackBarConfig): void {
-    this.snackBar.open(message, 'Close', {
+    const defaultConfig: MatSnackBarConfig = {
       duration: 3000,
       horizontalPosition: 'center',
       verticalPosition: 'top',
-      panelClass: ['error-snackbar'],
+      panelClass: ['error-snackbar']
+    };
+
+    this.snackBar.open(message, 'Close', {
+      ...defaultConfig,
       ...config
     });
   }
