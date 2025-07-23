@@ -106,7 +106,7 @@ app.post('/api/signup', async (req, res) => {
     const { name, email, phone, password, gender } = req.body;
 
     let user = await User.findOne({ email });
-    
+
     if (user) {
       if (user.isVerified) {
         return res.status(400).send({ error: 'Email already registered and verified.' });

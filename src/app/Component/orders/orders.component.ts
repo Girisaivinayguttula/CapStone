@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { ProductsService } from '../../Services/products.service';
 
 @Component({
   selector: 'app-orders',
@@ -13,7 +13,7 @@ import { RouterModule } from '@angular/router';
 export class OrdersComponent implements OnInit {
   orders: any[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(private productsService: ProductsService) { }
 
   ngOnInit() {
     this.fetchOrders();
@@ -26,11 +26,13 @@ export class OrdersComponent implements OnInit {
       return;
     }
 
-    this.http.get<any[]>('http://localhost:5000/api/orders/email', {
-      headers: { Authorization: `Bearer ${token}` }
-    }).subscribe(
-      data => this.orders = data,
-      error => console.error('Failed to fetch orders:', error)
-    );
+    this.productsService.fetchOrders(token).subscribe({
+      next: (data: any[]) => {
+        this.orders = data;
+      },
+      error: (error) => {
+        console.error('Failed to fetch orders:', error);
+      }
+    });
   }
 }

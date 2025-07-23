@@ -1,6 +1,5 @@
 <div class="card">
   <div class="row">
-    <!-- Shopping Cart Section -->
     <div class="col-md-8 cart">
       <div class="title">
         <div class="row">
@@ -20,7 +19,9 @@
         <div class="col details">
           <div class="row text-muted">{{ product.category }}</div>
           <div class="row">{{ product.name }}</div>
-          <div class="row"><p class="pp">Price:{{ product.price }}$</p></div>
+          <div class="row">
+            <p class="pp">Price:{{ product.price }}$</p>
+          </div>
         </div>
         <div class="col quantity-controls">
           <a href="#" (click)="decreaseQuantity(product, $event)">-</a>
@@ -41,7 +42,9 @@
 
     <!-- Summary Section -->
     <div class="col-md-4 summary">
-      <div><h5><b>Summary</b></h5></div>
+      <div>
+        <h5><b>Summary</b></h5>
+      </div>
       <hr>
       <div class="row">
         <div class="col" style="padding-left:0;">ITEMS {{ cartProducts.length }}</div>
@@ -57,7 +60,7 @@
         <div class="col">TOTAL PRICE</div>
         <div class="col text-right">${{ totalAmount + 5 }}</div>
       </div>
-      <button class="btn" ><a class="c" routerLink="/checkout">Checkout</a></button>
+      <button class="btn"><a class="c" routerLink="/checkout">Checkout</a></button>
 
     </div>
   </div>

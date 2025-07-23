@@ -4,9 +4,11 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start:server": "node server.js",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "dev": "concurrently \"ng serve\" \"node src/Backend/server.js\""
   },
   "private": true,
   "dependencies": {
@@ -20,8 +22,16 @@
     "@angular/platform-browser": "^18.2.0",
     "@angular/platform-browser-dynamic": "^18.2.0",
     "@angular/router": "^18.2.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2",
     "cloudinary": "^2.4.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.8.0",
+    "mongoose": "^8.5.3",
+    "nodemailer": "^6.9.14",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.10"
@@ -35,6 +45,7 @@
     "@angular/compiler-cli": "^18.2.0",
     "@eslint/js": "^9.9.1",
     "@types/jasmine": "~5.1.0",
+    "concurrently": "^9.2.0",
     "eslint": "^9.9.1",
     "globals": "^15.9.0",
     "jasmine-core": "~5.2.0",
@@ -43,6 +54,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "rimraf": "^6.0.1",
     "typescript": "~5.5.2",
     "typescript-eslint": "^8.3.0"
   }

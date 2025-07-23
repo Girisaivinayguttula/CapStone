@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, RouterOutlet } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
 
 export interface CartProduct {
   _id: string;
@@ -16,7 +15,7 @@ export interface CartProduct {
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CommonModule, RouterModule, RouterOutlet, HttpClientModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css']
 })
@@ -81,8 +80,4 @@ export class CartComponent implements OnInit {
     this.cartProducts = this.cartProducts.filter(p => p._id !== product._id);
     this.updateCart();
   }
-
-  // checkout() {
-  //   alert('Proceeding to checkout...');
-  // }
 }

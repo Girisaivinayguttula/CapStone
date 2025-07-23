@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { HttpHeaders } from '@angular/common/http'; // Import HttpHeaders
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { CommonService } from '../../Services/common.service';
+import { LoginService } from '../../Services/login.service';
 
 @Component({
   selector: 'app-footer',
@@ -14,30 +14,14 @@ import { FormsModule } from '@angular/forms';
 export class FooterComponent implements OnInit {
   userEmail: string = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(private commonService: CommonService, private loginService: LoginService) { }
 
   ngOnInit() {
-    this.getUserEmail();
-  }
-
-  getUserEmail() {
-    // Assume the token is stored in local storage after login
-    const token = localStorage.getItem('token');
-    
-    if (token) {
-      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
-      this.http.get<any>('http://localhost:5000/api/user', { headers })
-        .subscribe({
-          next: (response) => {
-            this.userEmail = response.email || ''; // Use the email from the response
-          },
-          error: (error) => {
-            console.error('Error fetching user details:', error);
-            this.userEmail = ''; // Default to empty if there's an error
-          }
-        });
-    }
+    this.commonService.currentData.subscribe(data => {
+      if (data) {
+        this.userEmail = data.email;
+      }
+    })
   }
 
   onSubscribe(email: string) {
@@ -45,8 +29,7 @@ export class FooterComponent implements OnInit {
       alert('Please enter a valid email address.');
       return;
     }
-  
-    this.http.post('http://localhost:5000/api/subscribe', { email })
+    this.loginService.suscribeMail(this.userEmail)
       .subscribe({
         next: () => {
           alert('You are subscribed to the newsletter!');

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
+import { ProductsService } from '../../Services/products.service';
 
 export interface Products {
   _id?: string;
@@ -16,7 +17,7 @@ export interface Products {
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [FormsModule, CommonModule, HttpClientModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.css']
 })
@@ -30,10 +31,10 @@ export class ProductComponent implements OnInit {
   productPrice = 0;
   productCategory = '';
   productImageUrl = '';
-  productQuantity = 0;  // New property for quantity
+  productQuantity = 0;
   categories = ['Cupcakes', 'Desserts', 'Pastries'];
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private productsService: ProductsService) { }
 
   ngOnInit() {
     this.fetchProducts();
@@ -65,13 +66,13 @@ export class ProductComponent implements OnInit {
         price: this.productPrice,
         category: this.productCategory,
         imageUrl: this.productImageUrl,
-        quantity: this.productQuantity // Set quantity,
+        quantity: this.productQuantity
       };
 
       this.http.post<Products>('http://localhost:5000/api/products', newProduct).subscribe({
         next: (product) => {
           this.products.push(product);
-          this.toggleModal(); // Close the modal after adding
+          this.toggleModal();
           this.resetForm();
         },
         error: (err) => {
@@ -88,7 +89,7 @@ export class ProductComponent implements OnInit {
     this.productPrice = product.price;
     this.productCategory = product.category;
     this.productImageUrl = product.imageUrl;
-    this.productQuantity = product.quantity || 0; // Set quantity
+    this.productQuantity = product.quantity || 0;
   }
 
   saveProduct(product: Products) {
@@ -99,7 +100,7 @@ export class ProductComponent implements OnInit {
         price: this.productPrice,
         category: this.productCategory,
         imageUrl: this.productImageUrl,
-        quantity: this.productQuantity // Set quantity
+        quantity: this.productQuantity
       };
 
       this.http.put<Products>(`http://localhost:5000/api/products/${this.currentProduct._id}`, updatedProduct).subscribe({
@@ -121,7 +122,7 @@ export class ProductComponent implements OnInit {
   deleteProduct(product: Products) {
     if (product._id) {
       const isConfirmed = window.confirm("Are you sure you want to delete this product?");
-      
+
       if (isConfirmed) {
         this.http.delete(`http://localhost:5000/api/products/${product._id}`).subscribe({
           next: () => {
@@ -133,7 +134,7 @@ export class ProductComponent implements OnInit {
         });
       }
     }
-  }  
+  }
 
   resetForm() {
     this.productName = '';
@@ -141,6 +142,6 @@ export class ProductComponent implements OnInit {
     this.productPrice = 0;
     this.productCategory = '';
     this.productImageUrl = '';
-    this.productQuantity = 0;  // Reset quantity
+    this.productQuantity = 0;
   }
 }
