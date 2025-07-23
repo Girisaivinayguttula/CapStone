@@ -12,9 +12,10 @@ const subscriptionRoutes = require('./routes/subscriptionRoutes');
 const app = express();
 
 app.use(cors({
-    origin: 'http://localhost:4200',
+    origin: ['http://localhost:4200', 'https://caba-pi.vercel.app'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
 }));
 app.use(bodyParser.json());
 
