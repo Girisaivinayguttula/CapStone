@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    apiUrl: 'https://caba.onrender.com'
+    apiUrl: 'https://caba.onrender.com/api'
 };
