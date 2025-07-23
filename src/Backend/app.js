@@ -8,7 +8,6 @@ const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const subscriptionRoutes = require('./routes/subscriptionRoutes');
-const cors = require('cors');
 const app = express();
 const allowedOrigins = ['https://caba-pi.vercel.app'];
 
