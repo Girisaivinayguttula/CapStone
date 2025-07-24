@@ -12,14 +12,14 @@ import { CommonModule } from '@angular/common';
 export class SubscriberComponent implements OnInit {
   subscriptions: string[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   ngOnInit() {
     this.fetchSubscriptions();
   }
 
   fetchSubscriptions() {
-    const apiUrl = 'http://localhost:5000/api/subscriptions'; // Update with your actual backend URL
+    const apiUrl = 'http://localhost:5000/api/subscriptions';
     this.http.get<string[]>(apiUrl).subscribe(
       (data) => {
         this.subscriptions = data;

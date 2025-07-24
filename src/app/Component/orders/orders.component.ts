@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ProductsService } from '../../Services/products.service';
+import { PopupModalService } from '../../Services/popup-modal.service';
+import { SpinnerService } from '../../Services/spinner.service';
 
 @Component({
   selector: 'app-orders',
@@ -13,7 +15,7 @@ import { ProductsService } from '../../Services/products.service';
 export class OrdersComponent implements OnInit {
   orders: any[] = [];
 
-  constructor(private productsService: ProductsService) { }
+  constructor(private productsService: ProductsService, private spinnerService: SpinnerService, private popupModalService: PopupModalService) { }
 
   ngOnInit() {
     this.fetchOrders();
@@ -25,13 +27,15 @@ export class OrdersComponent implements OnInit {
       console.error('No token found');
       return;
     }
-
+    this.spinnerService.show();
     this.productsService.fetchOrders(token).subscribe({
       next: (data: any[]) => {
+        this.spinnerService.hide();
         this.orders = data;
       },
-      error: (error) => {
-        console.error('Failed to fetch orders:', error);
+      error: () => {
+        this.spinnerService.hide();
+        this.popupModalService.show('Failed to fetch orders:');
       }
     });
   }

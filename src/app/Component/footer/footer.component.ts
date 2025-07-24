@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CommonService } from '../../Services/common.service';
 import { LoginService } from '../../Services/login.service';
+import { SpinnerService } from '../../Services/spinner.service';
+import { PopupModalService } from '../../Services/popup-modal.service';
 
 @Component({
   selector: 'app-footer',
@@ -14,7 +16,7 @@ import { LoginService } from '../../Services/login.service';
 export class FooterComponent implements OnInit {
   userEmail: string = '';
 
-  constructor(private commonService: CommonService, private loginService: LoginService) { }
+  constructor(private commonService: CommonService, private loginService: LoginService, private spinnerService: SpinnerService, private popupModalService: PopupModalService) { }
 
   ngOnInit() {
     this.commonService.currentData.subscribe(data => {
@@ -29,14 +31,16 @@ export class FooterComponent implements OnInit {
       alert('Please enter a valid email address.');
       return;
     }
+    this.spinnerService.show();
     this.loginService.suscribeMail(this.userEmail)
       .subscribe({
         next: () => {
-          alert('You are subscribed to the newsletter!');
+          this.spinnerService.hide();
+          this.popupModalService.show('You are subscribed to the newsletter!');
         },
         error: (error) => {
-          console.error('Error during subscription:', error);
-          alert('There was an error subscribing to the newsletter. Please try again later.');
+          this.spinnerService.hide();
+          this.popupModalService.show('There was an error subscribing to the newsletter. Please try again later.');
         }
       });
   }

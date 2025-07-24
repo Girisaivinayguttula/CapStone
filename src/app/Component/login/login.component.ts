@@ -7,6 +7,8 @@ import { ChangeDetectorRef } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { LoginService } from '../../Services/login.service';
 import { CommonService } from '../../Services/common.service';
+import { PopupModalService } from '../../Services/popup-modal.service';
+import { SpinnerService } from '../../Services/spinner.service';
 
 @Component({
   selector: 'app-login',
@@ -30,7 +32,9 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private cd: ChangeDetectorRef,
     private loginservice: LoginService,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private popupModalService: PopupModalService,
+    private spinnerService: SpinnerService
   ) { }
 
   ngOnInit() {
@@ -40,12 +44,14 @@ export class LoginComponent implements OnInit {
     if (this.isAdminCredentials()) {
       this.loginAsAdmin();
     } else {
+      this.spinnerService.show();
       this.loginservice.loginUser(this.loginData).subscribe({
         next: (response: any) => {
+          this.spinnerService.hide();
           this.handleLogin(response.token, response.isAdmin);
         },
         error: () => {
-          alert('Login failed: Invalid email or password.');
+          this.popupModalService.show("Invalid password");
         }
       });
     }
@@ -74,9 +80,6 @@ export class LoginComponent implements OnInit {
     this.getUserDetails();
     this.authService.updateAdminStatus();
     this.cd.detectChanges();
-    // this.router.navigate(['/']).then(() => {
-    //   window.location.reload();
-    // });
   }
 
   getUserDetails() {

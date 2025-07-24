@@ -3,6 +3,8 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { LoginService } from '../../Services/login.service';
+import { PopupModalService } from '../../Services/popup-modal.service';
+import { SpinnerService } from '../../Services/spinner.service';
 
 @Component({
   selector: 'app-signup',
@@ -25,20 +27,22 @@ export class SignupComponent {
   otpSent = false;
   otpVerificationFailed = false;
 
-  constructor(private router: Router, private loginservice: LoginService) { }
+  constructor(private router: Router, private loginservice: LoginService, private spinnerService: SpinnerService, private popupModalService: PopupModalService) { }
 
   onSubmit() {
     if (!this.isPasswordValid() || !this.isPhoneValid() || !this.user.name || !this.user.email) {
       return;
     }
-
+    this.spinnerService.show();
     this.loginservice.signUp(this.user).subscribe({
       next: () => {
         this.otpSent = true;
-        alert('OTP sent to your email. Please enter it to verify your account.');
+        this.spinnerService.hide();
+        this.popupModalService.show('OTP sent to your email. Please enter it to verify your account.');
       },
       error: () => {
-        alert('Signup failed. Please try again.');
+        this.spinnerService.hide();
+        this.popupModalService.show('Signup failed. Please try again.');
       }
     });
   }
@@ -48,17 +52,17 @@ export class SignupComponent {
       alert('OTP must be exactly 6 digits.');
       return;
     }
-
+    this.spinnerService.show();
     this.loginservice.verifyOtp(this.user.email, this.otp).subscribe({
-      next: (response) => {
-        console.log('OTP verified successfully', response);
-        alert('OTP verified! Redirecting to login page...');
+      next: () => {
+        this.spinnerService.hide();
+        this.popupModalService.show('OTP verified! Redirecting to login page...');
         setTimeout(() => this.router.navigate(['/login']), 1000);
       },
-      error: (err) => {
-        console.error('Error verifying OTP', err);
-        alert('Incorrect OTP. Please try again.');
+      error: () => {
+        this.spinnerService.hide();
         this.otpVerificationFailed = true;
+        this.popupModalService.show('Incorrect OTP. Please try again.');
       }
     });
   }
