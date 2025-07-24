@@ -54,7 +54,7 @@ export class CartComponent implements OnInit {
   }
 
   decreaseQuantity(product: CartProduct, event: Event) {
-    event.preventDefault(); // Prevent default anchor behavior
+    event.preventDefault();
     if (product.quantity > 1) {
       product.quantity -= 1;
     } else {
@@ -64,16 +64,15 @@ export class CartComponent implements OnInit {
   }
 
   increaseQuantity(product: CartProduct, event: Event) {
-    event.preventDefault(); // Prevent default anchor behavior
+    event.preventDefault();
     product.quantity += 1;
     this.updateCart();
   }
 
   updateCart() {
-    // Create a new array of products with updated quantities
     const updatedCart = this.cartProducts.flatMap(product => Array(product.quantity).fill(product));
     localStorage.setItem('cart', JSON.stringify(updatedCart));
-    this.calculateTotalAmount(); // Recalculate the total after each update
+    this.calculateTotalAmount();
   }
 
   removeFromCart(product: CartProduct) {

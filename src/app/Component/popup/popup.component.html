@@ -1,0 +1,5 @@
+<div class="popup-container" *ngIf="popupService.modalContent$ | async as content" (click)="popupService.hide()">
+    <div class="popup-content" (click)="$event.stopPropagation()">
+        <p>{{ content }}</p>
+    </div>
+</div>

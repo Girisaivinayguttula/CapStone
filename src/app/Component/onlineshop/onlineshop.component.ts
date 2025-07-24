@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ProductsService } from '../../Services/products.service';
+import { PopupModalService } from '../../Services/popup-modal.service';
+import { SpinnerService } from '../../Services/spinner.service';
 
 export interface Products {
   _id?: string;
@@ -27,15 +29,17 @@ export class OnlineshopComponent implements OnInit {
   categories: string[] = [];
   cartProducts: Set<string> = new Set();
 
-  constructor(private router: Router, private productsService: ProductsService) { }
+  constructor(private router: Router, private productsService: ProductsService, private spinnerService: SpinnerService, private popupModalService: PopupModalService) { }
 
   ngOnInit() {
     this.fetchProducts();
   }
 
   fetchProducts() {
+    this.spinnerService.show();
     this.productsService.getAllProducts().subscribe({
       next: (data: Products[]) => {
+        this.spinnerService.hide();
         this.products = data.map(product => ({
           ...product,
           imageUrl: product.imageUrl,
@@ -45,8 +49,9 @@ export class OnlineshopComponent implements OnInit {
 
         this.categories = Array.from(new Set(this.products.map(p => p.category)));
       },
-      error: (err) => {
-        console.error('Error fetching products:', err);
+      error: () => {
+        this.spinnerService.hide();
+        this.popupModalService.show('Error fetching products:');
       }
     });
   }
