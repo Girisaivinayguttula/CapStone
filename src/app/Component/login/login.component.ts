@@ -21,8 +21,6 @@ export class LoginComponent implements OnInit {
   loginData = { email: '', password: '' };
   user: any;
   isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-  userEmail = localStorage.getItem('email')
-  userPhone = localStorage.getItem('phone')
 
   private adminEmail = 'admin@gmail.com';
   private adminPassword = 'adminpass';
@@ -38,6 +36,9 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    if (this.isLoggedIn) {
+      this.getUserDetails();
+    }
   }
 
   onSubmit(): void {
@@ -93,7 +94,8 @@ export class LoginComponent implements OnInit {
         localStorage.setItem("userId", data.id);
         localStorage.setItem("name", data.name)
         localStorage.setItem("email", data.email)
-        localStorage.setItem("phone", data.phone)
+        localStorage.setItem("phone", data.phone);
+        this.cd.detectChanges();
       }
     });
   }

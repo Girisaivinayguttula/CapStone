@@ -24,4 +24,12 @@ export class ProductsService {
 
     return this.http.get<any[]>(this.apiUrl + '/orders/email', { headers });
   }
+
+  placeOrder(orderData: any, token: string): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+
+    return this.http.post<any>(this.apiUrl + '/orders', orderData, { headers });
+  }
 }

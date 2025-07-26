@@ -41,6 +41,7 @@ export class FooterComponent implements OnInit {
         error: (error) => {
           this.spinnerService.hide();
           this.popupModalService.show('There was an error subscribing to the newsletter. Please try again later.');
+          console.log(error)
         }
       });
   }
