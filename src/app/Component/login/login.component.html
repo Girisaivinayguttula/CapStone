@@ -13,12 +13,10 @@
   <!-- Profile Section (Visible after login) -->
   <div *ngIf="isLoggedIn">
     <div class="profile-container">
-      <h2>Welcome {{ user?.name }} </h2>
+      <h2>Welcome {{ user?.name }}</h2>
       <div *ngIf="user">
-        <!-- <p><strong>Name:</strong> {{ user.name }}</p> -->
-        <p><strong>Email:</strong> {{ userEmail }}</p>
-        <p><strong>Phone:</strong> {{ userPhone }}</p>
-        <!-- <p><strong>Gender:</strong> {{ user.gender }}</p> -->
+        <p><strong>Email:</strong> {{ user?.email }}</p>
+        <p><strong>Phone:</strong> {{ user?.phone }}</p>
       </div>
       <button class="btn" (click)="logout()"><mat-icon>logout</mat-icon></button>
     </div>

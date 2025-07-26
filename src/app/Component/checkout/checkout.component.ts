@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ProductsService } from '../../Services/products.service';
+import { PopupModalService } from '../../Services/popup-modal.service';
 
 export interface CartProduct {
   _id: string;
@@ -27,7 +28,7 @@ export class CheckoutComponent implements OnInit {
   email = localStorage.getItem("email") || '';
   address = '';
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private router: Router, private productService: ProductsService, private popupModalService: PopupModalService) { }
 
   ngOnInit() {
     this.loadCart();
@@ -70,9 +71,7 @@ export class CheckoutComponent implements OnInit {
 
   onPay() {
     if (!this.email || !this.address) {
-      alert('Email and address are required');
-      console.log('Email:', this.email);
-      console.log('Address:', this.address);
+      this.popupModalService.show('Email and address are required');
       return;
     }
 
@@ -92,20 +91,18 @@ export class CheckoutComponent implements OnInit {
 
     const token = localStorage.getItem('token');
     if (!token) {
-      alert('You must be logged in to place an order');
+      this.popupModalService.show('You must be logged in to place an order');
       return;
     }
 
-    const headers = { 'Authorization': `Bearer ${token}` };
-
-    this.http.post('http://localhost:5000/api/orders', orderData, { headers }).subscribe(
-      response => {
-        alert('Order placed successfully');
+    this.productService.placeOrder(orderData, token).subscribe(
+      () => {
+        this.popupModalService.show('Order placed successfully');
         localStorage.removeItem('cart');
-        this.router.navigate(['/cart']); // Redirect to cart page
+        this.router.navigate(['/cart']);
       },
-      error => {
-        alert('Failed to place order');
+      () => {
+        this.popupModalService.show('Failed to place order');
       }
     );
   }

@@ -13,8 +13,10 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh; /* Ensures the background covers the full viewport height */
-  font-family: 'Times New Roman', Times, serif; /* Set font-family */
+  min-height: 100vh;
+  /* Ensures the background covers the full viewport height */
+  font-family: 'Times New Roman', Times, serif;
+  /* Set font-family */
 }
 
 .container {
@@ -26,12 +28,16 @@ body {
   align-items: center;
   overflow: hidden;
   width: 100%;
-  max-width: 800px; /* Set a max-width to limit the container size */
+  max-width: 800px;
+  /* Set a max-width to limit the container size */
   padding: 20px;
-  margin-bottom: 110px; /* Adjust margin for smaller screens */
+  margin-bottom: 110px;
+  /* Adjust margin for smaller screens */
   margin-top: 50px;
-  margin-left: 280px; /* Default margin for larger screens */
-  font-family: 'Times New Roman', Times, serif; /* Set font-family */
+  margin-left: 280px;
+  /* Default margin for larger screens */
+  font-family: 'Times New Roman', Times, serif;
+  /* Set font-family */
 }
 
 /* Flexbox layout for form containers */
@@ -45,9 +51,12 @@ body {
   background: #fff;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 100%; /* Full width within the container */
-  max-width: 400px; /* Set a max-width for form containers */
-  margin: 10px; /* Margin for spacing between forms */
+  width: 100%;
+  /* Full width within the container */
+  max-width: 400px;
+  /* Set a max-width for form containers */
+  margin: 10px;
+  /* Margin for spacing between forms */
 }
 
 /* Sign In Form Styling */
@@ -67,14 +76,24 @@ body {
 /* Typography */
 h1 {
   margin-bottom: 20px;
-  font-family: 'Times New Roman', Times, serif; /* Set font-family */
+  font-family: 'Times New Roman', Times, serif;
+  /* Set font-family */
   font-weight: bold;
 }
 
-span, p {
-  font-size: 1rem; /* Adjust font size for readability */
+h2 {
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: bolder;
+  font-size: 42px;
+}
+
+span,
+p {
+  font-size: 1rem;
+  /* Adjust font size for readability */
   margin-bottom: 20px;
-  font-family: 'Times New Roman', Times, serif; /* Set font-family */
+  font-family: 'Times New Roman', Times, serif;
+  /* Set font-family */
 }
 
 input {
@@ -88,7 +107,8 @@ input {
 
 a {
   color: #ffffff;
-  font-size: 1rem; /* Adjust font size for readability */
+  font-size: 1rem;
+  /* Adjust font size for readability */
   margin: 15px 0;
   text-decoration: underline;
 }
@@ -98,7 +118,8 @@ a {
   border: 1px solid #fff;
   background: #fff;
   color: #000000;
-  font-size: 0.9rem; /* Adjust font size for readability */
+  font-size: 0.9rem;
+  /* Adjust font size for readability */
   font-weight: bold;
   padding: 12px 45px;
   text-transform: uppercase;
@@ -120,7 +141,8 @@ a {
 #signupbt {
   color: #ddd;
   text-decoration: underline;
-  font-size: 1rem; /* Adjust font size for readability */
+  font-size: 1rem;
+  /* Adjust font size for readability */
   display: flex;
   justify-content: center;
 }
@@ -128,7 +150,8 @@ a {
 /* Responsive Adjustments */
 @media screen and (min-width: 992px) {
   .container {
-    margin-left: 280px; /* Apply margin-left for larger screens */
+    margin-left: 280px;
+    /* Apply margin-left for larger screens */
   }
 }
 
@@ -136,19 +159,23 @@ a {
   .container {
     flex-direction: column;
     padding: 20px;
-    margin-left: 0; /* Remove margin-left for smaller screens */
+    margin-left: 0;
+    /* Remove margin-left for smaller screens */
   }
 
   .form-container {
-    max-width: 90%; /* Adjust max-width for smaller screens */
-    margin: 10px auto; /* Center the forms */
+    max-width: 90%;
+    /* Adjust max-width for smaller screens */
+    margin: 10px auto;
+    /* Center the forms */
   }
 }
 
 @media screen and (max-width: 768px) {
   .form-container {
     padding: 15px;
-    max-width: 100%; /* Full width on very small screens */
+    max-width: 100%;
+    /* Full width on very small screens */
   }
 }
 
