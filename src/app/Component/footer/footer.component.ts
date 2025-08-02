@@ -28,7 +28,7 @@ export class FooterComponent implements OnInit {
 
   onSubscribe(email: string) {
     if (!email) {
-      alert('Please enter a valid email address.');
+      this.popupModalService.show('Please enter a valid email address.');
       return;
     }
     this.spinnerService.show();

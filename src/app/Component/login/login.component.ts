@@ -20,7 +20,7 @@ import { SpinnerService } from '../../Services/spinner.service';
 export class LoginComponent implements OnInit {
   loginData = { email: '', password: '' };
   user: any;
-  isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+  isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
 
   private adminEmail = 'admin@gmail.com';
   private adminPassword = 'adminpass';
@@ -74,9 +74,9 @@ export class LoginComponent implements OnInit {
 
 
   handleLogin(token: string, isAdmin: boolean) {
-    localStorage.setItem('token', token);
-    localStorage.setItem('isLoggedIn', 'true');
-    localStorage.setItem('isAdmin', isAdmin ? 'true' : 'false');
+    sessionStorage.setItem('token', token);
+    sessionStorage.setItem('isLoggedIn', 'true');
+    sessionStorage.setItem('isAdmin', isAdmin ? 'true' : 'false');
     this.isLoggedIn = true;
     this.getUserDetails();
     this.authService.updateAdminStatus();
@@ -84,24 +84,24 @@ export class LoginComponent implements OnInit {
   }
 
   getUserDetails() {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (!token) return;
 
     this.loginservice.getUserDetails(token).subscribe({
       next: (data: any) => {
         this.user = data;
         this.commonService.updateData(this.user)
-        localStorage.setItem("userId", data.id);
-        localStorage.setItem("name", data.name)
-        localStorage.setItem("email", data.email)
-        localStorage.setItem("phone", data.phone);
+        sessionStorage.setItem("userId", data._id);
+        sessionStorage.setItem("name", data.name)
+        sessionStorage.setItem("email", data.email)
+        sessionStorage.setItem("phone", data.phone);
         this.cd.detectChanges();
       }
     });
   }
 
   logout() {
-    localStorage.clear();
+    sessionStorage.clear();
     this.isLoggedIn = false;
     this.user = null;
     this.cd.detectChanges();
