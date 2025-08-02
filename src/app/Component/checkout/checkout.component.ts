@@ -25,7 +25,7 @@ export class CheckoutComponent implements OnInit {
   totalAmount = 0;
   shippingCost = 5;
   selectedPaymentMethod = 'Card';
-  email = localStorage.getItem("email") || '';
+  email = sessionStorage.getItem("email") || '';
   address = '';
 
   constructor(private router: Router, private productService: ProductsService, private popupModalService: PopupModalService) { }
@@ -36,7 +36,7 @@ export class CheckoutComponent implements OnInit {
   }
 
   loadCart() {
-    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const cart = JSON.parse(sessionStorage.getItem('cart') || '[]');
     this.cartProducts = this.aggregateCartProducts(cart);
   }
 
@@ -89,7 +89,7 @@ export class CheckoutComponent implements OnInit {
       shippingCost: this.shippingCost
     };
 
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (!token) {
       this.popupModalService.show('You must be logged in to place an order');
       return;
@@ -98,7 +98,7 @@ export class CheckoutComponent implements OnInit {
     this.productService.placeOrder(orderData, token).subscribe(
       () => {
         this.popupModalService.show('Order placed successfully');
-        localStorage.removeItem('cart');
+        sessionStorage.removeItem('cart');
         this.router.navigate(['/cart']);
       },
       () => {

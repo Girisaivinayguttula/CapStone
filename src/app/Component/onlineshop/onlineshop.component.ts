@@ -71,9 +71,9 @@ export class OnlineshopComponent implements OnInit {
       return;
     }
 
-    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const cart = JSON.parse(sessionStorage.getItem('cart') || '[]');
     cart.push(product);
-    localStorage.setItem('cart', JSON.stringify(cart));
+    sessionStorage.setItem('cart', JSON.stringify(cart));
     this.cartProducts.add(product._id || '');
   }
 
@@ -82,6 +82,6 @@ export class OnlineshopComponent implements OnInit {
   }
 
   private isLoggedIn(): boolean {
-    return localStorage.getItem('isLoggedIn') === 'true';
+    return sessionStorage.getItem('isLoggedIn') === 'true';
   }
 }

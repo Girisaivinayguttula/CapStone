@@ -2,11 +2,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100vh; /* Full screen height */
+  height: 100vh;
+  /* Full screen height */
   padding-top: 40px;
   margin: 0;
   border: 0;
-  background-color: RGB(237, 237, 239); /* Light background color */
+  background-color: RGB(237, 237, 239);
+  /* Light background color */
 
   app-navbar {
     width: 100%;
@@ -54,7 +56,8 @@
     .image-content {
       img {
         width: 100%;
-        max-width: 600px; /* Increased max width for larger images */
+        max-width: 600px;
+        /* Increased max width for larger images */
         height: auto;
         margin: 0;
         border: 0;
@@ -88,7 +91,8 @@
 
       .image-content {
         img {
-          max-width: 500px; /* Adjusted size for tablets */
+          max-width: 500px;
+          /* Adjusted size for tablets */
           margin-top: 20px;
         }
       }
@@ -113,7 +117,8 @@
 
       .image-content {
         img {
-          max-width: 400px; /* Adjusted size for smaller tablets */
+          max-width: 400px;
+          /* Adjusted size for smaller tablets */
         }
       }
     }
@@ -142,7 +147,8 @@
 
       .image-content {
         img {
-          max-width: 300px; /* Adjusted size for mobile devices */
+          max-width: 300px;
+          /* Adjusted size for mobile devices */
         }
       }
     }
