@@ -13,10 +13,8 @@
     <li><a routerLink="/onlineshop" (click)="closeMenu()">Onlineshop</a></li>
     <li *ngIf="isAdmin"><a routerLink="/products" (click)="closeMenu()">Products</a></li>
     <li *ngIf="isAdmin"><a routerLink="/subscriber" (click)="closeMenu()">subscriptions</a></li>
-    <li><a routerLink="/store" (click)="closeMenu()">Store</a></li>
     <li><a routerLink="/orders" (click)="closeMenu()">My Orders</a></li>
     <li><a routerLink="/login" (click)="closeMenu()"><mat-icon>account_circle</mat-icon></a></li>
     <li><a routerLink="/cart" (click)="closeMenu()"><mat-icon>shopping_cart</mat-icon></a></li>
   </ul>
 </nav>
-

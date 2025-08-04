@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { AuthService } from '../../auth.service';   // Import AuthService
-import {MatIconModule} from '@angular/material/icon';
+import { AuthService } from '../../auth.service';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-navbar',
@@ -14,7 +14,7 @@ import {MatIconModule} from '@angular/material/icon';
 export class NavbarComponent implements OnInit {
   isAdmin = false;
 
-  constructor(private authService: AuthService) {} // Inject AuthService
+  constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
     this.authService.isAdmin$.subscribe(isAdmin => {
@@ -25,7 +25,7 @@ export class NavbarComponent implements OnInit {
   closeMenu(): void {
     const menuToggle = document.getElementById('menu-toggle') as HTMLInputElement;
     if (menuToggle) {
-      menuToggle.checked = false; // Uncheck the checkbox to close the menu
+      menuToggle.checked = false;
     }
   }
 }

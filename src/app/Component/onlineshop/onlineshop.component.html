@@ -4,16 +4,30 @@
   </header>
 
   <section class="category-filter">
-    <label for="category">Filter by Category:</label>
-    <select id="category" (change)="filterByCategory($event)">
+    <label class="category" for="category">Filter by Category:</label>
+    <select class="category" id="category" (change)="filterByCategory($event)">
       <option value="">All</option>
       <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
     </select>
   </section>
 
+  <!-- Skeleton loading cards -->
+  <div *ngIf="loading" class="product-list">
+    <div class="product-card skeleton" *ngFor="let item of [1,2,3,4,5,6]">
+      <div class="skeleton-img"></div>
+      <div class="product-info">
+        <div class="skeleton-line short"></div>
+        <div class="skeleton-line medium"></div>
+        <div class="skeleton-line long"></div>
+        <div class="skeleton-line short"></div>
+        <div class="skeleton-line btn"></div>
+      </div>
+    </div>
+  </div>
+
   <section class="products">
     <div *ngIf="filteredProducts.length === 0" class="no-products">
-      <p>No products available.</p>
+      <p class="font">No products available.</p>
     </div>
     <div class="product-list">
       <div *ngFor="let product of filteredProducts" class="product-card">
@@ -30,7 +44,7 @@
             </button>
           </div>
           <ng-template #outOfStock>
-            <p class="out-of-stock">Out of Stock</p>
+            <p class="font">Out of Stock</p>
           </ng-template>
         </div>
       </div>

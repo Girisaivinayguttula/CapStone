@@ -24,13 +24,19 @@
   flex-direction: column;
 }
 
+.font {
+  font-family: 'Times New Roman', Times, serif;
+}
+
 .product-list {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   gap: 30px;
   padding: 0;
-  margin: 0 auto;
+  /* margin: 0 auto; */
+  margin-top: 25px;
+  margin-bottom: 25px;
   max-width: 100%;
   /* Ensure it doesn’t overflow */
 }
@@ -71,6 +77,7 @@
   color: #888;
   text-transform: uppercase;
   margin-bottom: 10px;
+  font-family: 'Times New Roman', Times, serif;
 }
 
 .product-info h4 {
@@ -127,6 +134,58 @@ button:hover {
 .category-filter {
   padding-bottom: 25px;
 }
+
+.skeleton {
+  animation: shimmer 1.5s infinite linear;
+  background: linear-gradient(to right,
+      #eeeeee 0%,
+      #dddddd 20%,
+      #eeeeee 40%,
+      #eeeeee 100%);
+  background-size: 1000px 100%;
+}
+
+.skeleton-img {
+  height: 250px;
+  background-color: #ddd;
+}
+
+.skeleton-line {
+  height: 15px;
+  background-color: #ddd;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+
+.skeleton-line.short {
+  width: 30%;
+}
+
+.skeleton-line.medium {
+  width: 60%;
+}
+
+.skeleton-line.long {
+  width: 90%;
+}
+
+.skeleton-line.btn {
+  width: 100px;
+  height: 35px;
+  background-color: #ccc;
+  border-radius: 5px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
 
 /* Responsive adjustments */
 @media screen and (max-width: 1024px) {
