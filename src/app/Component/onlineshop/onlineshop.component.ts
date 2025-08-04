@@ -28,6 +28,7 @@ export class OnlineshopComponent implements OnInit {
   filteredProducts: Products[] = [];
   categories: string[] = [];
   cartProducts: Set<string> = new Set();
+  loading = false
 
   constructor(private router: Router, private productsService: ProductsService, private spinnerService: SpinnerService, private popupModalService: PopupModalService) { }
 
@@ -36,10 +37,10 @@ export class OnlineshopComponent implements OnInit {
   }
 
   fetchProducts() {
-    this.spinnerService.show();
+    this.loading = true
     this.productsService.getAllProducts().subscribe({
       next: (data: Products[]) => {
-        this.spinnerService.hide();
+        this.loading = false;
         this.products = data.map(product => ({
           ...product,
           imageUrl: product.imageUrl,
@@ -50,7 +51,7 @@ export class OnlineshopComponent implements OnInit {
         this.categories = Array.from(new Set(this.products.map(p => p.category)));
       },
       error: () => {
-        this.spinnerService.hide();
+        this.loading = false;
         this.popupModalService.show('Error fetching products:');
       }
     });
