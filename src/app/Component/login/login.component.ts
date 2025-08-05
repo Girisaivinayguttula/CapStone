@@ -53,6 +53,7 @@ export class LoginComponent implements OnInit {
         },
         error: () => {
           this.popupModalService.show("Invalid password");
+          this.spinnerService.hide();
         }
       });
     }
