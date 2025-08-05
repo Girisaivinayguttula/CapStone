@@ -1,27 +1,82 @@
+/* Fullscreen overlay with dimmed background */
 .spinner-overlay {
     position: fixed;
     top: 0;
     left: 0;
-    height: 100vh;
     width: 100vw;
-    background-color: rgba(255, 255, 255, 0.5);
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* semi-transparent dark background */
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 9999;
+    /* Ensure it stays on top */
 }
 
+/* Spinner wrapper */
 .spinner {
-    border: 8px solid #f3f3f3;
-    border-top: 8px solid #3f51b5;
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    animation: spin 1s linear infinite;
+    position: relative;
+    width: 65px;
+    aspect-ratio: 1 / 1;
 }
 
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
+/* Spinner circles */
+.loader-circle {
+    position: absolute;
+    border-radius: 50px;
+    animation: loaderAnim 2.5s infinite;
+    box-shadow: inset 0 0 0 3px #ffffff;
+    /* Light mode */
+}
+
+/* Second circle with delay */
+.loader-circle.delay {
+    animation-delay: -1.25s;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .loader-circle {
+        box-shadow: inset 0 0 0 3px #f5f5f5;
+    }
+}
+
+/* Animation keyframes */
+@keyframes loaderAnim {
+    0% {
+        inset: 0 35px 35px 0;
+    }
+
+    12.5% {
+        inset: 0 35px 0 0;
+    }
+
+    25% {
+        inset: 35px 35px 0 0;
+    }
+
+    37.5% {
+        inset: 35px 0 0 0;
+    }
+
+    50% {
+        inset: 35px 0 0 35px;
+    }
+
+    62.5% {
+        inset: 0 0 0 35px;
+    }
+
+    75% {
+        inset: 0 0 35px 35px;
+    }
+
+    87.5% {
+        inset: 0 0 35px 0;
+    }
+
+    100% {
+        inset: 0 35px 35px 0;
     }
 }

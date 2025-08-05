@@ -27,7 +27,7 @@
 
   <section class="products">
     <div *ngIf="filteredProducts.length === 0" class="no-products">
-      <p class="font">No products available.</p>
+      <p class="font" *ngIf="!loading">No products available.</p>
     </div>
     <div class="product-list">
       <div *ngFor="let product of filteredProducts" class="product-card">
