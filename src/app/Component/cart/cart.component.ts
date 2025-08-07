@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 export interface CartProduct {
   _id: string;
@@ -23,8 +23,18 @@ export class CartComponent implements OnInit {
   cartProducts: CartProduct[] = [];
   totalAmount = 0;
 
+  constructor(private router: Router) { }
+
   ngOnInit() {
     this.loadCart();
+    if (!this.isLoggedIn()) {
+      this.router.navigate(['/login']);
+      return;
+    }
+  }
+
+  private isLoggedIn(): boolean {
+    return sessionStorage.getItem('isLoggedIn') === 'true';
   }
 
   loadCart() {

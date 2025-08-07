@@ -27,8 +27,8 @@
   background-color: RGB(237, 237, 239);
   border-radius: 5px;
   overflow: hidden;
-  width: 30%; /* Adjust width to fit three products per row */
-  margin: 15px 0; /* Adjust margin for spacing */
+  width: 30%;
+  margin: 15px 0;
   text-align: left;
   transition: box-shadow 0.3s ease-in-out;
 }
@@ -94,11 +94,11 @@ button:hover {
 }
 
 .product-form-container {
-  background-color: #fff; /* White background for the form */
+  background-color: #fff;
   border-radius: 5px;
   padding: 20px;
   margin: 20px auto;
-  max-width: 600px; /* Limit form width */
+  max-width: 600px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -109,7 +109,7 @@ button:hover {
 
 .form-group {
   margin-bottom: 20px;
-  text-align: left; /* Align text to the left */
+  text-align: left;
 }
 
 .form-group label {
@@ -128,12 +128,12 @@ button:hover {
 }
 
 .form-group textarea {
-  resize: vertical; /* Allow vertical resize only */
-  height: 100px; /* Set a default height for textarea */
+  resize: vertical;
+  height: 100px;
 }
 
 .error {
-  color: #f00; /* Red color for errors */
+  color: #f00;
   font-size: 12px;
 }
 
@@ -152,7 +152,7 @@ button:hover {
 }
 
 .add-product-button {
-  background-color: #000000; /* Green button for adding */
+  background-color: #000000;
   color: #fff;
 }
 
@@ -160,7 +160,6 @@ button:hover {
   background-color: #454645;
 }
 
-/* Inline Editing Styles */
 .product-info input[type="text"],
 .product-info input[type="number"],
 .product-info textarea,
@@ -171,78 +170,69 @@ button:hover {
   color: #333;
   border: 1px solid #ccc;
   border-radius: 5px;
-  margin-bottom: 10px; /* Add some spacing */
-  box-sizing: border-box; /* Ensure padding doesn't affect width */
+  margin-bottom: 10px;
+  box-sizing: border-box;
 }
 
-/* Match the appearance of product-info */
 .product-info input[type="text"] {
-  font-size: 20px; /* Same as product-info h4 */
+  font-size: 20px;
   font-weight: 400;
 }
 
 .product-info input[type="number"] {
-  font-size: 18px; /* Same as .price */
+  font-size: 18px;
   color: #333;
 }
 
 .product-info textarea {
-  font-size: 14px; /* Same as .description */
+  font-size: 14px;
   color: #666;
-  resize: vertical; /* Allow only vertical resizing */
+  resize: vertical;
 }
 
 .product-info select {
-  font-size: 12px; /* Same as .category */
+  font-size: 12px;
   color: #888;
   text-transform: uppercase;
 }
 
-/* Remove default outline for a better look */
 .product-info input:focus,
 .product-info textarea:focus,
 .product-info select:focus {
   outline: none;
-  border-color: #888; /* Slightly darker border on focus */
-  box-shadow: 0 0 5px rgba(136, 136, 136, 0.5); /* Subtle shadow effect */
+  border-color: #888;
+  box-shadow: 0 0 5px rgba(136, 136, 136, 0.5);
 }
 
-/* Ensure margin is consistent for inline editing inputs */
 .product-info input {
-  margin-bottom: 10px; /* Add bottom margin for better spacing */
+  margin-bottom: 10px;
 }
 
-/* Specific styling for the "Image URL" input to increase its width */
 .product-info input[placeholder="Image URL"] {
-  width: calc(100% - 20px); /* Slightly narrower than full width for padding/margin */
-  margin-bottom: 15px; /* Increased bottom margin for better spacing */
+  width: calc(100% - 20px);
+  margin-bottom: 15px;
 }
 
-/* add-product.component.css */
 
-/* Modal overlay */
 .modal {
-  max-width: 600px; /* Set a maximum width for the form */
-  margin: 0 auto; /* Center the form */
-  padding: 20px; /* Add padding around the form */
-  background-color: #000000; /* Light background color */
-  border-radius: 8px; /* Rounded corners */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* Subtle shadow for depth */
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #000000;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
-/* Modal content */
 .modal-content {
   background: #fff;
   border-radius: 8px;
   margin-left: 50px;
-  padding: 50px; /* Reduced padding for a more compact design */
-  max-width: 400px; /* Reduced width to make the form smaller */
+  padding: 50px;
   width: 100%;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   position: relative;
 }
 
-/* Close button */
 .close {
   position: absolute;
   top: 10px;
@@ -251,7 +241,6 @@ button:hover {
   cursor: pointer;
 }
 
-/* Form styling */
 form {
   display: flex;
   flex-direction: column;
@@ -271,10 +260,11 @@ form {
 .form-group textarea,
 .form-group select {
   width: 100%;
-  padding: 6px; /* Reduced padding for a more compact field size */
+  padding: 6px;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
+
 .form-group textarea {
   resize: vertical;
   height: 100px;
@@ -284,10 +274,10 @@ button[type="submit"] {
   background: #000000;
   color: #fff;
   border: none;
-  padding: 8px 12px; /* Slightly reduced padding */
+  padding: 8px 12px;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 14px; /* Reduced font size */
+  font-size: 14px;
   margin-top: 10px;
 }
 
@@ -295,7 +285,6 @@ button[type="submit"]:hover {
   background: #2f3030;
 }
 
-/* Media query for tablets and small screens */
 @media (max-width: 1024px) {
   .onlineshop-container {
     min-width: 95%;
@@ -303,102 +292,100 @@ button[type="submit"]:hover {
   }
 
   .product-card {
-    width: 45%; /* Adjust width for tablets to fit two products per row */
-    margin: 10px 0; /* Adjust margin for spacing */
+    width: 45%;
+    margin: 10px 0;
   }
 
   .product-image {
-    height: 300px; /* Reduce height for smaller screens */
+    height: 300px;
   }
 
   .header h2 {
-    font-size: 20px; /* Adjust font size for smaller screens */
+    font-size: 20px;
   }
 
   .product-info h4 {
-    font-size: 18px; /* Adjust font size for smaller screens */
+    font-size: 18px;
   }
 
   .price {
-    font-size: 16px; /* Adjust font size for smaller screens */
+    font-size: 16px;
   }
 
   .description {
-    font-size: 12px; /* Adjust font size for smaller screens */
+    font-size: 12px;
   }
 
   .product-form-container {
-    max-width: 90%; /* Limit form width for smaller screens */
-    padding: 15px; /* Reduce padding for smaller screens */
+    max-width: 90%;
+    padding: 15px;
   }
 
   .product-form-container h2 {
-    font-size: 20px; /* Adjust font size for smaller screens */
+    font-size: 20px;
   }
 }
 
-/* Media query for mobile screens */
 @media (max-width: 768px) {
   .product-card {
-    width: 100%; /* Full width for mobile screens */
-    margin: 10px 0; /* Adjust margin for spacing */
+    width: 100%;
+    margin: 10px 0;
   }
 
   .product-image {
-    height: 250px; /* Reduce height further for mobile screens */
+    height: 250px;
   }
 
   .header h2 {
-    font-size: 18px; /* Adjust font size for mobile screens */
+    font-size: 18px;
   }
 
   .product-info h4 {
-    font-size: 16px; /* Adjust font size for mobile screens */
+    font-size: 16px;
   }
 
   .price {
-    font-size: 14px; /* Adjust font size for mobile screens */
+    font-size: 14px;
   }
 
   .description {
-    font-size: 12px; /* Adjust font size for mobile screens */
+    font-size: 12px;
   }
 
   .product-form-container {
-    max-width: 100%; /* Full width for mobile screens */
-    padding: 10px; /* Reduce padding for mobile screens */
+    max-width: 100%;
+    padding: 10px;
   }
 
   .product-form-container h2 {
-    font-size: 18px; /* Adjust font size for mobile screens */
+    font-size: 18px;
   }
 
   .product-info input,
   .product-info textarea,
   .product-info select {
-    font-size: 14px; /* Adjust font size for mobile screens */
+    font-size: 14px;
   }
 }
 
-/* Media query for very small screens */
 @media (max-width: 480px) {
   .header h2 {
-    font-size: 16px; /* Further reduce font size for very small screens */
+    font-size: 16px;
   }
 
   .product-info h4 {
-    font-size: 14px; /* Further reduce font size for very small screens */
+    font-size: 14px;
   }
 
   .price {
-    font-size: 12px; /* Further reduce font size for very small screens */
+    font-size: 12px;
   }
 
   .description {
-    font-size: 10px; /* Further reduce font size for very small screens */
+    font-size: 10px;
   }
 
   .product-image {
-    height: 200px; /* Reduce height further for very small screens */
+    height: 200px;
   }
 }

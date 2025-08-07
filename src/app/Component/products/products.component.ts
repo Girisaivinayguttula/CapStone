@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormsModule, NgForm } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ProductsService } from '../../Services/products.service';
 
-export interface Products {
+export interface Product {
   _id?: string;
   name: string;
   description: string;
@@ -17,31 +18,38 @@ export interface Products {
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.css']
 })
 export class ProductComponent implements OnInit {
   showForm = false;
-  isEditing = false;
-  products: Products[] = [];
-  currentProduct: Products | null = null;
-  productName = '';
-  productDescription = '';
-  productPrice = 0;
-  productCategory = '';
-  productImageUrl = '';
-  productQuantity = 0;
+  products: Product[] = [];
+  currentProduct: Product | null = null;
+  productForm: FormGroup;
   categories = ['Cupcakes', 'Desserts', 'Pastries'];
 
-  constructor(private http: HttpClient, private productsService: ProductsService) { }
+  constructor(
+    private fb: FormBuilder,
+    private http: HttpClient,
+    private productsService: ProductsService
+  ) {
+    this.productForm = this.fb.group({
+      name: ['', Validators.required],
+      description: ['', Validators.required],
+      price: [0, [Validators.required, Validators.min(0)]],
+      category: ['', Validators.required],
+      imageUrl: ['', Validators.required],
+      quantity: [0, [Validators.required, Validators.min(0)]]
+    });
+  }
 
   ngOnInit() {
     this.fetchProducts();
   }
 
   fetchProducts() {
-    this.http.get<Products[]>('http://localhost:5000/api/products').subscribe({
+    this.http.get<Product[]>('http://localhost:5000/api/products').subscribe({
       next: (data) => {
         this.products = data;
       },
@@ -58,18 +66,10 @@ export class ProductComponent implements OnInit {
     }
   }
 
-  addProduct(form: NgForm) {
-    if (form.valid) {
-      const newProduct: Products = {
-        name: this.productName,
-        description: this.productDescription,
-        price: this.productPrice,
-        category: this.productCategory,
-        imageUrl: this.productImageUrl,
-        quantity: this.productQuantity
-      };
-
-      this.http.post<Products>('http://localhost:5000/api/products', newProduct).subscribe({
+  addProduct() {
+    if (this.productForm.valid) {
+      const newProduct: Product = this.productForm.value;
+      this.http.post<Product>('http://localhost:5000/api/products', newProduct).subscribe({
         next: (product) => {
           this.products.push(product);
           this.toggleModal();
@@ -82,28 +82,22 @@ export class ProductComponent implements OnInit {
     }
   }
 
-  editProduct(product: Products) {
+  editProduct(product: Product) {
     this.currentProduct = product;
-    this.productName = product.name;
-    this.productDescription = product.description;
-    this.productPrice = product.price;
-    this.productCategory = product.category;
-    this.productImageUrl = product.imageUrl;
-    this.productQuantity = product.quantity || 0;
+    this.productForm.patchValue({
+      name: product.name,
+      description: product.description,
+      price: product.price,
+      category: product.category,
+      imageUrl: product.imageUrl,
+      quantity: product.quantity || 0
+    });
   }
 
-  saveProduct(product: Products) {
-    if (this.currentProduct && this.currentProduct._id) {
-      const updatedProduct: Products = {
-        name: this.productName,
-        description: this.productDescription,
-        price: this.productPrice,
-        category: this.productCategory,
-        imageUrl: this.productImageUrl,
-        quantity: this.productQuantity
-      };
-
-      this.http.put<Products>(`http://localhost:5000/api/products/${this.currentProduct._id}`, updatedProduct).subscribe({
+  saveProduct() {
+    if (this.productForm.valid && this.currentProduct && this.currentProduct._id) {
+      const updatedProduct: Product = this.productForm.value;
+      this.http.put<Product>(`http://localhost:5000/api/products/${this.currentProduct._id}`, updatedProduct).subscribe({
         next: (updatedProduct) => {
           const index = this.products.findIndex(p => p._id === updatedProduct._id);
           if (index !== -1) {
@@ -119,10 +113,9 @@ export class ProductComponent implements OnInit {
     }
   }
 
-  deleteProduct(product: Products) {
+  deleteProduct(product: Product) {
     if (product._id) {
       const isConfirmed = window.confirm("Are you sure you want to delete this product?");
-
       if (isConfirmed) {
         this.http.delete(`http://localhost:5000/api/products/${product._id}`).subscribe({
           next: () => {
@@ -137,11 +130,6 @@ export class ProductComponent implements OnInit {
   }
 
   resetForm() {
-    this.productName = '';
-    this.productDescription = '';
-    this.productPrice = 0;
-    this.productCategory = '';
-    this.productImageUrl = '';
-    this.productQuantity = 0;
+    this.productForm.reset();
   }
 }

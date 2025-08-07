@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ProductsService } from '../../Services/products.service';
 import { PopupModalService } from '../../Services/popup-modal.service';
-import { SpinnerService } from '../../Services/spinner.service';
 
 export interface Products {
   _id?: string;
@@ -30,7 +29,7 @@ export class OnlineshopComponent implements OnInit {
   cartProducts: Set<string> = new Set();
   loading = false
 
-  constructor(private router: Router, private productsService: ProductsService, private spinnerService: SpinnerService, private popupModalService: PopupModalService) { }
+  constructor(private router: Router, private productsService: ProductsService, private popupModalService: PopupModalService) { }
 
   ngOnInit() {
     this.fetchProducts();
@@ -52,7 +51,7 @@ export class OnlineshopComponent implements OnInit {
       },
       error: () => {
         this.loading = false;
-        this.popupModalService.show('Error fetching products:');
+        this.popupModalService.show('Error fetching products');
       }
     });
   }
