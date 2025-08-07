@@ -1,40 +1,57 @@
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { LoginService } from '../../Services/login.service';
 import { PopupModalService } from '../../Services/popup-modal.service';
+import { ReactiveFormsModule } from '@angular/forms';
 import { SpinnerService } from '../../Services/spinner.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-signup',
-  standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule],
   templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.css']
+  styleUrls: ['./signup.component.css'],
+  standalone: true,
+  imports: [ReactiveFormsModule, CommonModule]
 })
-export class SignupComponent {
-
-  user = {
-    name: '',
-    email: '',
-    phone: '',
-    password: '',
-    gender: 'male'
-  };
-
-  otp = '';
+export class SignupComponent implements OnInit {
+  combinedForm!: FormGroup;
   otpSent = false;
-  otpVerificationFailed = false;
 
-  constructor(private router: Router, private loginservice: LoginService, private spinnerService: SpinnerService, private popupModalService: PopupModalService) { }
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private loginService: LoginService,
+    private spinnerService: SpinnerService,
+    private popupModalService: PopupModalService
+  ) { }
+
+  ngOnInit(): void {
+    this.initiateForm();
+  }
+
+  private initiateForm(): void {
+    this.combinedForm = this.fb.group({
+      signup: this.fb.group({
+        name: ['', Validators.required],
+        email: ['', [Validators.required, Validators.email]],
+        phone: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
+        password: ['', [Validators.required, Validators.minLength(6)]],
+        gender: ['male']
+      }),
+      otpVerification: this.fb.group({
+        otp: ['', [Validators.required, Validators.pattern(/^[0-9]{6}$/)]]
+      })
+    });
+  }
 
   onSubmit() {
-    if (!this.isPasswordValid() || !this.isPhoneValid() || !this.user.name || !this.user.email) {
+    if (this.combinedForm.get('signup')?.invalid) {
       return;
     }
+
     this.spinnerService.show();
-    this.loginservice.signUp(this.user).subscribe({
+    this.loginService.signUp(this.combinedForm.get('signup')?.value).subscribe({
       next: () => {
         this.otpSent = true;
         this.spinnerService.hide();
@@ -48,12 +65,15 @@ export class SignupComponent {
   }
 
   onVerifyOtp() {
-    if (!this.isOtpValid()) {
-      alert('OTP must be exactly 6 digits.');
+    if (this.combinedForm.get('otpVerification')?.invalid) {
       return;
     }
+
+    const email = this.combinedForm.get('signup.email')?.value;
+    const otp = this.combinedForm.get('otpVerification.otp')?.value;
+
     this.spinnerService.show();
-    this.loginservice.verifyOtp(this.user.email, this.otp).subscribe({
+    this.loginService.verifyOtp(email, otp).subscribe({
       next: () => {
         this.spinnerService.hide();
         this.popupModalService.show('OTP verified! Redirecting to login page...');
@@ -61,24 +81,8 @@ export class SignupComponent {
       },
       error: () => {
         this.spinnerService.hide();
-        this.otpVerificationFailed = true;
         this.popupModalService.show('Incorrect OTP. Please try again.');
       }
     });
-  }
-
-  isPasswordValid(): boolean {
-    const password = this.user.password;
-    return password.length >= 6;
-  }
-
-  isPhoneValid(): boolean {
-    const phone = this.user.phone;
-    return phone.length === 10 && /^[0-9]+$/.test(phone);
-  }
-
-  isOtpValid(): boolean {
-    const otp = this.otp;
-    return otp.length === 6 && /^[0-9]+$/.test(otp);
   }
 }
