@@ -22,8 +22,8 @@ export class LoginComponent implements OnInit {
   user: any;
   isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
 
-  private adminEmail = 'admin@gmail.com';
-  private adminPassword = 'adminpass';
+  private adminEmail = 'Admin';
+  private adminPassword = 'AdminpPass';
 
   constructor(
     private authService: AuthService,
