@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
   isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
 
   private adminEmail = 'Admin';
-  private adminPassword = 'AdminpPass';
+  private adminPassword = 'AdminPass';
 
   constructor(
     private authService: AuthService,
