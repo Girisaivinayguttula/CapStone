@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ProductsService } from '../../Services/products.service';
 import { PopupModalService } from '../../Services/popup-modal.service';
+import { Subject, takeUntil } from 'rxjs';
 
 export interface Products {
   _id?: string;
@@ -23,6 +24,8 @@ export interface Products {
   styleUrls: ['./onlineshop.component.css']
 })
 export class OnlineshopComponent implements OnInit {
+
+  private destory$ = new Subject<void>();
   products: Products[] = [];
   filteredProducts: Products[] = [];
   categories: string[] = [];
@@ -35,9 +38,14 @@ export class OnlineshopComponent implements OnInit {
     this.fetchProducts();
   }
 
+  ngOnDestroy() {
+    this.destory$.next();
+    this.destory$.complete();
+  }
+
   fetchProducts() {
     this.loading = true
-    this.productsService.getAllProducts().subscribe({
+    this.productsService.getAllProducts().pipe(takeUntil(this.destory$)).subscribe({
       next: (data: Products[]) => {
         this.loading = false;
         this.products = data.map(product => ({

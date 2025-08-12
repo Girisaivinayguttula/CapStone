@@ -1,5 +1,5 @@
 .onlineshop-container {
-  background-color: RGB(237, 237, 239);
+  background-color: rgb(237, 237, 239);
   min-width: 1200px;
   margin: 0 auto;
   padding: 20px;
@@ -24,7 +24,7 @@
 }
 
 .product-card {
-  background-color: RGB(237, 237, 239);
+  background-color: rgb(237, 237, 239);
   border-radius: 5px;
   overflow: hidden;
   width: 30%;
@@ -73,7 +73,8 @@
   margin-bottom: 20px;
 }
 
-button {
+button,
+button[type="submit"] {
   background-color: #333;
   color: #fff;
   padding: 10px 20px;
@@ -83,8 +84,17 @@ button {
   transition: background-color 0.3s ease-in-out;
 }
 
-button:hover {
+button:hover,
+button[type="submit"]:hover {
   background-color: #555;
+}
+
+.add-product-button {
+  background-color: #000;
+}
+
+.add-product-button:hover {
+  background-color: #454645;
 }
 
 .no-products {
@@ -93,7 +103,8 @@ button:hover {
   color: #666;
 }
 
-.product-form-container {
+.product-form-container,
+.modal-content {
   background-color: #fff;
   border-radius: 5px;
   padding: 20px;
@@ -108,7 +119,7 @@ button:hover {
 }
 
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   text-align: left;
 }
 
@@ -120,46 +131,7 @@ button:hover {
 
 .form-group input,
 .form-group textarea,
-.form-group select {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.form-group textarea {
-  resize: vertical;
-  height: 100px;
-}
-
-.error {
-  color: #f00;
-  font-size: 12px;
-}
-
-button {
-  background-color: #333;
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease-in-out;
-}
-
-button:hover {
-  background-color: #555;
-}
-
-.add-product-button {
-  background-color: #000000;
-  color: #fff;
-}
-
-.add-product-button:hover {
-  background-color: #454645;
-}
-
+.form-group select,
 .product-info input[type="text"],
 .product-info input[type="number"],
 .product-info textarea,
@@ -170,8 +142,13 @@ button:hover {
   color: #333;
   border: 1px solid #ccc;
   border-radius: 5px;
-  margin-bottom: 10px;
   box-sizing: border-box;
+}
+
+.form-group textarea,
+.product-info textarea {
+  resize: vertical;
+  height: 100px;
 }
 
 .product-info input[type="text"] {
@@ -181,13 +158,6 @@ button:hover {
 
 .product-info input[type="number"] {
   font-size: 18px;
-  color: #333;
-}
-
-.product-info textarea {
-  font-size: 14px;
-  color: #666;
-  resize: vertical;
 }
 
 .product-info select {
@@ -198,14 +168,13 @@ button:hover {
 
 .product-info input:focus,
 .product-info textarea:focus,
-.product-info select:focus {
+.product-info select:focus,
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
   outline: none;
   border-color: #888;
   box-shadow: 0 0 5px rgba(136, 136, 136, 0.5);
-}
-
-.product-info input {
-  margin-bottom: 10px;
 }
 
 .product-info input[placeholder="Image URL"] {
@@ -213,24 +182,13 @@ button:hover {
   margin-bottom: 15px;
 }
 
-
 .modal {
   max-width: 600px;
   margin: 0 auto;
   padding: 20px;
-  background-color: #000000;
+  background-color: #000;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-}
-
-.modal-content {
-  background: #fff;
-  border-radius: 8px;
-  margin-left: 50px;
-  padding: 50px;
-  width: 100%;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  position: relative;
 }
 
 .close {
@@ -246,45 +204,7 @@ form {
   flex-direction: column;
 }
 
-.form-group {
-  margin-bottom: 15px;
-}
-
-.form-group label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-.form-group input,
-.form-group textarea,
-.form-group select {
-  width: 100%;
-  padding: 6px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-.form-group textarea {
-  resize: vertical;
-  height: 100px;
-}
-
-button[type="submit"] {
-  background: #000000;
-  color: #fff;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  margin-top: 10px;
-}
-
-button[type="submit"]:hover {
-  background: #2f3030;
-}
-
+/* ===== Responsive Styles ===== */
 @media (max-width: 1024px) {
   .onlineshop-container {
     min-width: 95%;

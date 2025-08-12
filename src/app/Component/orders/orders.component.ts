@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { ProductsService } from '../../Services/products.service';
 import { PopupModalService } from '../../Services/popup-modal.service';
 import { SpinnerService } from '../../Services/spinner.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-orders',
@@ -13,12 +14,18 @@ import { SpinnerService } from '../../Services/spinner.service';
   styleUrls: ['./orders.component.css']
 })
 export class OrdersComponent implements OnInit {
+  private destroy$ = new Subject<void>();
   orders: any[] = [];
 
   constructor(private productsService: ProductsService, private spinnerService: SpinnerService, private popupModalService: PopupModalService) { }
 
   ngOnInit() {
     this.fetchOrders();
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   fetchOrders() {
@@ -28,14 +35,14 @@ export class OrdersComponent implements OnInit {
       return;
     }
     this.spinnerService.show();
-    this.productsService.fetchOrders(token).subscribe({
+    this.productsService.fetchOrders(token).pipe(takeUntil(this.destroy$)).subscribe({
       next: (data: any[]) => {
         this.spinnerService.hide();
         this.orders = data;
       },
       error: () => {
         this.spinnerService.hide();
-        this.popupModalService.show('Failed to fetch orders:');
+        this.popupModalService.show('Failed to fetch orders');
       }
     });
   }

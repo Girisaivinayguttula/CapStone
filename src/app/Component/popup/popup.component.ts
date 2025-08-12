@@ -27,5 +27,4 @@ export class PopupComponent {
   ngOnDestroy() {
     this.autoCloseSub.unsubscribe();
   }
-
 }
