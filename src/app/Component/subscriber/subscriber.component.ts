@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { LoginService } from '../../Services/login.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-subscriber',
@@ -10,17 +11,22 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./subscriber.component.css']
 })
 export class SubscriberComponent implements OnInit {
+  private destroy$ = new Subject<void>();
   subscriptions: string[] = [];
 
-  constructor(private http: HttpClient) { }
+  constructor(private loginService: LoginService) { }
 
   ngOnInit() {
     this.fetchSubscriptions();
   }
 
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   fetchSubscriptions() {
-    const apiUrl = 'http://localhost:5000/api/subscriptions';
-    this.http.get<string[]>(apiUrl).subscribe(
+    this.loginService.getSuscribers().pipe(takeUntil(this.destroy$)).subscribe(
       (data) => {
         this.subscriptions = data;
       },

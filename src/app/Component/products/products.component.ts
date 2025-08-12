@@ -4,16 +4,9 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ProductsService } from '../../Services/products.service';
+import { Products } from '../onlineshop/onlineshop.component';
+import { takeUntil, Subject, pipe, take } from 'rxjs';
 
-export interface Product {
-  _id?: string;
-  name: string;
-  description: string;
-  price: number;
-  category: string;
-  imageUrl: string;
-  quantity?: number;
-}
 
 @Component({
   selector: 'app-products',
@@ -23,9 +16,10 @@ export interface Product {
   styleUrls: ['./products.component.css']
 })
 export class ProductComponent implements OnInit {
+  private destroy$ = new Subject<void>();
   showForm = false;
-  products: Product[] = [];
-  currentProduct: Product | null = null;
+  products: Products[] = [];
+  currentProduct: Products | null = null;
   productForm: FormGroup;
   categories = ['Cupcakes', 'Desserts', 'Pastries'];
 
@@ -48,8 +42,13 @@ export class ProductComponent implements OnInit {
     this.fetchProducts();
   }
 
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   fetchProducts() {
-    this.http.get<Product[]>('http://localhost:5000/api/products').subscribe({
+    this.productsService.getAllProducts().pipe(takeUntil(this.destroy$)).subscribe({
       next: (data) => {
         this.products = data;
       },
@@ -68,8 +67,8 @@ export class ProductComponent implements OnInit {
 
   addProduct() {
     if (this.productForm.valid) {
-      const newProduct: Product = this.productForm.value;
-      this.http.post<Product>('http://localhost:5000/api/products', newProduct).subscribe({
+      const newProduct: Products = this.productForm.value;
+      this.productsService.addProduct(newProduct).pipe(takeUntil(this.destroy$)).subscribe({
         next: (product) => {
           this.products.push(product);
           this.toggleModal();
@@ -82,7 +81,7 @@ export class ProductComponent implements OnInit {
     }
   }
 
-  editProduct(product: Product) {
+  editProduct(product: Products) {
     this.currentProduct = product;
     this.productForm.patchValue({
       name: product.name,
@@ -96,8 +95,8 @@ export class ProductComponent implements OnInit {
 
   saveProduct() {
     if (this.productForm.valid && this.currentProduct && this.currentProduct._id) {
-      const updatedProduct: Product = this.productForm.value;
-      this.http.put<Product>(`http://localhost:5000/api/products/${this.currentProduct._id}`, updatedProduct).subscribe({
+      const updatedProduct: Products = this.productForm.value;
+      this.productsService.saveProduct({ _id: this.currentProduct._id, ...updatedProduct }).subscribe({
         next: (updatedProduct) => {
           const index = this.products.findIndex(p => p._id === updatedProduct._id);
           if (index !== -1) {
@@ -113,7 +112,7 @@ export class ProductComponent implements OnInit {
     }
   }
 
-  deleteProduct(product: Product) {
+  deleteProduct(product: Products) {
     if (product._id) {
       const isConfirmed = window.confirm("Are you sure you want to delete this product?");
       if (isConfirmed) {

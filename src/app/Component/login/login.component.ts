@@ -9,6 +9,8 @@ import { LoginService } from '../../Services/login.service';
 import { CommonService } from '../../Services/common.service';
 import { PopupModalService } from '../../Services/popup-modal.service';
 import { SpinnerService } from '../../Services/spinner.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -24,6 +26,7 @@ export class LoginComponent implements OnInit {
 
   private adminEmail = 'Admin';
   private adminPassword = 'AdminPass';
+  private destroy$ = new Subject<void>();
 
   constructor(
     private authService: AuthService,
@@ -41,12 +44,17 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   onSubmit(): void {
     if (this.isAdminCredentials()) {
       this.loginAsAdmin();
     } else {
       this.spinnerService.show();
-      this.loginservice.loginUser(this.loginData).subscribe({
+      this.loginservice.loginUser(this.loginData).pipe(takeUntil(this.destroy$)).subscribe({
         next: (response: any) => {
           this.spinnerService.hide();
           this.handleLogin(response.token, response.isAdmin);
@@ -106,8 +114,6 @@ export class LoginComponent implements OnInit {
     this.isLoggedIn = false;
     this.user = null;
     this.cd.detectChanges();
-    this.router.navigate(['/']).then(() => {
-      window.location.reload();
-    });
+    this.router.navigate(['/'])
   }
 }

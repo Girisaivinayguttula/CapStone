@@ -32,4 +32,12 @@ export class ProductsService {
 
     return this.http.post<any>(this.apiUrl + '/orders', orderData, { headers });
   }
+
+  addProduct(product: Products): Observable<Products> {
+    return this.http.post<Products>(this.apiUrl + '/products', product);
+  }
+
+  saveProduct(product: Products): Observable<Products> {
+    return this.http.put<Products>(`${this.apiUrl}/products/${product._id}`, product);
+  }
 }

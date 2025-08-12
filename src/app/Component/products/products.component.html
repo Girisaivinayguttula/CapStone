@@ -49,29 +49,29 @@
     </div>
     <div *ngFor="let product of products" class="product-card">
       <img [src]="product.imageUrl" alt="{{ product.name }}" class="product-image" />
-      <div class="product-info">
-        <h4 *ngIf="currentProduct?._id !== product._id">{{ product.name }}</h4>
-        <input *ngIf="currentProduct?._id === product._id" [formGroup]="productForm" formControlName="name"
-          placeholder="Name" />
-        <p class="price" *ngIf="currentProduct?._id !== product._id">Cost ${{ product.price }}</p>
-        <input *ngIf="currentProduct?._id === product._id" [formGroup]="productForm" formControlName="price"
-          placeholder="Price" type="number" />
-        <p class="description" *ngIf="currentProduct?._id !== product._id">{{ product.description }}</p>
-        <textarea *ngIf="currentProduct?._id === product._id" [formGroup]="productForm" formControlName="description"
-          placeholder="Description"></textarea>
-        <p class="category" *ngIf="currentProduct?._id !== product._id">Category: {{ product.category }}</p>
-        <select *ngIf="currentProduct?._id === product._id" [formGroup]="productForm" formControlName="category">
-          <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
-        </select>
-        <input *ngIf="currentProduct?._id === product._id" [formGroup]="productForm" formControlName="imageUrl"
-          placeholder="Image URL" />
-        <p class="quantity" *ngIf="currentProduct?._id !== product._id">Quantity: {{ product.quantity }}</p>
-        <input *ngIf="currentProduct?._id === product._id" [formGroup]="productForm" formControlName="quantity"
-          placeholder="Quantity" type="number" />
-        <button *ngIf="currentProduct?._id !== product._id" (click)="editProduct(product)">Edit</button>
-        <button *ngIf="currentProduct?._id === product._id" (click)="saveProduct()">Save</button>
-        <button (click)="deleteProduct(product)">Delete</button>
-      </div>
+      <form [formGroup]="productForm">
+        <div class="product-info">
+          <h4 *ngIf="currentProduct?._id !== product._id">{{ product.name }}</h4>
+          <input *ngIf="currentProduct?._id === product._id" formControlName="name" placeholder="Name" />
+          <p class="price" *ngIf="currentProduct?._id !== product._id">Cost ${{ product.price }}</p>
+          <input *ngIf="currentProduct?._id === product._id" formControlName="price" placeholder="Price"
+            type="number" />
+          <p class="description" *ngIf="currentProduct?._id !== product._id">{{ product.description }}</p>
+          <textarea *ngIf="currentProduct?._id === product._id" formControlName="description"
+            placeholder="Description"></textarea>
+          <p class="category" *ngIf="currentProduct?._id !== product._id">Category: {{ product.category }}</p>
+          <select *ngIf="currentProduct?._id === product._id" formControlName="category">
+            <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+          </select>
+          <input *ngIf="currentProduct?._id === product._id" formControlName="imageUrl" placeholder="Image URL" />
+          <p class="quantity" *ngIf="currentProduct?._id !== product._id">Quantity: {{ product.quantity }}</p>
+          <input *ngIf="currentProduct?._id === product._id" formControlName="quantity" placeholder="Quantity"
+            type="number" />
+          <button *ngIf="currentProduct?._id !== product._id" (click)="editProduct(product)">Edit</button>
+          <button *ngIf="currentProduct?._id === product._id" (click)="saveProduct()">Save</button>
+          <button (click)="deleteProduct(product)">Delete</button>
+        </div>
+      </form>
     </div>
   </section>
 </div>
