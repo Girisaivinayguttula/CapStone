@@ -59,8 +59,9 @@ export class LoginComponent implements OnInit {
           this.spinnerService.hide();
           this.handleLogin(response.token, response.isAdmin);
         },
-        error: () => {
-          this.popupModalService.show("Invalid password");
+        error: (err) => {
+          console.log(err.message)
+          this.popupModalService.show("Invalid Details");
           this.spinnerService.hide();
         }
       });
