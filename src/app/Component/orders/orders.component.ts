@@ -5,6 +5,7 @@ import { ProductsService } from '../../Services/products.service';
 import { PopupModalService } from '../../Services/popup-modal.service';
 import { SpinnerService } from '../../Services/spinner.service';
 import { Subject, takeUntil } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-orders',
@@ -16,11 +17,16 @@ import { Subject, takeUntil } from 'rxjs';
 export class OrdersComponent implements OnInit {
   private destroy$ = new Subject<void>();
   orders: any[] = [];
+  token = sessionStorage.getItem('token');
 
-  constructor(private productsService: ProductsService, private spinnerService: SpinnerService, private popupModalService: PopupModalService) { }
+  constructor(private productsService: ProductsService, private spinnerService: SpinnerService, private popupModalService: PopupModalService, private router: Router) { }
 
   ngOnInit() {
     this.fetchOrders();
+    if (!this.token) {
+      this.router.navigate(['/login']);
+      this.popupModalService.show('Please log in to view your orders');
+    }
   }
 
   ngOnDestroy() {
